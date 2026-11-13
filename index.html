@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oppervlakte & Vierkante Meter (m²) Berekenen – Snel & Gratis</title>
+    <meta name="description" content="Bereken direct de oppervlakte in vierkante meters (m²) en omtrek van een rechthoek, cirkel of driehoek. Inclusief handige materiaalberekening voor verf, tegels of vloeren.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+        .ad-slot {
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Navigatiebalk (Hub-structuur voor al je toekomstige calculators) -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-2">
+                <span class="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-lg text-lg">RekenHub</span>
+                <span class="font-semibold text-slate-900 hidden sm:inline">Slimme Calculators</span>
+            </a>
+            <nav class="flex space-x-4 sm:space-x-6 text-sm font-medium text-slate-600">
+                <a href="index.html" class="text-blue-600 font-semibold">Oppervlakte (m²)</a>
+                <a href="#bmi-soon" onclick="alert('Volgende pagina om te bouwen: bmi.html')" class="hover:text-blue-600 transition">BMI Calculator</a>
+                <a href="#btw-soon" onclick="alert('Volgende pagina om te bouwen: btw.html')" class="hover:text-blue-600 transition">BTW Berekenen</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Top AdSense Banner Placeholder -->
+    <div class="max-w-5xl mx-auto w-full px-4 pt-6">
+        <div class="ad-slot h-24 rounded-lg w-full">
+            Advertentieruimte (728x90 / Responsive Leaderboard)
+        </div>
+    </div>
+
+    <!-- Hoofdinhoud -->
+    <main class="max-w-5xl mx-auto w-full px-4 py-8 flex-grow">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+                Oppervlakte & Omtrek Berekenen (m²)
+            </h1>
+            <p class="text-slate-600 text-lg">
+                Kies een vorm, vul de afmetingen in en bereken direct het aantal vierkante meters, de omtrek en hoeveel materiaal je nodig hebt.
+            </p>
+        </div>
+
+        <!-- De Calculator Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-10">
+            
+            <!-- Vorm Selectie Tabs -->
+            <div class="grid grid-cols-3 border-b border-slate-200 bg-slate-50">
+                <button id="tab-rect" onclick="setShape('rect')" class="py-4 px-2 text-center font-semibold text-sm sm:text-base border-b-2 border-blue-600 text-blue-600 bg-white transition">
+                    Rechthoek / Vierkant
+                </button>
+                <button id="tab-circle" onclick="setShape('circle')" class="py-4 px-2 text-center font-semibold text-sm sm:text-base border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition">
+                    Cirkel
+                </button>
+                <button id="tab-triangle" onclick="setShape('triangle')" class="py-4 px-2 text-center font-semibold text-sm sm:text-base border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition">
+                    Driehoek
+                </button>
+            </div>
+
+            <div class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <!-- Invoervelden (Links) -->
+                <div class="md:col-span-7 space-y-5">
+                    
+                    <!-- Eenheid keuze -->
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Meeteenheid</label>
+                        <select id="unit" onchange="calculate()" class="w-full rounded-lg border-slate-300 border px-3 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
+                            <option value="1" selected>Meters (m)</option>
+                            <option value="0.01">Centimeters (cm)</option>
+                            <option value="0.001">Millimeters (mm)</option>
+                        </select>
+                    </div>
+
+                    <!-- Velden voor Rechthoek -->
+                    <div id="inputs-rect" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Lengte (<span class="unit-label">m</span>)</label>
+                            <input type="number" id="rect-length" value="5" min="0" step="any" oninput="calculate()" class="w-full rounded-lg border-slate-300 border px-4 py-2.5 text-lg font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Breedte (<span class="unit-label">m</span>)</label>
+                            <input type="number" id="rect-width" value="4" min="0" step="any" oninput="calculate()" class="w-full rounded-lg border-slate-300 border px-4 py-2.5 text-lg font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Velden voor Cirkel -->
+                    <div id="inputs-circle" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Straal / Radius (<span class="unit-label">m</span>)</label>
+                            <input type="number" id="circle-radius" value="3" min="0" step="any" oninput="calculate()" class="w-full rounded-lg border-slate-300 border px-4 py-2.5 text-lg font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            <p class="text-xs text-slate-500 mt-1">De straal is de helft van de diameter (doorsnede).</p>
+                        </div>
+                    </div>
+
+                    <!-- Velden voor Driehoek -->
+                    <div id="inputs-triangle" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Basis (<span class="unit-label">m</span>)</label>
+                            <input type="number" id="tri-base" value="4" min="0" step="any" oninput="calculate()" class="w-full rounded-lg border-slate-300 border px-4 py-2.5 text-lg font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Hoogte (<span class="unit-label">m</span>)</label>
+                            <input type="number" id="tri-height" value="3" min="0" step="any" oninput="calculate()" class="w-full rounded-lg border-slate-300 border px-4 py-2.5 text-lg font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Extra optie: Snijverlies voor klussers -->
+                    <div class="pt-2 border-t border-slate-100">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" id="waste-toggle" onchange="calculate()" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                            <span class="text-sm text-slate-700">Tel 10% snijverlies mee (handig voor tegels, laminaat of gras)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Resultaat & Visuele Vorm (Rechts) -->
+                <div class="md:col-span-5 bg-blue-50/70 rounded-xl p-6 border border-blue-100 flex flex-col justify-between space-y-6">
+                    
+                    <!-- Dynamische SVG Illustratie -->
+                    <div class="flex justify-center items-center h-32 bg-white rounded-lg border border-blue-100 p-2" id="shape-preview">
+                        <!-- Wordt gevuld door JS -->
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-blue-600">Totale Oppervlakte</span>
+                            <div class="text-3xl sm:text-4xl font-extrabold text-slate-900" id="res-area">20,00 m²</div>
+                            <div class="text-xs text-slate-500 mt-0.5" id="res-area-cm">200.000 cm²</div>
+                        </div>
+
+                        <div class="pt-3 border-t border-blue-200/60 flex justify-between items-center">
+                            <span class="text-sm text-slate-600">Omtrek:</span>
+                            <span class="font-bold text-slate-900" id="res-perimeter">18,00 m</span>
+                        </div>
+
+                        <div class="pt-2 border-t border-blue-200/60 flex justify-between items-center">
+                            <span class="text-sm text-slate-600">Benodigde verf (1 laag):</span>
+                            <span class="font-bold text-slate-900" id="res-paint">± 2,0 liter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Midden AdSense Banner Placeholder -->
+        <div class="ad-slot h-28 rounded-lg w-full mb-10">
+            Advertentieruimte (In-Article / Responsive)
+        </div>
+
+        <!-- SEO Tekst & Uitleg (Essentieel voor Google Ranking & AdSense goedkeuring) -->
+        <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 prose max-w-none space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">Hoe bereken je vierkante meters (m²)?</h2>
+            <p class="text-slate-600 leading-relaxed">
+                Het berekenen van de oppervlakte in vierkante meters (m²) heb je regelmatig nodig: bijvoorbeeld bij het kopen van laminaat, tegels, verf, graszoden of bij het opgeven van de woonoppervlakte van een woning. De exacte formule hangt af van de vorm van het oppervlak.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-1">1. Rechthoek of Vierkant</h3>
+                    <p class="text-sm text-slate-600 mb-2">Vermenigvuldig de lengte met de breedte.</p>
+                    <code class="text-xs bg-white px-2 py-1 rounded border border-slate-200 block font-mono">Oppervlakte = Lengte × Breedte</code>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-1">2. Cirkel</h3>
+                    <p class="text-sm text-slate-600 mb-2">Vermenigvuldig pi (π ≈ 3,14159) met de straal in het kwadraat.</p>
+                    <code class="text-xs bg-white px-2 py-1 rounded border border-slate-200 block font-mono">Oppervlakte = π × straal²</code>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h3 class="font-bold text-slate-900 mb-1">3. Driehoek</h3>
+                    <p class="text-sm text-slate-600 mb-2">Vermenigvuldig de basis met de hoogte en deel door twee.</p>
+                    <code class="text-xs bg-white px-2 py-1 rounded border border-slate-200 block font-mono">Oppervlakte = (Basis × Hoogte) / 2</code>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold text-slate-900 pt-4">Veelgestelde vragen (FAQ)</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-semibold text-slate-900">Hoe reken ik centimeters om naar vierkante meters?</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Deel de lengte en breedte in centimeters eerst door 100 om meters te krijgen. Een kamer van 400 cm bij 300 cm is dus 4 meter bij 3 meter = 12 m². In onze calculator kun je bovenin direct "Centimeters (cm)" selecteren zodat dit automatisch gebeurt.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-slate-900">Waarom moet ik 10% snijverlies rekenen bij vloeren of tegels?</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        Bij het leggen van tegels, laminaat of parket moet je planken of tegels op maat zagen langs de randen. Daardoor houd je reststukken over die je niet altijd opnieuw kunt gebruiken. Door 10% extra te bestellen voorkom je dat je net te kort komt.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-slate-900">Hoe bereken ik de omtrek van een cirkel?</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                        De omtrek van een cirkel bereken je met de formule: <strong>2 × π × straal</strong> (of diameter × π). Vul in onze calculator de straal in en de omtrek verschijnt direct onder de oppervlakte.
+                    </p>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- Footer met verplichte pagina's voor Google AdSense -->
+    <footer class="bg-white border-t border-slate-200 mt-12">
+        <div class="max-w-5xl mx-auto px-4 py-8 flex flex-col sm:flex-row justify-between items-center text-sm text-slate-500 space-y-4 sm:space-y-0">
+            <div>© 2026 RekenHub. Alle rechten voorbehouden.</div>
+            <div class="flex space-x-6">
+                <a href="privacy.html" class="hover:text-slate-800">Privacybeleid</a>
+                <a href="disclaimer.html" class="hover:text-slate-800">Disclaimer</a>
+                <a href="contact.html" class="hover:text-slate-800">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Calculator Logica -->
+    <script>
+        let currentShape = 'rect';
+
+        function setShape(shape) {
+            currentShape = shape;
+            
+            // Reset tabs
+            ['rect', 'circle', 'triangle'].forEach(s => {
+                const tab = document.getElementById('tab-' + s);
+                const inputs = document.getElementById('inputs-' + s);
+                if (s === shape) {
+                    tab.classList.add('border-blue-600', 'text-blue-600', 'bg-white');
+                    tab.classList.remove('border-transparent', 'text-slate-600');
+                    inputs.classList.remove('hidden');
+                } else {
+                    tab.classList.remove('border-blue-600', 'text-blue-600', 'bg-white');
+                    tab.classList.add('border-transparent', 'text-slate-600');
+                    inputs.classList.add('hidden');
+                }
+            });
+
+            calculate();
+        }
+
+        function formatNumber(num) {
+            return num.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function calculate() {
+            const unitFactor = parseFloat(document.getElementById('unit').value);
+            const unitSelect = document.getElementById('unit');
+            const unitText = unitSelect.options[unitSelect.selectedIndex].text.match(/\(([^)]+)\)/)[1];
+            
+            document.querySelectorAll('.unit-label').forEach(el => el.textContent = unitText);
+
+            let areaM2 = 0;
+            let perimeterM = 0;
+            let svgHtml = '';
+
+            if (currentShape === 'rect') {
+                const l = (parseFloat(document.getElementById('rect-length').value) || 0) * unitFactor;
+                const w = (parseFloat(document.getElementById('rect-width').value) || 0) * unitFactor;
+                areaM2 = l * w;
+                perimeterM = 2 * (l + w);
+
+                // Schaal SVG verhouding
+                const ratio = (l > 0 && w > 0) ? Math.min(Math.max(l / w, 0.4), 2.5) : 1.5;
+                const svgW = ratio >= 1 ? 100 : 100 * ratio;
+                const svgH = ratio >= 1 ? 100 / ratio : 100;
+                svgHtml = `<svg width="140" height="110" viewBox="0 0 140 110"><rect x="${(140-svgW)/2}" y="${(110-svgH)/2}" width="${svgW}" height="${svgH}" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="2"/></svg>`;
+            } 
+            else if (currentShape === 'circle') {
+                const r = (parseFloat(document.getElementById('circle-radius').value) || 0) * unitFactor;
+                areaM2 = Math.PI * r * r;
+                perimeterM = 2 * Math.PI * r;
+
+                svgHtml = `<svg width="120" height="110" viewBox="0 0 120 110"><circle cx="60" cy="55" r="42" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><line x1="60" y1="55" x2="102" y2="55" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`;
+            } 
+            else if (currentShape === 'triangle') {
+                const b = (parseFloat(document.getElementById('tri-base').value) || 0) * unitFactor;
+                const h = (parseFloat(document.getElementById('tri-height').value) || 0) * unitFactor;
+                areaM2 = (b * h) / 2;
+                // Benadering omtrek voor gelijkbenige driehoek
+                const side = Math.sqrt(Math.pow(b / 2, 2) + Math.pow(h, 2));
+                perimeterM = b + 2 * side;
+
+                svgHtml = `<svg width="120" height="110" viewBox="0 0 120 110"><polygon points="60,15 15,95 105,95" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><line x1="60" y1="15" x2="60" y2="95" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="3,2"/></svg>`;
+            }
+
+            // Snijverlies toepassen indien aangevinkt
+            const addWaste = document.getElementById('waste-toggle').checked;
+            if (addWaste) {
+                areaM2 = areaM2 * 1.10;
+            }
+
+            // Update UI
+            document.getElementById('shape-preview').innerHTML = svgHtml;
+            document.getElementById('res-area').textContent = formatNumber(areaM2) + ' m²';
+            document.getElementById('res-area-cm').textContent = Math.round(areaM2 * 10000).toLocaleString('nl-BE') + ' cm²' + (addWaste ? ' (incl. 10% snijverlies)' : '');
+            document.getElementById('res-perimeter').textContent = (currentShape === 'triangle' ? '± ' : '') + formatNumber(perimeterM) + ' m';
+            
+            // Verf berekening (gemiddeld 10 m² per liter)
+            const paintLiters = areaM2 / 10;
+            document.getElementById('res-paint').textContent = '± ' + formatNumber(paintLiters) + ' liter';
+        }
+
+        // Start direct bij laden
+        calculate();
+    </script>
+</body>
+</html>
