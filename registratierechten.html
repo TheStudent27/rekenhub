@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registratierechten & Notariskosten Vlaanderen Berekenen (2% / 1% / 12%)</title>
+    <meta name="description" content="Bereken eenvoudig de registratierechten (verkooprecht) en geschatte notariskosten bij aankoop van een woning of bouwgrond in Vlaanderen.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen antialiased">
+
+    <div id="app-header"></div>
+
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-8">
+            <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Vastgoed & Financiën (Vlaanderen)</div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+                Registratierechten & Notariskosten Vlaanderen
+            </h1>
+            <p class="text-slate-600 text-base sm:text-lg">
+                Bereken de verkooprechten en bijkomende aankoopkosten voor jouw woning of tweede verblijf in het Vlaams Gewest.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                <div class="md:col-span-7 space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Aankoopprijs van het pand (€)</label>
+                        <input type="number" id="price" value="320000" min="0" step="1000" oninput="calculate()" class="w-full rounded-xl border-slate-300 border px-4 py-3 text-xl font-extrabold focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Tarief Verkooprecht (Vlaanderen)</label>
+                        <div class="space-y-2.5">
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="tax-rate" value="0.02" checked onchange="calculate()" class="mt-1 text-blue-600">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">2% – Enige en eigen woning</div>
+                                    <div class="text-xs text-slate-500">Standaardtarief voor gezinswoningen in Vlaanderen.</div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="tax-rate" value="0.01" onchange="calculate()" class="mt-1 text-blue-600">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">1% – Ingrijpende Energetische Renovatie (IER)</div>
+                                    <div class="text-xs text-slate-500">Enige eigen woning met grondige energetische verbouwing of sloop-heropbouw.</div>
+                                </div>
+                            </label>
+
+                            <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
+                                <input type="radio" name="tax-rate" value="0.12" onchange="calculate()" class="mt-1 text-blue-600">
+                                <div>
+                                    <div class="font-bold text-slate-900 text-sm">12% – Tweede verblijf, opbrengsteigendom of bouwgrond</div>
+                                    <div class="text-xs text-slate-500">Algemeen tarief wanneer niet aan de voorwaarden van enige eigen woning is voldaan.</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-1">
+                        <label class="flex items-center space-x-2.5 cursor-pointer">
+                            <input type="checkbox" id="modest-home" onchange="calculate()" class="rounded text-blue-600 focus:ring-blue-500 h-4 w-4">
+                            <span class="text-sm font-medium text-slate-700">Bescheiden woning (extra rechtenvermindering van €1.867 / €933 toepassen indien ≤ €220.000)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Totale Bijkomende Kosten</span>
+                        <div class="text-4xl font-extrabold text-slate-900" id="res-extra">€ 10.640</div>
+                        <div class="text-xs text-slate-500 mt-0.5" id="res-grand-total">Totaal te financieren: € 330.640</div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-200 space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-slate-600">Registratierechten:</span>
+                            <span class="font-bold text-slate-900" id="res-tax">€ 6.400</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-600">Erelonen notaris (indicatief):</span>
+                            <span class="font-bold text-slate-900" id="res-notary">€ 2.490</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-600">Aktekosten & btw (indicatief):</span>
+                            <span class="font-bold text-slate-900" id="res-deed">€ 1.750</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
+            <h2 class="text-2xl font-bold text-slate-900">Welke kosten betaal je bovenop de aankoopprijs?</h2>
+            <p class="text-slate-600 leading-relaxed">
+                Wanneer je in Vlaanderen een bestaande woning koopt, betaal je registratierechten (verkooprecht) in plaats van 21% btw. Voor een enige en eigen gezinswoning bedraagt dit tarief <strong>2%</strong> (of <strong>1%</strong> bij een ingrijpende energetische renovatie)[cite: 2]. Voor een bouwgrond, investeringspand of tweede verblijf geldt het standaardtarief van <strong>12%</strong>[cite: 2]. Daarnaast rekent de notaris een wettelijk vastgelegd ereloon en administratieve aktekosten aan[cite: 2].
+            </p>
+        </article>
+    </main>
+
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function fmt(val) {
+            return '€ ' + Math.round(val).toLocaleString('nl-BE');
+        }
+        function calculateNotaryFee(price) {
+            // Indicatieve degressieve schijven voor ereloon aankoopakte
+            let fee = 0;
+            if (price <= 7500) fee = price * 0.0456;
+            else if (price <= 17500) fee = 342 + (price - 7500) * 0.0285;
+            else if (price <= 30000) fee = 627 + (price - 17500) * 0.0228;
+            else if (price <= 45495) fee = 912 + (price - 30000) * 0.0171;
+            else if (price <= 64095) fee = 1176.96 + (price - 45495) * 0.0114;
+            else if (price <= 250095) fee = 1389 + (price - 64095) * 0.0057;
+            else fee = 2449.20 + (price - 250095) * 0.00057;
+            return Math.max(0, fee);
+        }
+        function calculate() {
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const rate = parseFloat(document.querySelector('input[name="tax-rate"]:checked').value);
+            const isModest = document.getElementById('modest-home').checked;
+
+            let tax = price * rate;
+            if (isModest && price > 0 && price <= 220000) {
+                if (rate === 0.02) tax = Math.max(0, tax - 1867);
+                if (rate === 0.01) tax = Math.max(0, tax - 933);
+            }
+
+            const notaryFee = price > 0 ? calculateNotaryFee(price) : 0;
+            const deedCosts = price > 0 ? 1150 + (notaryFee * 0.21) : 0; // Administratieve kosten + 21% btw op ereloon/akte
+            const totalExtra = tax + notaryFee + deedCosts;
+
+            document.getElementById('res-tax').textContent = fmt(tax);
+            document.getElementById('res-notary').textContent = fmt(notaryFee);
+            document.getElementById('res-deed').textContent = fmt(deedCosts);
+            document.getElementById('res-extra').textContent = fmt(totalExtra);
+            document.getElementById('res-grand-total').textContent = 'Totaal te financieren: ' + fmt(price + totalExtra);
+        }
+        calculate();
+    </script>
+</body>
+</html>

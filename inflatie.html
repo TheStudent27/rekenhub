@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inflatie & Koopkracht Calculator – Waardeverlies Berekenen</title>
+    <meta name="description" content="Bereken hoeveel jouw spaargeld in de toekomst nog waard is door inflatie, of hoeveel je nodig hebt om dezelfde koopkracht te behouden.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }</style>
+</head>
+<body class="flex flex-col min-h-screen antialiased">
+    <div id="app-header"></div>
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-8">
+            <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Financiën</div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Inflatie & Koopkracht Calculator</h1>
+            <p class="text-slate-600 text-base sm:text-lg">Ontdek welk effect jaarlijkse geldontwaarding heeft op de koopkracht van je spaargeld.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 mb-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div class="md:col-span-7 space-y-5">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">Huidig bedrag (€)</label>
+                    <input type="number" id="amount" value="25000" step="500" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Gemiddelde inflatie (%/jaar)</label>
+                        <input type="number" id="inflation" value="2.5" step="0.1" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Aantal jaren</label>
+                        <input type="number" id="years" value="15" min="1" max="50" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold">
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Resterende Koopkracht</span>
+                    <div class="text-4xl font-extrabold text-slate-900" id="res-real">€ 17.262</div>
+                    <p class="text-xs text-slate-500 mt-1" id="res-loss">Verlies aan koopkracht: € 7.738 (-31,0%)</p>
+                </div>
+                <div class="pt-3 border-t border-slate-200">
+                    <span class="text-xs font-semibold text-slate-500 block">Benodigd bedrag voor gelijke koopkracht:</span>
+                    <span class="text-lg font-extrabold text-blue-600" id="res-needed">€ 36.207</span>
+                </div>
+            </div>
+        </div>
+
+        <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
+            <h2 class="text-2xl font-bold text-slate-900">Hoe bereken je het effect van inflatie?</h2>
+            <p class="text-slate-600 leading-relaxed">De toekomstige koopkracht bereken je via de formule <code>Bedrag / (1 + inflatie)^jaren</code>. Zelfs een ogenschijnlijk lage inflatie van 2% tot 2,5% per jaar halveert de koopkracht van stilstaand spaargeld over een periode van ongeveer 30 jaar.</p>
+        </article>
+    </main>
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function fmt(v) { return '€ ' + Math.round(v).toLocaleString('nl-BE'); }
+        function calc() {
+            const amt = parseFloat(document.getElementById('amount').value) || 0;
+            const inf = (parseFloat(document.getElementById('inflation').value) || 0) / 100;
+            const yrs = parseInt(document.getElementById('years').value) || 0;
+
+            const factor = Math.pow(1 + inf, yrs);
+            const realValue = factor > 0 ? amt / factor : amt;
+            const neededValue = amt * factor;
+            const loss = amt - realValue;
+            const lossPct = amt > 0 ? (loss / amt) * 100 : 0;
+
+            document.getElementById('res-real').textContent = fmt(realValue);
+            document.getElementById('res-loss').textContent = `Verlies aan koopkracht: ${fmt(loss)} (-${lossPct.toFixed(1)}%)`;
+            document.getElementById('res-needed').textContent = fmt(neededValue);
+        }
+        calc();
+    </script>
+</body>
+</html>

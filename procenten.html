@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procenten & Korting Berekenen – Snelle Percentage Calculator</title>
+    <meta name="description" content="Bereken eenvoudig percentages, kortingen tijdens de solden, procentuele stijging of daling en hoeveel procent een getal van een totaal is.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }</style>
+</head>
+<body class="flex flex-col min-h-screen antialiased">
+    <div id="app-header"></div>
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-8">
+            <div class="text-xs font-semibold text-purple-600 uppercase tracking-wider mb-1">Dagelijks & Wiskunde</div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Procenten & Korting Berekenen</h1>
+            <p class="text-slate-600 text-base sm:text-lg">Drie handige procent-calculators op één pagina voor kortingen, marges en verhoudingen.</p>
+        </div>
+
+        <div class="space-y-6 mb-10">
+            <!-- Kaart 1: Korting / Percentage van bedrag -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2 text-base font-bold text-slate-700">
+                    <span>Wat is</span>
+                    <input type="number" id="p1-pct" value="25" oninput="calc1()" class="w-24 rounded-xl border-slate-300 border px-3 py-2 text-center font-extrabold text-blue-600">
+                    <span>% van</span>
+                    <input type="number" id="p1-val" value="180" oninput="calc1()" class="w-32 rounded-xl border-slate-300 border px-3 py-2 text-center font-extrabold">
+                    <span>?</span>
+                </div>
+                <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 text-right">
+                    <div class="text-2xl font-extrabold text-slate-900" id="r1-res">45,00</div>
+                    <div class="text-xs text-emerald-600 font-semibold" id="r1-disc">Na korting: 135,00</div>
+                </div>
+            </div>
+
+            <!-- Kaart 2: Hoeveel procent is X van Y -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2 text-base font-bold text-slate-700">
+                    <input type="number" id="p2-part" value="35" oninput="calc2()" class="w-28 rounded-xl border-slate-300 border px-3 py-2 text-center font-extrabold">
+                    <span>is hoeveel % van</span>
+                    <input type="number" id="p2-total" value="140" oninput="calc2()" class="w-28 rounded-xl border-slate-300 border px-3 py-2 text-center font-extrabold">
+                    <span>?</span>
+                </div>
+                <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 text-right">
+                    <div class="text-2xl font-extrabold text-blue-600" id="r2-res">25,00%</div>
+                </div>
+            </div>
+
+            <!-- Kaart 3: Procentuele stijging / daling -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-2 text-base font-bold text-slate-700">
+                    <span>Van</span>
+                    <input type="number" id="p3-old" value="80" oninput="calc3()" class="w-28 rounded-xl border-slate-300 border px-3 py-2 text-center font-extrabold">
+                    <span>naar</span>
+                    <input type="number" id="p3-new" value="100" oninput="calc3()" class="w-28 rounded-xl border-slate-300 border px-3 py-2 text-center font-extrabold">
+                    <span>is een verschil van:</span>
+                </div>
+                <div class="bg-slate-50 px-5 py-3 rounded-xl border border-slate-200 text-right">
+                    <div class="text-2xl font-extrabold text-emerald-600" id="r3-res">+25,00%</div>
+                </div>
+            </div>
+        </div>
+
+        <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
+            <h2 class="text-2xl font-bold text-slate-900">Handige formules voor procentberekeningen</h2>
+            <p class="text-slate-600 leading-relaxed">Om een procentueel verschil tussen een oude en nieuwe waarde te berekenen gebruik je <code>((Nieuw - Oud) / Oud) × 100</code>. Bij solden of kortingen vermenigvuldig je de originele prijs met <code>(100 - kortingspercentage) / 100</code>.</p>
+        </article>
+    </main>
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function fmt(n) { return n.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+        function calc1() {
+            const pct = parseFloat(document.getElementById('p1-pct').value) || 0;
+            const val = parseFloat(document.getElementById('p1-val').value) || 0;
+            const res = (pct / 100) * val;
+            document.getElementById('r1-res').textContent = fmt(res);
+            document.getElementById('r1-disc').textContent = 'Na korting: ' + fmt(val - res);
+        }
+        function calc2() {
+            const part = parseFloat(document.getElementById('p2-part').value) || 0;
+            const total = parseFloat(document.getElementById('p2-total').value) || 0;
+            const res = total !== 0 ? (part / total) * 100 : 0;
+            document.getElementById('r2-res').textContent = fmt(res) + '%';
+        }
+        function calc3() {
+            const oldV = parseFloat(document.getElementById('p3-old').value) || 0;
+            const newV = parseFloat(document.getElementById('p3-new').value) || 0;
+            const diff = oldV !== 0 ? ((newV - oldV) / oldV) * 100 : 0;
+            const el = document.getElementById('r3-res');
+            el.textContent = (diff > 0 ? '+' : '') + fmt(diff) + '%';
+            el.className = 'text-2xl font-extrabold ' + (diff >= 0 ? 'text-emerald-600' : 'text-rose-600');
+        }
+        calc1(); calc2(); calc3();
+    </script>
+</body>
+</html>

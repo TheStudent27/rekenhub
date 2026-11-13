@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stroomverbruik & Energiekosten Calculator – Wat kost een toestel?</title>
+    <meta name="description" content="Bereken eenvoudig het stroomverbruik (kWh) en de energiekosten per dag, maand en jaar van elk elektrisch apparaat op basis van wattage en kWh-prijs.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen antialiased">
+
+    <div id="app-header"></div>
+
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-8">
+            <div class="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-1">Wonen & Energie</div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+                Stroomverbruik & Kosten Berekenen
+            </h1>
+            <p class="text-slate-600 text-base sm:text-lg">
+                Kies een veelvoorkomend toestel of vul zelf het wattage in om de stroomkosten per dag, maand en jaar te zien.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 mb-10">
+            <div class="mb-6">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Snel invullen (Populaire toestellen)</label>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="setPreset(2000, 1.5)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 transition">Droogkast (2000W)</button>
+                    <button onclick="setPreset(1200, 4)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 transition">Airco (1200W)</button>
+                    <button onclick="setPreset(1500, 6)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 transition">Warmtepomp (1500W)</button>
+                    <button onclick="setPreset(450, 3)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 transition">Gaming PC (450W)</button>
+                    <button onclick="setPreset(50, 24)" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 transition">Koelkast gem. (50W)</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Vermogen van het apparaat (Watt)</label>
+                        <input type="number" id="wattage" value="2000" min="0" oninput="calculate()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Gebruik per dag (uren)</label>
+                            <input type="number" id="hours" value="2" min="0" max="24" step="0.1" oninput="calculate()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1">Dagen per week</label>
+                            <input type="number" id="days" value="7" min="1" max="7" step="1" oninput="calculate()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1">Stroomprijs per kWh (€)</label>
+                        <input type="number" id="rate" value="0.34" min="0" step="0.01" oninput="calculate()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 text-lg font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="text-xs text-slate-500 mt-1">Gemiddeld all-in tarief in België/Nederland ligt rond €0,30 – €0,38 per kWh.</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Kosten per Jaar</span>
+                        <div class="text-4xl font-extrabold text-slate-900" id="cost-year">€ 496,40</div>
+                        <div class="text-xs font-medium text-slate-500 mt-0.5" id="kwh-year">1.460,0 kWh per jaar</div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-200 flex justify-between items-center">
+                        <span class="text-sm text-slate-600">Per maand:</span>
+                        <div class="text-right">
+                            <span class="font-bold text-slate-900 block" id="cost-month">€ 41,37</span>
+                            <span class="text-xs text-slate-400" id="kwh-month">121,7 kWh</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-200 flex justify-between items-center">
+                        <span class="text-sm text-slate-600">Per gebruiksdag:</span>
+                        <div class="text-right">
+                            <span class="font-bold text-slate-900 block" id="cost-day">€ 1,36</span>
+                            <span class="text-xs text-slate-400" id="kwh-day">4,00 kWh</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
+            <h2 class="text-2xl font-bold text-slate-900">Hoe bereken je het stroomverbruik in kWh?</h2>
+            <p class="text-slate-600 leading-relaxed">
+                Op het energielabel of de achterkant van elk elektrisch toestel staat het vermogen in Watt (W). Om het verbruik in kilowattuur (kWh) te berekenen, deel je het aantal Watt door 1.000 en vermenigvuldig je dat met het aantal gebruiksuren: <code>(Watt / 1000) × uren = kWh</code>. Vermenigvuldig de uitkomst met jouw kWh-tarief om de exacte kostprijs te weten.
+            </p>
+        </article>
+    </main>
+
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function setPreset(watt, hrs) {
+            document.getElementById('wattage').value = watt;
+            document.getElementById('hours').value = hrs;
+            document.getElementById('days').value = 7;
+            calculate();
+        }
+        function fmtCurrency(val) {
+            return '€ ' + val.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function calculate() {
+            const watt = parseFloat(document.getElementById('wattage').value) || 0;
+            const hours = parseFloat(document.getElementById('hours').value) || 0;
+            const days = parseFloat(document.getElementById('days').value) || 0;
+            const rate = parseFloat(document.getElementById('rate').value) || 0;
+
+            const kwhDay = (watt / 1000) * hours;
+            const kwhYear = kwhDay * days * 52.1428;
+            const kwhMonth = kwhYear / 12;
+
+            document.getElementById('cost-day').textContent = fmtCurrency(kwhDay * rate);
+            document.getElementById('kwh-day').textContent = kwhDay.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' kWh';
+
+            document.getElementById('cost-month').textContent = fmtCurrency(kwhMonth * rate);
+            document.getElementById('kwh-month').textContent = kwhMonth.toLocaleString('nl-BE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' kWh';
+
+            document.getElementById('cost-year').textContent = fmtCurrency(kwhYear * rate);
+            document.getElementById('kwh-year').textContent = kwhYear.toLocaleString('nl-BE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' kWh per jaar';
+        }
+        calculate();
+    </script>
+</body>
+</html>
