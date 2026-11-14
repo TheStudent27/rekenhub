@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = url.toString();
     };
 
-    // 2. Laad strakke Google Fonts + Print CSS
+    // 2. Google Fonts + Print CSS
     if (!document.getElementById("rekenhub-fonts")) {
         const fontLink = document.createElement("link");
         fontLink.id = "rekenhub-fonts";
@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
             linkCopied: "Link gekopieerd!",
             printPdf: "Print / PDF",
             nextStep: "Handige vervolgstap",
-            faqTitle: "Veelgestelde vragen",
             footerNote: "Alle berekeningen zijn indicatief en gebaseerd op actuele formules en fiscale regels voor België, Nederland en Luxemburg.",
             privacy: "Privacybeleid",
             disclaimer: "Disclaimer",
@@ -72,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
             linkCopied: "Lien copié !",
             printPdf: "Imprimer / PDF",
             nextStep: "Étape suivante utile",
-            faqTitle: "Questions fréquentes",
             footerNote: "Tous les calculs sont indicatifs et basés sur les formules et règles fiscales actuelles pour la Belgique, les Pays-Bas et le Luxembourg.",
             privacy: "Confidentialité",
             disclaimer: "Mentions légales",
@@ -91,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
             linkCopied: "Link copied!",
             printPdf: "Print / PDF",
             nextStep: "Recommended next step",
-            faqTitle: "Frequently Asked Questions",
             footerNote: "All calculations are indicative and based on current formulas and tax rules for Belgium, the Netherlands, and Luxembourg.",
             privacy: "Privacy Policy",
             disclaimer: "Disclaimer",
@@ -102,28 +99,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const t = uiStrings[lang];
 
+    // Logische 5-delige verdeling
     const menuCategories = [
         {
             id: "financien",
-            title: { nl: "Financiën & Vastgoed", fr: "Finances & Immobilier", en: "Financial & Property" },
-            short: { nl: "Financiën", fr: "Finances", en: "Financial" },
+            title: { nl: "Sparen, Lenen & Vastgoed", fr: "Épargne, Prêt & Immobilier", en: "Savings, Loans & Property" },
+            short: { nl: "Geld & Vastgoed", fr: "Finances", en: "Finance & Property" },
             items: [
-                { name: { nl: "BTW Calculator", fr: "Calculateur TVA", en: "VAT / Sales Tax Calculator" }, sub: { nl: "BE • NL • LU tarieven", fr: "Taux BE • NL • LU", en: "BE • NL • LU rates" }, file: "btw.html", icon: "🧾", fiscal: true },
+                { name: { nl: "Hypotheek & Woonlening", fr: "Prêt Hypothécaire", en: "Mortgage & Loan" }, sub: { nl: "Maandlast & aflossing", fr: "Mensualité & intérêts", en: "Monthly payment" }, file: "hypotheek.html", icon: "🏦", fiscal: false },
                 { name: { nl: "Sparen & Beleggen", fr: "Épargne & Investissement", en: "Savings & Compound Interest" }, sub: { nl: "Netto na belasting", fr: "Net après impôt", en: "Net after tax" }, file: "sparen.html", icon: "📈", fiscal: true },
-                { name: { nl: "Hypotheek & Woonlening", fr: "Prêt Hypothécaire", en: "Mortgage & Loan Calculator" }, sub: { nl: "Maandlast & aflossing", fr: "Mensualité & intérêts", en: "Monthly payment" }, file: "hypotheek.html", icon: "🏦", fiscal: false },
                 { name: { nl: "Registratie & Overdracht", fr: "Droits d'enregistrement", en: "Property Transfer Tax" }, sub: { nl: "Aankoopkosten woning", fr: "Frais d'achat immobilier", en: "Closing costs" }, file: "registratierechten.html", icon: "🔑", fiscal: true },
-                { name: { nl: "Flexi-job Loon", fr: "Salaire Flexi-job", en: "Flexi-job Wage (BE)" }, sub: { nl: "België (bruto = netto)", fr: "Belgique (brut = net)", en: "Belgium tax-free" }, file: "flexijob.html", icon: "💼", fiscal: true },
                 { name: { nl: "Inflatie & Koopkracht", fr: "Inflation & Pouvoir d'achat", en: "Inflation Calculator" }, sub: { nl: "Waardeverlies spaargeld", fr: "Perte de valeur", en: "Purchasing power" }, file: "inflatie.html", icon: "📉", fiscal: false }
             ]
         },
         {
-            id: "wonen",
-            title: { nl: "Energie & Wonen", fr: "Énergie & Maison", en: "Energy & Home" },
-            short: { nl: "Energie & m²", fr: "Énergie & m²", en: "Energy & Area" },
+            id: "werk-btw",
+            title: { nl: "Werk, Loon & Btw", fr: "Travail, Salaire & TVA", en: "Work, Income & Tax" },
+            short: { nl: "Werk & Btw", fr: "Travail & TVA", en: "Work & Tax" },
             items: [
+                { name: { nl: "Werkuren & Uurloon", fr: "Heures & Salaire Horaire", en: "Work Hours & Pay" }, sub: { nl: "Decimale uren & loon", fr: "Heures décimales", en: "Decimal hours & wage" }, file: "werkuren.html", icon: "⏱️", fiscal: false },
+                { name: { nl: "Flexi-job Loon (BE)", fr: "Salaire Flexi-job (BE)", en: "Flexi-job Wage (BE)" }, sub: { nl: "Bruto = netto & plafond", fr: "Brut = net & plafond", en: "Tax-free side income" }, file: "flexijob.html", icon: "💼", fiscal: true },
+                { name: { nl: "BTW Calculator", fr: "Calculateur TVA", en: "VAT / Sales Tax" }, sub: { nl: "BE • NL • LU tarieven", fr: "Taux BE • NL • LU", en: "BE • NL • LU rates" }, file: "btw.html", icon: "🧾", fiscal: true },
+                { name: { nl: "Procenten & Marge", fr: "Pourcentage & Marge", en: "Percentage & Margin" }, sub: { nl: "Korting, winstmarge & %", fr: "Remise, marge & %", en: "Discount & profit margin" }, file: "procenten.html", icon: "🏷️", fiscal: false }
+            ]
+        },
+        {
+            id: "wonen",
+            title: { nl: "Wonen & Energie", fr: "Maison & Énergie", en: "Home & Energy" },
+            short: { nl: "Wonen & Energie", fr: "Maison & Énergie", en: "Home & Energy" },
+            items: [
+                { name: { nl: "Oppervlakte & Omtrek (m²)", fr: "Surface & Périmètre (m²)", en: "Square Meter (m²) Area" }, sub: { nl: "Vierkante meters & verf", fr: "Mètres carrés & peinture", en: "Area & perimeter" }, file: "oppervlakte.html", icon: "📐", fiscal: false },
                 { name: { nl: "Stroomverbruik (kWh)", fr: "Consommation Électrique", en: "Electricity Cost (kWh)" }, sub: { nl: "Kosten per toestel", fr: "Coût par appareil", en: "Appliance usage" }, file: "energie.html", icon: "🔌", fiscal: false },
-                { name: { nl: "Zonnepanelen", fr: "Panneaux Solaires", en: "Solar Panel ROI" }, sub: { nl: "Terugverdientijd", fr: "Temps de retour", en: "Payback period" }, file: "zonnepanelen.html", icon: "☀️", fiscal: true },
-                { name: { nl: "Oppervlakte (m²)", fr: "Surface & Périmètre (m²)", en: "Square Meter (m²) Area" }, sub: { nl: "Omtrek, verf & snijverlies", fr: "Périmètre & peinture", en: "Area & perimeter" }, file: "oppervlakte.html", icon: "📐", fiscal: false }
+                { name: { nl: "Zonnepanelen", fr: "Panneaux Solaires", en: "Solar Panel ROI" }, sub: { nl: "Terugverdientijd", fr: "Temps de retour", en: "Payback period" }, file: "zonnepanelen.html", icon: "☀️", fiscal: true }
             ]
         },
         {
@@ -137,13 +144,11 @@ document.addEventListener("DOMContentLoaded", function () {
             ]
         },
         {
-            id: "dagelijks",
-            title: { nl: "Gezondheid & Dagelijks", fr: "Santé & Quotidien", en: "Health & Everyday" },
-            short: { nl: "Gezondheid & Rekenen", fr: "Santé & Calculs", en: "Health & Math" },
+            id: "gezondheid",
+            title: { nl: "Gezondheid & Sport", fr: "Santé & Sport", en: "Health & Fitness" },
+            short: { nl: "Gezondheid", fr: "Santé", en: "Health" },
             items: [
-                { name: { nl: "BMI & Caloriebehoefte", fr: "IMC & Besoins Caloriques", en: "BMI & Calorie Calculator" }, sub: { nl: "Gezond gewicht & kcal", fr: "Poids idéal & kcal", en: "Healthy weight & kcal" }, file: "bmi.html", icon: "⚖️", fiscal: false },
-                { name: { nl: "Procenten & Korting", fr: "Pourcentage & Remise", en: "Percentage & Discount" }, sub: { nl: "Solden, marge & verschil", fr: "Soldes & marges", en: "Sales & margins" }, file: "procenten.html", icon: "🏷️", fiscal: false },
-                { name: { nl: "Werkuren & Uurloon", fr: "Heures & Salaire Horaire", en: "Work Hours & Pay" }, sub: { nl: "Decimale uren berekenen", fr: "Heures décimales", en: "Decimal hours" }, file: "werkuren.html", icon: "⏱️", fiscal: false }
+                { name: { nl: "BMI & Caloriebehoefte", fr: "IMC & Besoins Caloriques", en: "BMI & Calorie Calculator" }, sub: { nl: "Gezond gewicht & kcal", fr: "Poids idéal & kcal", en: "Healthy weight & kcal" }, file: "bmi.html", icon: "⚖️", fiscal: false }
             ]
         }
     ];
@@ -160,7 +165,6 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (e) {}
     }
 
-    // Taalkiezer HTML
     const langSwitcherHtml = `
         <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200/80 text-xs font-bold">
             ${["nl", "fr", "en"].map(code => `
@@ -171,7 +175,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     `;
 
-    // Navigatie HTML
     let navDesktopHtml = `<a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium transition ${currentPath === 'index.html' ? 'text-slate-900 bg-slate-100 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">${t.overview}</a>`;
     let navMobileHtml = `<a href="index.html" class="block px-3 py-2.5 rounded-xl text-base font-semibold ${currentPath === 'index.html' ? 'text-blue-600 bg-blue-50' : 'text-slate-800'}">${t.allTools}</a>`;
 
@@ -251,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="flex items-center gap-2.5">
                         <div class="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center text-white font-heading font-bold text-sm">R</div>
                         <span class="font-heading font-bold text-slate-800">RekenHub Benelux</span>
-                        <span class="text-sm text-slate-400">© 2026</span>
+                        <span class="text-sm text-slate-400">&copy; 2026</span>
                     </div>
                     <div class="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-500">
                         <a href="index.html" class="hover:text-slate-900 transition">${t.allTools}</a>
@@ -281,7 +284,6 @@ document.addEventListener("DOMContentLoaded", function () {
         mobileBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
     }
 
-    // 3. Extra functies op individuele calculator-pagina's
     const mainEl = document.querySelector("main");
     if (activeTool && mainEl) {
         if (t.transNotice) {
