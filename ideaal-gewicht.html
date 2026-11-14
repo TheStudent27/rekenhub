@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideaal Gewicht & Vetpercentage Calculator – RekenHub</title>
+    <meta name="description" content="Bereken je ideale streefgewicht (Devine & Robinson formule) en je lichaamsvetpercentage via de Navy-omtrekmethode.">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased">
+    <div id="app-header"></div>
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-6">
+            <div class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">Gezondheid & Sport</div>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold mb-2">Ideaal Gewicht & Vetpercentage</h1>
+            <p class="text-slate-600">Bereken je gezonde streefgewicht op basis van lengte en bouw, en schat je vetpercentage via taille- en nekomtrek.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
+            <div class="md:col-span-7 space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Geslacht</label>
+                        <select id="iw-gender" onchange="calcIW()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-semibold bg-white">
+                            <option value="m">Man</option>
+                            <option value="f">Vrouw</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Lengte (cm)</label>
+                        <input type="number" id="iw-height" value="178" min="120" max="230" oninput="calcIW()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Gewicht (kg)</label>
+                        <input type="number" id="iw-weight" value="78" min="30" max="250" oninput="calcIW()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Taille (cm)</label>
+                        <input type="number" id="iw-waist" value="84" min="40" max="200" oninput="calcIW()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-600 mb-1">Nek (cm)</label>
+                        <input type="number" id="iw-neck" value="38" min="20" max="70" oninput="calcIW()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                    </div>
+                </div>
+                <div id="iw-hip-box" class="hidden">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Heupomtrek (cm — voor vrouwen)</label>
+                    <input type="number" id="iw-hip" value="96" min="50" max="200" oninput="calcIW()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                </div>
+            </div>
+
+            <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-4">
+                <div>
+                    <span class="text-xs font-bold uppercase text-rose-600">Ideaal Streefgewicht (Gemiddelde)</span>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1" id="res-iw">72,4 kg</div>
+                    <div class="text-xs text-slate-500 mt-0.5" id="res-iw-range">Gezonde BMI-marge: 58,6 – 79,2 kg</div>
+                </div>
+                <div class="pt-3 border-t border-slate-200 flex justify-between items-center">
+                    <span class="text-sm text-slate-600">Geschat vetpercentage:</span>
+                    <span class="text-lg font-extrabold text-blue-600" id="res-bf">16,8%</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-600">Vetvrije spiermassa:</span>
+                    <span class="font-bold text-slate-900" id="res-lean">64,9 kg</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function calcIW() {
+            const g = document.getElementById('iw-gender').value;
+            document.getElementById('iw-hip-box').classList.toggle('hidden', g !== 'f');
+
+            const h = parseFloat(document.getElementById('iw-height').value) || 175;
+            const w = parseFloat(document.getElementById('iw-weight').value) || 75;
+            const waist = parseFloat(document.getElementById('iw-waist').value) || 82;
+            const neck = parseFloat(document.getElementById('iw-neck').value) || 37;
+            const hip = parseFloat(document.getElementById('iw-hip').value) || 95;
+
+            const inchesOver5ft = Math.max(0, (h / 2.54) - 60);
+            const devine = g === 'm' ? 50 + 2.3 * inchesOver5ft : 45.5 + 2.3 * inchesOver5ft;
+            const robinson = g === 'm' ? 52 + 1.9 * inchesOver5ft : 49 + 1.7 * inchesOver5ft;
+            const avgIdeal = (devine + robinson) / 2;
+
+            const minHealthy = 18.5 * Math.pow(h / 100, 2);
+            const maxHealthy = 25.0 * Math.pow(h / 100, 2);
+
+            // US Navy Body Fat Formula
+            let bf = 18;
+            if (g === 'm' && waist > neck) {
+                bf = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(h)) - 450;
+            } else if (g === 'f' && (waist + hip) > neck) {
+                bf = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(h)) - 450;
+            }
+            bf = Math.min(Math.max(bf, 3), 60);
+            const leanMass = w * (1 - bf / 100);
+
+            document.getElementById('res-iw').textContent = avgIdeal.toLocaleString('nl-BE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' kg';
+            document.getElementById('res-iw-range').textContent = `Gezonde BMI-marge: ${minHealthy.toFixed(1)} – ${maxHealthy.toFixed(1)} kg`;
+            document.getElementById('res-bf').textContent = bf.toFixed(1).replace('.', ',') + '%';
+            document.getElementById('res-lean').textContent = leanMass.toFixed(1).replace('.', ',') + ' kg';
+        }
+        calcIW();
+    </script>
+</body>
+</html>

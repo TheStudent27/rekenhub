@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             overview: "Overzicht",
             allTools: "Alle Calculators",
             adLabel: "Advertentieruimte (Responsive Banner)",
-            fiscalBadge: "Tarieven & regels bijgewerkt voor 2026",
+            fiscalBadge: "Tarieven & barema's bijgewerkt voor 2026",
             saveShare: "Berekening bewaren of delen:",
             copyRes: "Kopieer uitkomst",
             copied: "Gekopieerd!",
@@ -56,14 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
             footerNote: "Alle berekeningen zijn indicatief en gebaseerd op actuele formules en fiscale regels voor België, Nederland en Luxemburg.",
             privacy: "Privacybeleid",
             disclaimer: "Disclaimer",
-            contact: "Contact",
-            transNotice: ""
+            contact: "Contact"
         },
         fr: {
             overview: "Aperçu",
             allTools: "Tous les calculateurs",
             adLabel: "Espace publicitaire (Bannière responsive)",
-            fiscalBadge: "Tarifs et règles mis à jour pour 2026",
+            fiscalBadge: "Barèmes et règles mis à jour pour 2026",
             saveShare: "Enregistrer ou partager le calcul :",
             copyRes: "Copier le résultat",
             copied: "Copié !",
@@ -74,14 +73,13 @@ document.addEventListener("DOMContentLoaded", function () {
             footerNote: "Tous les calculs sont indicatifs et basés sur les formules et règles fiscales actuelles pour la Belgique, les Pays-Bas et le Luxembourg.",
             privacy: "Confidentialité",
             disclaimer: "Mentions légales",
-            contact: "Contact",
-            transNotice: "Cette calculatrice est configurée pour la Belgique et les Pays-Bas. Utilisez le traducteur de votre navigateur si nécessaire."
+            contact: "Contact"
         },
         en: {
             overview: "Overview",
             allTools: "All Calculators",
             adLabel: "Advertisement Space (Responsive Banner)",
-            fiscalBadge: "Rates & tax rules updated for 2026",
+            fiscalBadge: "Tax rates & scales updated for 2026",
             saveShare: "Save or share calculation:",
             copyRes: "Copy result",
             copied: "Copied!",
@@ -92,14 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
             footerNote: "All calculations are indicative and based on current formulas and tax rules for Belgium, the Netherlands, and Luxembourg.",
             privacy: "Privacy Policy",
             disclaimer: "Disclaimer",
-            contact: "Contact",
-            transNotice: "This calculator uses Benelux defaults (BE/NL/LU). You can adjust all rates and inputs freely below."
+            contact: "Contact"
         }
     };
 
     const t = uiStrings[lang];
 
-    // Logische 5-delige verdeling
     const menuCategories = [
         {
             id: "financien",
@@ -117,8 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
             title: { nl: "Werk, Loon & Btw", fr: "Travail, Salaire & TVA", en: "Work, Income & Tax" },
             short: { nl: "Werk & Btw", fr: "Travail & TVA", en: "Work & Tax" },
             items: [
-                { name: { nl: "Werkuren & Uurloon", fr: "Heures & Salaire Horaire", en: "Work Hours & Pay" }, sub: { nl: "Decimale uren & loon", fr: "Heures décimales", en: "Decimal hours & wage" }, file: "werkuren.html", icon: "⏱️", fiscal: false },
-                { name: { nl: "Flexi-job Loon (BE)", fr: "Salaire Flexi-job (BE)", en: "Flexi-job Wage (BE)" }, sub: { nl: "Bruto = netto & plafond", fr: "Brut = net & plafond", en: "Tax-free side income" }, file: "flexijob.html", icon: "💼", fiscal: true },
+                { name: { nl: "Bruto-Netto & Uurloon", fr: "Salaire Brut-Net & Horaire", en: "Gross-to-Net & Hourly Pay" }, sub: { nl: "Barema's BE & NL 2026", fr: "Barèmes BE & NL 2026", en: "Salary scales BE & NL 2026" }, file: "werkuren.html", icon: "💶", fiscal: true },
+                { name: { nl: "Flexi-job Loon (BE)", fr: "Salaire Flexi-job (BE)", en: "Flexi-job Salary (BE)" }, sub: { nl: "Bruto = netto & plafond", fr: "Brut = net & plafond", en: "Tax-free side income" }, file: "flexijob.html", icon: "💼", fiscal: true },
                 { name: { nl: "BTW Calculator", fr: "Calculateur TVA", en: "VAT / Sales Tax" }, sub: { nl: "BE • NL • LU tarieven", fr: "Taux BE • NL • LU", en: "BE • NL • LU rates" }, file: "btw.html", icon: "🧾", fiscal: true },
                 { name: { nl: "Procenten & Marge", fr: "Pourcentage & Marge", en: "Percentage & Margin" }, sub: { nl: "Korting, winstmarge & %", fr: "Remise, marge & %", en: "Discount & profit margin" }, file: "procenten.html", icon: "🏷️", fiscal: false }
             ]
@@ -148,22 +144,16 @@ document.addEventListener("DOMContentLoaded", function () {
             title: { nl: "Gezondheid & Sport", fr: "Santé & Sport", en: "Health & Fitness" },
             short: { nl: "Gezondheid", fr: "Santé", en: "Health" },
             items: [
-                { name: { nl: "BMI & Caloriebehoefte", fr: "IMC & Besoins Caloriques", en: "BMI & Calorie Calculator" }, sub: { nl: "Gezond gewicht & kcal", fr: "Poids idéal & kcal", en: "Healthy weight & kcal" }, file: "bmi.html", icon: "⚖️", fiscal: false }
+                { name: { nl: "BMI & Caloriebehoefte", fr: "IMC & Besoins Caloriques", en: "BMI & Calorie Calculator" }, sub: { nl: "Gezond gewicht & kcal", fr: "Poids idéal & kcal", en: "Healthy weight & kcal" }, file: "bmi.html", icon: "⚖️", fiscal: false },
+                { name: { nl: "Ideaal Gewicht & Vet%", fr: "Poids Idéal & Masse Grasse", en: "Ideal Weight & Body Fat" }, sub: { nl: "Streefgewicht & taille", fr: "Poids cible & tour de taille", en: "Target weight & body fat" }, file: "ideaal-gewicht.html", icon: "📏", fiscal: false },
+                { name: { nl: "Hardlooptempo & Finishtijd", fr: "Allure Course & Temps", en: "Running Pace Calculator" }, sub: { nl: "5K, 10K & marathon", fr: "5K, 10K & marathon", en: "5K, 10K & marathon" }, file: "hardlooptempo.html", icon: "🏃", fiscal: false },
+                { name: { nl: "Waterbehoefte & Slaapcyclus", fr: "Hydratation & Cycles Sommeil", en: "Water Intake & Sleep Cycle" }, sub: { nl: "Liters/dag & wektijd", fr: "Litres/jour & réveil", en: "Daily liters & wake time" }, file: "water-slaap.html", icon: "💧", fiscal: false }
             ]
         }
     ];
 
     const activeCat = menuCategories.find(c => c.items.some(i => i.file === currentPath));
     const activeTool = activeCat ? activeCat.items.find(i => i.file === currentPath) : null;
-
-    if (activeTool) {
-        try {
-            let recent = JSON.parse(localStorage.getItem("rekenhub_recent") || "[]");
-            recent = recent.filter(r => r.file !== activeTool.file);
-            recent.unshift({ name: activeTool.name, file: activeTool.file, icon: activeTool.icon });
-            localStorage.setItem("rekenhub_recent", JSON.stringify(recent.slice(0, 3)));
-        } catch (e) {}
-    }
 
     const langSwitcherHtml = `
         <div class="inline-flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200/80 text-xs font-bold">
@@ -254,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="flex items-center gap-2.5">
                         <div class="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center text-white font-heading font-bold text-sm">R</div>
                         <span class="font-heading font-bold text-slate-800">RekenHub Benelux</span>
-                        <span class="text-sm text-slate-400">&copy; 2026</span>
+                        <span class="text-sm text-slate-400">© 2026</span>
                     </div>
                     <div class="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-500">
                         <a href="index.html" class="hover:text-slate-900 transition">${t.allTools}</a>
@@ -284,17 +274,102 @@ document.addEventListener("DOMContentLoaded", function () {
         mobileBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
     }
 
+    // 3. Automatische vertaling van alle calculatorpagina's wanneer FR of EN gekozen is
     const mainEl = document.querySelector("main");
-    if (activeTool && mainEl) {
-        if (t.transNotice) {
-            mainEl.insertAdjacentHTML("afterbegin", `
-                <div class="no-print bg-blue-50/80 border border-blue-200 text-blue-800 rounded-xl px-4 py-2.5 text-xs font-medium mb-5 flex items-center justify-between gap-2">
-                    <span>🌐 ${t.transNotice}</span>
-                    <button onclick="setSiteLang('nl')" class="underline font-bold shrink-0">NL</button>
-                </div>
-            `);
-        }
+    if (lang !== "nl" && mainEl) {
+        const dict = {
+            fr: [
+                ["Hypotheek & Woonlening Simulator", "Simulateur de Prêt Hypothécaire"],
+                ["Bereken je maandelijkse aflossing bij een vaste rentevoet en zie de verhouding tussen kapitaal en intrest.", "Calculez votre mensualité à taux fixe et visualisez la répartition entre capital et intérêts."],
+                ["Te lenen bedrag", "Montant à emprunter"],
+                ["Looptijd (jaren)", "Durée (années)"],
+                ["Jaarlijkse rentevoet (%)", "Taux d'intérêt annuel (%)"],
+                ["MAANDLAST", "MENSUALITÉ"],
+                ["TOTALE RENTE", "INTÉRÊTS TOTAUX"],
+                ["TOTAAL TERUGBETAALD", "TOTAL REMBOURSÉ"],
+                ["BTW Calculator", "Calculateur de TVA"],
+                ["Bedrag exclusief btw", "Montant hors TVA"],
+                ["Bedrag inclusief btw", "Montant TVA comprise"],
+                ["BTW-tarief", "Taux de TVA"],
+                ["Startbedrag", "Capital initial"],
+                ["Maandelijkse inleg", "Versement mensuel"],
+                ["Verwacht rendement", "Rendement attendu"],
+                ["NETTO EINDKAPITAAL", "CAPITAL FINAL NET"],
+                ["EIGEN INLEG", "APPORT PERSONNEL"],
+                ["BETAALDE TAKS", "IMPÔT PAYÉ"],
+                ["Oppervlakte & Omtrek Berekenen", "Calcul de Surface & Périmètre"],
+                ["Rechthoek / Vierkant", "Rectangle / Carré"],
+                ["Cirkel", "Cercle"],
+                ["Driehoek", "Triangle"],
+                ["Lengte", "Longueur"],
+                ["Breedte", "Largeur"],
+                ["Hoogte", "Hauteur"],
+                ["Gewicht", "Poids"],
+                ["Leeftijd", "Âge"],
+                ["Geslacht", "Sexe"],
+                ["Man", "Homme"],
+                ["Vrouw", "Femme"],
+                ["België (BE)", "Belgique (BE)"],
+                ["Nederland (NL)", "Pays-Bas (NL)"],
+                ["Alleenstaande", "Isolé / Célibataire"],
+                ["Fiscale partners", "Partenaires fiscaux"],
+                ["jaar", "ans"]
+            ],
+            en: [
+                ["Hypotheek & Woonlening Simulator", "Mortgage & Home Loan Simulator"],
+                ["Bereken je maandelijkse aflossing bij een vaste rentevoet en zie de verhouding tussen kapitaal en intrest.", "Calculate your fixed monthly mortgage payment and see the breakdown between principal and interest."],
+                ["Te lenen bedrag", "Loan amount"],
+                ["Looptijd (jaren)", "Loan term (years)"],
+                ["Jaarlijkse rentevoet (%)", "Annual interest rate (%)"],
+                ["MAANDLAST", "MONTHLY PAYMENT"],
+                ["TOTALE RENTE", "TOTAL INTEREST"],
+                ["TOTAAL TERUGBETAALD", "TOTAL REPAID"],
+                ["BTW Calculator", "VAT / Sales Tax Calculator"],
+                ["Bedrag exclusief btw", "Amount excluding VAT"],
+                ["Bedrag inclusief btw", "Amount including VAT"],
+                ["BTW-tarief", "VAT rate"],
+                ["Startbedrag", "Initial deposit"],
+                ["Maandelijkse inleg", "Monthly contribution"],
+                ["Verwacht rendement", "Expected annual return"],
+                ["NETTO EINDKAPITAAL", "NET FINAL BALANCE"],
+                ["EIGEN INLEG", "TOTAL CONTRIBUTED"],
+                ["BETAALDE TAKS", "TAX PAID"],
+                ["Oppervlakte & Omtrek Berekenen", "Square Meter (m²) & Perimeter Calculator"],
+                ["Rechthoek / Vierkant", "Rectangle / Square"],
+                ["Cirkel", "Circle"],
+                ["Driehoek", "Triangle"],
+                ["Lengte", "Length"],
+                ["Breedte", "Width"],
+                ["Hoogte", "Height"],
+                ["Gewicht", "Weight"],
+                ["Leeftijd", "Age"],
+                ["Geslacht", "Gender"],
+                ["Man", "Male"],
+                ["Vrouw", "Female"],
+                ["België (BE)", "Belgium (BE)"],
+                ["Nederland (NL)", "Netherlands (NL)"],
+                ["Alleenstaande", "Single"],
+                ["Fiscale partners", "Fiscal partners"],
+                ["jaar", "years"]
+            ]
+        }[lang];
 
+        const walker = document.createTreeWalker(mainEl, NodeFilter.SHOW_TEXT, null);
+        let node;
+        while ((node = walker.nextNode())) {
+            let val = node.nodeValue;
+            if (!val || !val.trim()) continue;
+            dict.forEach(([nlTxt, targetTxt]) => {
+                if (val.includes(nlTxt)) {
+                    val = val.split(nlTxt).join(targetTxt);
+                }
+            });
+            node.nodeValue = val;
+        }
+    }
+
+    // 4. Extra functies op individuele calculator-pagina's
+    if (activeTool && mainEl) {
         const h1 = mainEl.querySelector("h1");
         if (h1 && activeTool.fiscal) {
             h1.insertAdjacentHTML("afterend", `

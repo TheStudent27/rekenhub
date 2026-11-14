@@ -3,86 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Werkuren & Uurloon Calculator – Tijdregistratie & Loon Berekenen</title>
-    <meta name="description" content="Bereken eenvoudig je gewerkte uren tussen begin- en eindtijd inclusief pauze-aftrek, decimaal aantal uren en verdiend uurloon.">
+    <title>Bruto-Netto Loonsimulator & Uurloon Calculator 2026 (BE & NL) – RekenHub</title>
+    <meta name="description" content="Bereken je nettoloon vanuit bruto maandloon of uurloon voor België en Nederland (2026). Inclusief barema's (GGMMI, PC 200, Bouw, Horeca), RSZ, werkbonus, kinderen ten laste en Nederlandse loonheffingskorting.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }</style>
+    <style>
+        body { background-color: #f8fafc; color: #0f172a; }
+    </style>
 </head>
 <body class="flex flex-col min-h-screen antialiased">
     <div id="app-header"></div>
+
     <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
-        <div class="mb-8">
-            <div class="text-xs font-semibold text-purple-600 uppercase tracking-wider mb-1">Dagelijks & Werk</div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Werkuren & Uurloon Calculator</h1>
-            <p class="text-slate-600 text-base sm:text-lg">Reken start- en eindtijd om naar exacte uren, decimale werkuren (voor facturatie) en totaalbedrag.</p>
+        <div class="mb-6">
+            <div class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1" data-i18n="cat">Werk, Loon & Btw (BE & NL)</div>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900 mb-2" data-i18n="title">
+                Bruto-Netto Loonsimulator & Uurloon (2026)
+            </h1>
+            <p class="text-slate-600 text-base" data-i18n="subtitle">
+                Simuleer je nettoloon op basis van officiële 2026-barema's en belastingregels in België en Nederland, of reken je gewerkte uren om.
+            </p>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 mb-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-            <div class="md:col-span-7 space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Starttijd</label>
-                        <input type="time" id="start" value="08:30" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 font-bold text-lg">
+        <!-- Hoofdkaart met Tabbladen -->
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 overflow-hidden mb-8">
+            <div class="grid grid-cols-2 border-b border-slate-200 bg-slate-50">
+                <button id="tab-bruto" onclick="switchTab('bruto')" class="py-4 px-3 text-center font-bold text-sm sm:text-base border-b-2 border-blue-600 text-blue-600 bg-white transition" data-i18n="tabBruto">
+                    💶 Bruto → Netto & Barema's
+                </button>
+                <button id="tab-uren" onclick="switchTab('uren')" class="py-4 px-3 text-center font-bold text-sm sm:text-base border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition" data-i18n="tabUren">
+                    ⏱️ Werkuren & Uurloon
+                </button>
+            </div>
+
+            <!-- TAB 1: BRUTO-NETTO & BAREMA SIMULATOR -->
+            <div id="panel-bruto" class="p-6 sm:p-8 space-y-6">
+                <!-- Land & Barema Preset -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 pb-6 border-b border-slate-100">
+                    <div class="md:col-span-5">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2" data-i18n="lblCountry">1. Fiscaal Land</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" id="btn-be" onclick="setCountry('BE')" class="py-2.5 px-3 rounded-xl border-2 border-blue-600 bg-blue-50/70 text-blue-700 font-bold text-sm transition">🇧🇪 België</button>
+                            <button type="button" id="btn-nl" onclick="setCountry('NL')" class="py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:border-slate-300 transition">🇳🇱 Nederland</button>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Eindtijd</label>
-                        <input type="time" id="end" value="17:00" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 font-bold text-lg">
+
+                    <div class="md:col-span-7">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2" data-i18n="lblBarema">2. Kies Barema / Wettelijk Minimumloon (2026)</label>
+                        <select id="barema-select" onchange="applyBarema()" class="w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none"></select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Pauze (minuten)</label>
-                        <input type="number" id="pause" value="30" min="0" step="5" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 font-bold text-lg">
+
+                <!-- Invoer & Resultaat -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1" data-i18n="lblInputMode">Invoer per</label>
+                                <select id="pay-period" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-semibold bg-white">
+                                    <option value="month" data-i18n="optMonth">Maand (Bruto maandloon)</option>
+                                    <option value="hour" data-i18n="optHour">Uur (Bruto uurloon)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1" id="lbl-gross-amount">Brutoloon (€)</label>
+                                <input type="number" id="gross-input" value="2850" min="0" step="any" oninput="calcSalary()" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-lg font-bold focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1" data-i18n="lblHoursWeek">Contracturen per week</label>
+                                <select id="hours-week" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-semibold bg-white">
+                                    <option value="38" selected>38 uur (Standaard BE)</option>
+                                    <option value="40">40 uur (Standaard NL / BE ADV)</option>
+                                    <option value="36">36 uur (Overheid / Zorg NL)</option>
+                                    <option value="32">32 uur (80% deeltijds)</option>
+                                    <option value="19">19 uur (50% halftijds)</option>
+                                </select>
+                            </div>
+                            <div id="be-statuut-box">
+                                <label class="block text-sm font-bold text-slate-700 mb-1" data-i18n="lblStatuut">Statuut (België)</label>
+                                <select id="be-statuut" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-semibold bg-white">
+                                    <option value="bediende">Bediende (RSZ op 100%)</option>
+                                    <option value="arbeider">Arbeider (RSZ op 108%)</option>
+                                    <option value="student">Jobstudent (2,71% solidariteit)</option>
+                                </select>
+                            </div>
+                            <div id="nl-heffing-box" class="hidden">
+                                <label class="block text-sm font-bold text-slate-700 mb-1" data-i18n="lblHeffing">Loonheffingskorting (NL)</label>
+                                <select id="nl-heffing" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm font-semibold bg-white">
+                                    <option value="yes">Ja, toepassen (hoofdwerkgever)</option>
+                                    <option value="no">Nee (2e baan / bijverdienste)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Belgische SD Worx parameters -->
+                        <div id="be-extra-fields" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lblCivil">Burgerlijke staat</label>
+                                <select id="be-civil" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold bg-white">
+                                    <option value="single">Alleenstaande</option>
+                                    <option value="married_2">Gehuwd / Samenw. (2 inkomens)</option>
+                                    <option value="married_1">Gehuwd / Samenw. (1 inkomen)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lblKids">Kinderen ten laste</label>
+                                <select id="be-kids" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold bg-white">
+                                    <option value="0">0 kinderen</option>
+                                    <option value="1">1 kind</option>
+                                    <option value="2">2 kinderen</option>
+                                    <option value="3">3 kinderen</option>
+                                    <option value="4">4+ kinderen</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1" data-i18n="lblNetBonus">Netto vergoeding (€/mnd)</label>
+                                <input type="number" id="be-net-allowance" value="0" min="0" step="10" oninput="calcSalary()" placeholder="bv. 50" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold">
+                            </div>
+                        </div>
+
+                        <!-- Nederlandse extra parameters -->
+                        <div id="nl-extra-fields" class="hidden grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Vakantiegeld (8%)</label>
+                                <select id="nl-holiday" onchange="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold bg-white">
+                                    <option value="excl">Exclusief (uitbetaling in mei)</option>
+                                    <option value="incl">Inclusief in maandloon</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">Reiskostenvergoeding (€/mnd netto)</label>
+                                <input type="number" id="nl-travel" value="0" min="0" step="10" oninput="calcSalary()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-bold">
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-1">Uurloon (€)</label>
-                        <input type="number" id="wage" value="18.50" step="0.50" oninput="calc()" class="w-full rounded-xl border-slate-300 border px-4 py-2.5 font-bold text-lg">
+
+                    <!-- Loonstrook Samenvatting -->
+                    <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200/90 flex flex-col justify-between space-y-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600" data-i18n="resNetTitle">Geschat Nettoloon</span>
+                            <div class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1" id="res-net-month">€ 2.138,40</div>
+                            <div class="text-xs text-slate-500 mt-1" id="res-net-hour">Netto uurloon: € 13,00 / uur</div>
+                        </div>
+
+                        <div class="space-y-2.5 pt-3 border-t border-slate-200 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-600" data-i18n="rowGross">Bruto maandloon:</span>
+                                <span class="font-bold text-slate-900" id="res-gross-month">€ 2.850,00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600" id="lbl-social-deduction">RSZ-bijdrage (13,07%):</span>
+                                <span class="font-semibold text-rose-600" id="res-rsz">- € 372,50</span>
+                            </div>
+                            <div class="flex justify-between" id="row-workbonus">
+                                <span class="text-slate-600">Sociale werkbonus:</span>
+                                <span class="font-semibold text-emerald-600" id="res-bonus">+ € 0,00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600" id="lbl-tax-deduction">Bedrijfsvoorheffing:</span>
+                                <span class="font-semibold text-rose-600" id="res-tax">- € 339,10</span>
+                            </div>
+                            <div class="flex justify-between pt-2 border-t border-slate-200 text-xs text-slate-500">
+                                <span id="lbl-extra-year">Vakantiegeld + 13e maand (indicatie):</span>
+                                <span class="font-bold text-slate-700" id="res-year-extra">€ 2.622 / jaar</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Netto Werktijd</span>
-                    <div class="text-4xl font-extrabold text-slate-900" id="res-time">8u 00m</div>
-                    <div class="text-xs text-slate-500 mt-1" id="res-dec">Decimaal: 8,00 uur</div>
+            <!-- TAB 2: WERKUREN & UURLOON CALCULATOR -->
+            <div id="panel-uren" class="hidden p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-7 space-y-4">
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Starttijd</label>
+                            <input type="time" id="work-start" value="08:30" oninput="calcHours()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Eindtijd</label>
+                            <input type="time" id="work-end" value="17:00" oninput="calcHours()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Pauze (min)</label>
+                            <input type="number" id="work-break" value="30" min="0" oninput="calcHours()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Aantal dagen</label>
+                            <input type="number" id="work-days" value="5" min="1" oninput="calcHours()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Bruto of netto uurloon (€)</label>
+                            <input type="number" id="work-rate" value="18.50" min="0" step="0.01" oninput="calcHours()" class="w-full rounded-xl border border-slate-300 px-3 py-2.5 font-bold">
+                        </div>
+                    </div>
                 </div>
-                <div class="pt-3 border-t border-slate-200 flex justify-between items-center">
-                    <span class="text-sm text-slate-600">Totaal te factureren / loon:</span>
-                    <span class="text-xl font-extrabold text-emerald-600" id="res-pay">€ 148,00</span>
+                <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Totale Werkuren</span>
+                    <div class="text-3xl font-extrabold text-slate-900" id="res-hours-dec">40,00 uur</div>
+                    <div class="text-xs text-slate-500" id="res-hours-hm">8u 00m per dag × 5 dagen</div>
+                    <div class="pt-3 border-t border-slate-200 flex justify-between items-center">
+                        <span class="text-sm text-slate-600">Totaal loon (periode):</span>
+                        <span class="text-lg font-extrabold text-emerald-600" id="res-hours-pay">€ 740,00</span>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
-            <h2 class="text-2xl font-bold text-slate-900">Waarom uren omrekenen naar decimale uren?</h2>
-            <p class="text-slate-600 leading-relaxed">Op facturen en loonbrieven worden werkuren decimaal geschreven in plaats van in minuten: 8 uur en 15 minuten is dus <code>8,25 uur</code> en 8 uur en 45 minuten is <code>8,75 uur</code>. Deze calculator zet beide formaten automatisch om.</p>
-        </article>
     </main>
+
     <div id="app-footer"></div>
     <script src="layout.js"></script>
     <script>
-        function calc() {
-            const [sh, sm] = document.getElementById('start').value.split(':').map(Number);
-            const [eh, em] = document.getElementById('end').value.split(':').map(Number);
-            const pause = parseInt(document.getElementById('pause').value) || 0;
-            const wage = parseFloat(document.getElementById('wage').value) || 0;
+        let country = 'BE';
 
-            let startMin = sh * 60 + sm;
-            let endMin = eh * 60 + em;
-            if (endMin < startMin) endMin += 24 * 60; // Nachtdienst ondersteuning
+        // Officiële 2026 barema's & minimumlonen (BE & NL)
+        const baremas = {
+            BE: [
+                { label: "Vrij bedrag invoeren", month: null, hour: null, hours: 38, statuut: "bediende" },
+                { label: "Wettelijk Minimumloon BE (GGMMI 2026) — € 2.233,61 / mnd (€ 13,56/u)", month: 2233.61, hour: 13.56, hours: 38, statuut: "bediende" },
+                { label: "PC 200 Bedienden (Klasse A, 0 jaar ervaring) — € 2.242,80 / mnd", month: 2242.80, hour: 13.62, hours: 38, statuut: "bediende" },
+                { label: "PC 200 Bedienden (Klasse B, 5 jaar ervaring) — € 2.685,00 / mnd", month: 2685.00, hour: 16.31, hours: 38, statuut: "bediende" },
+                { label: "PC 200 Bedienden (Klasse C, 10 jaar ervaring) — € 3.290,00 / mnd", month: 3290.00, hour: 19.98, hours: 38, statuut: "bediende" },
+                { label: "PC 302 Horeca (Categorie I) — € 15,21 / uur", month: 2504.58, hour: 15.21, hours: 38, statuut: "arbeider" },
+                { label: "PC 124 Bouw (Categorie I) — € 18,75 / uur", month: 3087.50, hour: 18.75, hours: 38, statuut: "arbeider" },
+                { label: "Jobstudent 18 jaar (79% GGMMI) — € 10,72 / uur", month: 1764.55, hour: 10.72, hours: 38, statuut: "student" },
+                { label: "Jobstudent 21+ jaar (100% GGMMI) — € 13,56 / uur", month: 2233.61, hour: 13.56, hours: 38, statuut: "student" }
+            ],
+            NL: [
+                { label: "Vrij bedrag invoeren", month: null, hour: null, hours: 40, statuut: "bediende" },
+                { label: "Wettelijk Minimumuurloon NL (21+, juli 2026) — € 14,99 / uur", month: 2598.27, hour: 14.99, hours: 40, statuut: "bediende" },
+                { label: "Minimumjeugdloon 20 jaar (80%) — € 11,99 / uur", month: 2078.27, hour: 11.99, hours: 40, statuut: "bediende" },
+                { label: "Minimumjeugdloon 19 jaar (60%) — € 8,99 / uur", month: 1558.27, hour: 8.99, hours: 40, statuut: "bediende" },
+                { label: "Minimumjeugdloon 18 jaar (50%) — € 7,50 / uur", month: 1300.00, hour: 7.50, hours: 40, statuut: "bediende" },
+                { label: "Modaal Inkomen Nederland (2026) — € 3.666,00 / mnd", month: 3666.00, hour: 21.15, hours: 40, statuut: "bediende" }
+            ]
+        };
 
-            const totalMin = Math.max(0, endMin - startMin - pause);
-            const hrs = Math.floor(totalMin / 60);
-            const mins = totalMin % 60;
-            const decHrs = totalMin / 60;
-
-            document.getElementById('res-time').textContent = `${hrs}u ${String(mins).padStart(2, '0')}m`;
-            document.getElementById('res-dec').textContent = `Decimaal: ${decHrs.toFixed(2).replace('.', ',')} uur`;
-            document.getElementById('res-pay').textContent = '€ ' + (decHrs * wage).toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        function switchTab(tab) {
+            document.getElementById('panel-bruto').classList.toggle('hidden', tab !== 'bruto');
+            document.getElementById('panel-uren').classList.toggle('hidden', tab !== 'uren');
+            document.getElementById('tab-bruto').className = tab === 'bruto'
+                ? 'py-4 px-3 text-center font-bold text-sm sm:text-base border-b-2 border-blue-600 text-blue-600 bg-white transition'
+                : 'py-4 px-3 text-center font-bold text-sm sm:text-base border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition';
+            document.getElementById('tab-uren').className = tab === 'uren'
+                ? 'py-4 px-3 text-center font-bold text-sm sm:text-base border-b-2 border-blue-600 text-blue-600 bg-white transition'
+                : 'py-4 px-3 text-center font-bold text-sm sm:text-base border-b-2 border-transparent text-slate-600 hover:text-slate-900 transition';
         }
-        calc();
+
+        function setCountry(c) {
+            country = c;
+            document.getElementById('btn-be').className = c === 'BE'
+                ? 'py-2.5 px-3 rounded-xl border-2 border-blue-600 bg-blue-50/70 text-blue-700 font-bold text-sm transition'
+                : 'py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:border-slate-300 transition';
+            document.getElementById('btn-nl').className = c === 'NL'
+                ? 'py-2.5 px-3 rounded-xl border-2 border-blue-600 bg-blue-50/70 text-blue-700 font-bold text-sm transition'
+                : 'py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-slate-700 font-bold text-sm hover:border-slate-300 transition';
+
+            document.getElementById('be-statuut-box').classList.toggle('hidden', c !== 'BE');
+            document.getElementById('be-extra-fields').classList.toggle('hidden', c !== 'BE');
+            document.getElementById('nl-heffing-box').classList.toggle('hidden', c !== 'NL');
+            document.getElementById('nl-extra-fields').classList.toggle('hidden', c !== 'NL');
+            document.getElementById('nl-extra-fields').classList.toggle('grid', c === 'NL');
+            document.getElementById('row-workbonus').classList.toggle('hidden', c !== 'BE');
+
+            const sel = document.getElementById('barema-select');
+            sel.innerHTML = baremas[c].map((b, i) => `<option value="${i}">${b.label}</option>`).join('');
+            document.getElementById('hours-week').value = c === 'BE' ? '38' : '40';
+            calcSalary();
+        }
+
+        function applyBarema() {
+            const idx = parseInt(document.getElementById('barema-select').value, 10);
+            const item = baremas[country][idx];
+            if (!item || item.month === null) return;
+
+            document.getElementById('hours-week').value = String(item.hours);
+            if (country === 'BE') document.getElementById('be-statuut').value = item.statuut;
+            const period = document.getElementById('pay-period').value;
+            document.getElementById('gross-input').value = period === 'hour' ? item.hour : item.month;
+            calcSalary();
+        }
+
+        function fmtEuro(n) {
+            return '€ ' + n.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function calcSalary() {
+            const period = document.getElementById('pay-period').value;
+            const rawVal = parseFloat(document.getElementById('gross-input').value) || 0;
+            const hoursWeek = parseFloat(document.getElementById('hours-week').value) || 38;
+            const hoursMonth = (hoursWeek * 13) / 3; // Officiële Belgische/NL omrekenfactor 13/3
+
+            const grossMonth = period === 'hour' ? rawVal * hoursMonth : rawVal;
+            const grossHour = period === 'hour' ? rawVal : (hoursMonth > 0 ? rawVal / hoursMonth : 0);
+
+            document.getElementById('res-gross-month').textContent = fmtEuro(grossMonth);
+
+            if (country === 'BE') {
+                const statuut = document.getElementById('be-statuut').value;
+                const civil = document.getElementById('be-civil').value;
+                const kids = parseInt(document.getElementById('be-kids').value, 10);
+                const netAllowance = parseFloat(document.getElementById('be-net-allowance').value) || 0;
+
+                if (statuut === 'student') {
+                    const rsz = grossMonth * 0.0271;
+                    const net = grossMonth - rsz + netAllowance;
+                    document.getElementById('lbl-social-deduction').textContent = 'Solidariteitsbijdrage (2,71%):';
+                    document.getElementById('res-rsz').textContent = '- ' + fmtEuro(rsz);
+                    document.getElementById('res-bonus').textContent = '+ € 0,00';
+                    document.getElementById('lbl-tax-deduction').textContent = 'Bedrijfsvoorheffing (student):';
+                    document.getElementById('res-tax').textContent = '- € 0,00';
+                    document.getElementById('res-net-month').textContent = fmtEuro(net);
+                    document.getElementById('res-net-hour').textContent = `Netto uurloon: ${fmtEuro(hoursMonth > 0 ? net / hoursMonth : 0)} / uur`;
+                    document.getElementById('res-year-extra').textContent = 'Geen 13e maand / vakantiegeld';
+                    return;
+                }
+
+                // Belgische RSZ (13,07% op 100% bediende of 108% arbeider)
+                const rszBase = statuut === 'arbeider' ? grossMonth * 1.08 : grossMonth;
+                const rszRaw = rszBase * 0.1307;
+
+                // Sociale Werkbonus 2026 (max ~€ 299,53 tot € 2.300,62 bruto, afbouwend tot € 3.250)
+                let workbonus = 0;
+                if (grossMonth > 0 && grossMonth <= 2300.62) {
+                    workbonus = Math.min(rszRaw, statuut === 'arbeider' ? 323.49 : 299.53);
+                } else if (grossMonth > 2300.62 && grossMonth < 3250) {
+                    const maxB = statuut === 'arbeider' ? 323.49 : 299.53;
+                    workbonus = Math.min(rszRaw, maxB * (1 - (grossMonth - 2300.62) / (3250 - 2300.62)));
+                }
+
+                const rszNet = Math.max(0, rszRaw - workbonus);
+                const taxableMonth = Math.max(0, grossMonth - rszNet);
+
+                // Jaarlijks belastbaar & bedrijfsvoorheffing (2026 schalen)
+                const annualTaxable = taxableMonth * 12;
+                const profCosts = Math.min(5930, annualTaxable * 0.30);
+                const netTaxableYear = Math.max(0, annualTaxable - profCosts);
+
+                let taxYear = 0;
+                if (netTaxableYear > 16320) taxYear += Math.min(netTaxableYear - 16320, 28800 - 16320) * 0.40;
+                if (netTaxableYear > 28800) taxYear += Math.min(netTaxableYear - 28800, 49840 - 28800) * 0.45;
+                if (netTaxableYear > 49840) taxYear += (netTaxableYear - 49840) * 0.50;
+                taxYear += Math.min(netTaxableYear, 16320) * 0.25;
+
+                // Belastingvrije som (2026 basis ~€ 11.180 -> belastingvermindering ~€ 2.795)
+                let taxCreditYear = 2795;
+                if (civil === 'married_1') taxCreditYear += 1250; // huwelijksquotiënt indicatie
+                const kidCredits = [0, 510, 1320, 2960, 4800];
+                taxCreditYear += kidCredits[Math.min(kids, 4)];
+
+                // Fiscale werkbonus (33,14% van sociale werkbonus)
+                const fiscalWorkbonusMonth = workbonus * 0.3314;
+                const bvMonth = Math.max(0, (taxYear - taxCreditYear) / 12 - fiscalWorkbonusMonth);
+
+                const netMonth = Math.max(0, taxableMonth - bvMonth + netAllowance);
+                document.getElementById('lbl-social-deduction').textContent = statuut === 'arbeider' ? 'RSZ-bijdrage (13,07% op 108%):' : 'RSZ-bijdrage (13,07%):';
+                document.getElementById('res-rsz').textContent = '- ' + fmtEuro(rszRaw);
+                document.getElementById('res-bonus').textContent = '+ ' + fmtEuro(workbonus);
+                document.getElementById('lbl-tax-deduction').textContent = 'Bedrijfsvoorheffing:';
+                document.getElementById('res-tax').textContent = '- ' + fmtEuro(bvMonth);
+                document.getElementById('res-net-month').textContent = fmtEuro(netMonth);
+                document.getElementById('res-net-hour').textContent = `Bruto: ${fmtEuro(grossHour)}/u • Netto: ${fmtEuro(hoursMonth > 0 ? netMonth / hoursMonth : 0)}/u`;
+                document.getElementById('res-year-extra').textContent = fmtEuro(netMonth * 1.15) + ' netto (indicatie)';
+            } else {
+                // Nederland (2026 loonheffing & heffingskortingen)
+                const applyHeffing = document.getElementById('nl-heffing').value === 'yes';
+                const holidayMode = document.getElementById('nl-holiday').value;
+                const travelNet = parseFloat(document.getElementById('nl-travel').value) || 0;
+
+                const baseGross = holidayMode === 'incl' ? grossMonth / 1.08 : grossMonth;
+                const annualGross = baseGross * 12.96; // incl. 8% vakantiegeld
+
+                // Schijf 1 (tot €38.883: 35,75%), Schijf 2 (tot €78.426: 37,56%), Schijf 3 (49,50%)
+                let grossTaxYear = 0;
+                if (annualGross <= 38883) {
+                    grossTaxYear = annualGross * 0.3575;
+                } else if (annualGross <= 78426) {
+                    grossTaxYear = 38883 * 0.3575 + (annualGross - 38883) * 0.3756;
+                } else {
+                    grossTaxYear = 38883 * 0.3575 + (78426 - 38883) * 0.3756 + (annualGross - 78426) * 0.495;
+                }
+
+                let taxCreditsYear = 0;
+                if (applyHeffing && annualGross > 0) {
+                    // Algemene heffingskorting 2026 (max €3.115, afbouw vanaf €29.736)
+                    const ahk = annualGross <= 29736 ? 3115 : Math.max(0, 3115 - (annualGross - 29736) * 0.06398);
+                    // Arbeidskorting 2026 (max €5.685)
+                    let ak = 0;
+                    if (annualGross <= 11965) ak = annualGross * 0.08324;
+                    else if (annualGross <= 25845) ak = 996 + (annualGross - 11965) * 0.31009;
+                    else if (annualGross <= 45592) ak = 5300 + (annualGross - 25845) * 0.0195;
+                    else ak = Math.max(0, 5685 - (annualGross - 45592) * 0.0651);
+                    taxCreditsYear = ahk + ak;
+                }
+
+                const netTaxYear = Math.max(0, grossTaxYear - taxCreditsYear);
+                const taxMonth = (netTaxYear / 12.96) * (holidayMode === 'incl' ? 1.08 : 1);
+                const pensionEst = grossMonth * 0.04; // gemiddelde werknemerspremie pensioen
+                const netMonth = Math.max(0, grossMonth - pensionEst - taxMonth + travelNet);
+
+                document.getElementById('lbl-social-deduction').textContent = 'Pensioenpremie (indicatie 4%):';
+                document.getElementById('res-rsz').textContent = '- ' + fmtEuro(pensionEst);
+                document.getElementById('lbl-tax-deduction').textContent = 'Loonheffing (na kortingen):';
+                document.getElementById('res-tax').textContent = '- ' + fmtEuro(taxMonth);
+                document.getElementById('res-net-month').textContent = fmtEuro(netMonth);
+                document.getElementById('res-net-hour').textContent = `Bruto: ${fmtEuro(grossHour)}/u • Netto: ${fmtEuro(hoursMonth > 0 ? netMonth / hoursMonth : 0)}/u`;
+                document.getElementById('res-year-extra').textContent = fmtEuro(baseGross * 0.96 * 0.55) + ' netto vakantiegeld/jr';
+            }
+        }
+
+        function calcHours() {
+            const [sh, sm] = document.getElementById('work-start').value.split(':').map(Number);
+            const [eh, em] = document.getElementById('work-end').value.split(':').map(Number);
+            const brk = parseFloat(document.getElementById('work-break').value) || 0;
+            const days = parseFloat(document.getElementById('work-days').value) || 1;
+            const rate = parseFloat(document.getElementById('work-rate').value) || 0;
+
+            let diffMin = (eh * 60 + em) - (sh * 60 + sm);
+            if (diffMin < 0) diffMin += 24 * 60;
+            const netMinDay = Math.max(0, diffMin - brk);
+            const totalDec = (netMinDay / 60) * days;
+
+            const hDay = Math.floor(netMinDay / 60);
+            const mDay = Math.round(netMinDay % 60);
+
+            document.getElementById('res-hours-dec').textContent = totalDec.toLocaleString('nl-BE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' uur';
+            document.getElementById('res-hours-hm').textContent = `${hDay}u ${String(mDay).padStart(2, '0')}m per dag × ${days} dagen`;
+            document.getElementById('res-hours-pay').textContent = fmtEuro(totalDec * rate);
+        }
+
+        setCountry('BE');
+        calcHours();
     </script>
 </body>
 </html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardlooptempo & Finishtijd Calculator (Pace) – RekenHub</title>
+    <meta name="description" content="Bereken je hardlooptempo (min/km), snelheid (km/u) en verwachte eindtijd voor 5 km, 10 km, halve marathon en marathon.">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased">
+    <div id="app-header"></div>
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-6">
+            <div class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">Gezondheid & Sport</div>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold mb-2">Hardlooptempo & Finishtijd Calculator</h1>
+            <p class="text-slate-600">Bereken direct je tempo per kilometer (min/km), snelheid in km/u en tussentijden voor bekende afstanden.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 mb-8">
+            <div class="md:col-span-7 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1.5">Afstand (km)</label>
+                    <div class="flex flex-wrap gap-2 mb-2">
+                        <button type="button" onclick="setDist(5)" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-xs font-bold">5 km</button>
+                        <button type="button" onclick="setDist(10)" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-xs font-bold">10 km</button>
+                        <button type="button" onclick="setDist(16.09)" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-xs font-bold">10 Miles</button>
+                        <button type="button" onclick="setDist(21.0975)" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-xs font-bold">Halve Marathon</button>
+                        <button type="button" onclick="setDist(42.195)" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-rose-50 text-xs font-bold">Marathon</button>
+                    </div>
+                    <input type="number" id="run-dist" value="10" min="0.1" step="any" oninput="calcPace()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-bold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Gewenste of gelopen tijd (Uren : Minuten : Seconden)</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <input type="number" id="run-h" value="0" min="0" oninput="calcPace()" placeholder="Uur" class="rounded-xl border border-slate-300 px-3 py-2.5 font-bold text-center">
+                        <input type="number" id="run-m" value="50" min="0" max="59" oninput="calcPace()" placeholder="Min" class="rounded-xl border border-slate-300 px-3 py-2.5 font-bold text-center">
+                        <input type="number" id="run-s" value="0" min="0" max="59" oninput="calcPace()" placeholder="Sec" class="rounded-xl border border-slate-300 px-3 py-2.5 font-bold text-center">
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-5 bg-slate-50 rounded-2xl p-6 border border-slate-200 space-y-3">
+                <span class="text-xs font-bold uppercase text-rose-600">Tempo per Kilometer (Pace)</span>
+                <div class="text-3xl font-extrabold text-slate-900" id="res-pace">5:00 min/km</div>
+                <div class="text-xs text-slate-500" id="res-speed">Gemiddelde snelheid: 12,00 km/u</div>
+                <div class="pt-3 border-t border-slate-200 space-y-1.5 text-xs">
+                    <div class="flex justify-between"><span>5 km prognose:</span><span class="font-bold" id="est-5k">25:00</span></div>
+                    <div class="flex justify-between"><span>10 km prognose:</span><span class="font-bold" id="est-10k">50:00</span></div>
+                    <div class="flex justify-between"><span>Halve marathon (21,1 km):</span><span class="font-bold" id="est-hm">1:45:29</span></div>
+                    <div class="flex justify-between"><span>Marathon (42,2 km):</span><span class="font-bold" id="est-fm">3:30:58</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function setDist(d) {
+            document.getElementById('run-dist').value = d;
+            calcPace();
+        }
+        function fmtTime(totalSec) {
+            const h = Math.floor(totalSec / 3600);
+            const m = Math.floor((totalSec % 3600) / 60);
+            const s = Math.round(totalSec % 60);
+            return h > 0 ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` : `${m}:${String(s).padStart(2, '0')}`;
+        }
+        function calcPace() {
+            const dist = parseFloat(document.getElementById('run-dist').value) || 1;
+            const totalSec = (parseInt(document.getElementById('run-h').value || 0, 10) * 3600)
+                           + (parseInt(document.getElementById('run-m').value || 0, 10) * 60)
+                           + parseInt(document.getElementById('run-s').value || 0, 10);
+
+            const secPerKm = totalSec / dist;
+            const speedKmh = totalSec > 0 ? (dist / (totalSec / 3600)) : 0;
+
+            document.getElementById('res-pace').textContent = fmtTime(secPerKm) + ' min/km';
+            document.getElementById('res-speed').textContent = `Gemiddelde snelheid: ${speedKmh.toFixed(2).replace('.', ',')} km/u`;
+            document.getElementById('est-5k').textContent = fmtTime(secPerKm * 5);
+            document.getElementById('est-10k').textContent = fmtTime(secPerKm * 10);
+            document.getElementById('est-hm').textContent = fmtTime(secPerKm * 21.0975);
+            document.getElementById('est-fm').textContent = fmtTime(secPerKm * 42.195);
+        }
+        calcPace();
+    </script>
+</body>
+</html>

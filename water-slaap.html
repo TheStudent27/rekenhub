@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waterbehoefte & Slaapcyclus Calculator – RekenHub</title>
+    <meta name="description" content="Bereken hoeveel liter water je per dag nodig hebt en ontdek je optimale bedtijd of wektijd op basis van slaapcycli van 90 minuten.">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased">
+    <div id="app-header"></div>
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-6">
+            <div class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">Gezondheid & Sport</div>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold mb-2">Waterbehoefte & Slaapcyclus Calculator</h1>
+            <p class="text-slate-600">Ontdek hoeveel water je lichaam dagelijks nodig heeft én hoe laat je het best opstaat om uitgerust wakker te worden.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Waterinname -->
+            <div class="space-y-4">
+                <h2 class="font-heading text-lg font-bold text-slate-900">💧 Dagelijkse Waterinname</h2>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Lichaamsgewicht (kg)</label>
+                    <input type="number" id="ws-weight" value="75" min="30" max="200" oninput="calcWS()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Dagelijkse beweging / sport (minuten)</label>
+                    <input type="number" id="ws-sport" value="30" min="0" max="300" step="15" oninput="calcWS()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-bold">
+                </div>
+                <div class="bg-sky-50/80 border border-sky-200 rounded-2xl p-5">
+                    <div class="text-xs font-bold uppercase text-sky-700">Aanbevolen Waterinname</div>
+                    <div class="text-3xl font-extrabold text-slate-900 mt-1" id="res-water">2,60 liter / dag</div>
+                    <div class="text-xs text-slate-600 mt-1" id="res-glasses">± 11 glazen water (van 250 ml)</div>
+                </div>
+            </div>
+
+            <!-- Slaapcyclus -->
+            <div class="space-y-4">
+                <h2 class="font-heading text-lg font-bold text-slate-900">😴 Optimale Wektijd (90-min cycli)</h2>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Ik ga slapen om (incl. 15 min inslapen):</label>
+                    <input type="time" id="ws-bedtime" value="23:00" oninput="calcWS()" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 font-bold">
+                </div>
+                <div class="bg-indigo-50/80 border border-indigo-200 rounded-2xl p-5 space-y-2">
+                    <div class="text-xs font-bold uppercase text-indigo-700">Beste momenten om wakker te worden</div>
+                    <div class="flex flex-wrap gap-2 pt-1" id="res-waketimes"></div>
+                    <p class="text-[11px] text-slate-500 pt-1">Aanbevolen: 5 cycli (7,5 uur slaap) of 6 cycli (9 uur slaap).</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        function calcWS() {
+            const w = parseFloat(document.getElementById('ws-weight').value) || 75;
+            const sport = parseFloat(document.getElementById('ws-sport').value) || 0;
+            const liters = (w * 0.03) + ((sport / 30) * 0.35);
+
+            document.getElementById('res-water').textContent = liters.toFixed(2).replace('.', ',') + ' liter / dag';
+            document.getElementById('res-glasses').textContent = `± ${Math.round(liters * 4)} glazen water (van 250 ml)`;
+
+            const [bh, bm] = document.getElementById('ws-bedtime').value.split(':').map(Number);
+            const fallAsleepMin = bh * 60 + bm + 15;
+            const cycles = [
+                { c: 4, label: '6u slaap' },
+                { c: 5, label: '7,5u (Ideaal)' },
+                { c: 6, label: '9u (Volledig)' }
+            ];
+
+            document.getElementById('res-waketimes').innerHTML = cycles.map(item => {
+                const total = (fallAsleepMin + item.c * 90) % (24 * 60);
+                const hh = String(Math.floor(total / 60)).padStart(2, '0');
+                const mm = String(total % 60).padStart(2, '0');
+                return `<span class="px-3 py-1.5 rounded-xl bg-white border border-indigo-200 text-sm font-extrabold text-indigo-900">${hh}:${mm} <span class="text-[10px] font-medium text-slate-500">(${item.label})</span></span>`;
+            }).join('');
+        }
+        calcWS();
+    </script>
+</body>
+</html>
