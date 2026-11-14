@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RekenHub – Gratis Online Calculators 2026 (België & Nederland)</title>
-    <meta name="description" content="Snelle, nauwkeurige en gratis calculators voor België en Nederland (2026): bruto-netto loon, sparen & Box 3, registratierechten, laadkosten, gezondheid en web-tools.">
+    <meta name="description" content="Snelle, nauwkeurige en gratis calculators voor België en Nederland (2026): digitale rekenmachine, bruto-netto loon, sparen, IBAN/BTW-check en QR-generator.">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         section { scroll-margin-top: 90px; }
@@ -15,7 +15,7 @@
 
     <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex-grow space-y-10">
 
-        <!-- Vernieuwde Hero met Illustratie, Zoekbalk & 4 Kernblokken -->
+        <!-- Hero met Zoekbalk + Directe Digitale Zakrekenmachine -->
         <div class="bg-white/95 backdrop-blur-xs rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm relative overflow-hidden">
             <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br from-blue-100/70 to-emerald-100/60 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -32,51 +32,53 @@
                     </h1>
 
                     <p id="hero-subtitle" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
-                        Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot laadkosten en hardlooptempo. 100% gratis, lokaal in je browser en met directe bronvermelding.
+                        Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot IBAN-controle en QR-codes. 100% gratis en lokaal in je browser.
                     </p>
 
                     <div class="pt-1 max-w-xl space-y-2.5">
                         <div class="relative">
-                            <input type="text" id="search-input" onkeyup="renderBento()" placeholder="Waar wil je mee rekenen? (bijv. bruto, Box 3, hypotheek, BMI)..." class="w-full rounded-2xl border border-slate-300 bg-slate-50/90 focus:bg-white pl-11 pr-4 py-3.5 text-sm font-medium text-slate-800 shadow-2xs focus:border-[#003366] focus:ring-2 focus:ring-blue-500/20 outline-none transition">
+                            <input type="text" id="search-input" onkeyup="renderBento()" placeholder="Waar wil je mee rekenen? (bijv. bruto, IBAN, QR, hypotheek, BMI)..." class="w-full rounded-2xl border border-slate-300 bg-slate-50/90 focus:bg-white pl-11 pr-4 py-3.5 text-sm font-medium text-slate-800 shadow-2xs focus:border-[#003366] focus:ring-2 focus:ring-blue-500/20 outline-none transition">
                             <svg class="w-4 h-4 text-slate-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         </div>
                         <div id="quick-pills" class="flex flex-wrap items-center gap-1.5 text-xs font-medium text-slate-500"></div>
                     </div>
                 </div>
 
-                <!-- Rechterkolom: Levendige 2026 Dashboard-illustratie -->
-                <div class="lg:col-span-5 hidden sm:flex justify-center">
-                    <svg viewBox="0 0 360 240" class="w-full max-w-sm h-auto drop-shadow-xs" fill="none">
-                        <!-- Achtergrondkaart -->
-                        <rect x="24" y="18" width="260" height="190" rx="22" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
-                        <!-- Bovenbalk -->
-                        <rect x="24" y="18" width="260" height="36" rx="22" fill="#003366"/>
-                        <rect x="24" y="38" width="260" height="16" fill="#003366"/>
-                        <circle cx="44" cy="36" r="4" fill="#34D399"/>
-                        <circle cx="58" cy="36" r="4" fill="#FBBF24"/>
-                        <circle cx="72" cy="36" r="4" fill="#F87171"/>
-                        <!-- Grafiekbalken -->
-                        <rect x="46" y="128" width="24" height="58" rx="6" fill="#BAE6FD"/>
-                        <rect x="80" y="106" width="24" height="80" rx="6" fill="#38BDF8"/>
-                        <rect x="114" y="84" width="24" height="102" rx="6" fill="#0284C7"/>
-                        <rect x="148" y="68" width="24" height="118" rx="6" fill="#10B981"/>
-                        <path d="M56 116L92 94L126 76L160 58" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
-                        <circle cx="160" cy="58" r="5" fill="#059669"/>
-                        <!-- Zwevende Rekenmachine-kaart rechts -->
-                        <rect x="196" y="48" width="144" height="174" rx="20" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
-                        <rect x="212" y="64" width="112" height="34" rx="10" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.5"/>
-                        <text x="314" y="86" text-anchor="end" fill="#047857" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="15">€ 2.485,50</text>
-                        <!-- Toetsen -->
-                        <rect x="212" y="110" width="32" height="22" rx="6" fill="#F1F5F9"/>
-                        <rect x="252" y="110" width="32" height="22" rx="6" fill="#F1F5F9"/>
-                        <rect x="292" y="110" width="32" height="22" rx="6" fill="#DBEAFE"/>
-                        <rect x="212" y="140" width="32" height="22" rx="6" fill="#F1F5F9"/>
-                        <rect x="252" y="140" width="32" height="22" rx="6" fill="#F1F5F9"/>
-                        <rect x="292" y="140" width="32" height="22" rx="6" fill="#DBEAFE"/>
-                        <rect x="212" y="170" width="72" height="24" rx="7" fill="#003366"/>
-                        <rect x="292" y="170" width="32" height="24" rx="7" fill="#10B981"/>
-                        <text x="308" y="186" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-weight="700" font-size="14">=</text>
-                    </svg>
+                <!-- Rechterkolom: Echte Werkende Digitale Rekenmachine (Toetsenbord + Klik) -->
+                <div class="lg:col-span-5">
+                    <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg border border-slate-800 max-w-sm mx-auto">
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 mb-2 px-1">
+                            <span id="calc-label" class="font-semibold tracking-wide">Snelle Rekenmachine</span>
+                            <span id="calc-history" class="font-mono truncate max-w-[160px] text-right"></span>
+                        </div>
+                        <input type="text" id="calc-display" value="0" readonly class="w-full bg-slate-950 text-right font-mono text-2xl font-bold text-emerald-400 px-3.5 py-2.5 rounded-xl border border-slate-800 mb-3 outline-none tabular-nums">
+
+                        <div class="grid grid-cols-4 gap-1.5 text-sm font-bold">
+                            <button type="button" onclick="calcClear()" class="py-2.5 rounded-xl bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 transition">C</button>
+                            <button type="button" onclick="calcBackspace()" class="py-2.5 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-700 transition">⌫</button>
+                            <button type="button" onclick="calcPercent()" class="py-2.5 rounded-xl bg-slate-800 text-blue-300 hover:bg-slate-700 transition">%</button>
+                            <button type="button" onclick="calcOp('/')" class="py-2.5 rounded-xl bg-blue-600/30 text-blue-300 hover:bg-blue-600/40 transition">÷</button>
+
+                            <button type="button" onclick="calcDigit('7')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">7</button>
+                            <button type="button" onclick="calcDigit('8')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">8</button>
+                            <button type="button" onclick="calcDigit('9')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">9</button>
+                            <button type="button" onclick="calcOp('*')" class="py-2.5 rounded-xl bg-blue-600/30 text-blue-300 hover:bg-blue-600/40 transition">×</button>
+
+                            <button type="button" onclick="calcDigit('4')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">4</button>
+                            <button type="button" onclick="calcDigit('5')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">5</button>
+                            <button type="button" onclick="calcDigit('6')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">6</button>
+                            <button type="button" onclick="calcOp('-')" class="py-2.5 rounded-xl bg-blue-600/30 text-blue-300 hover:bg-blue-600/40 transition">−</button>
+
+                            <button type="button" onclick="calcDigit('1')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">1</button>
+                            <button type="button" onclick="calcDigit('2')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">2</button>
+                            <button type="button" onclick="calcDigit('3')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">3</button>
+                            <button type="button" onclick="calcOp('+')" class="py-2.5 rounded-xl bg-blue-600/30 text-blue-300 hover:bg-blue-600/40 transition">+</button>
+
+                            <button type="button" onclick="calcDigit('0')" class="col-span-2 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">0</button>
+                            <button type="button" onclick="calcDigit('.')" class="py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 transition">,</button>
+                            <button type="button" onclick="calcEquals()" class="py-2.5 rounded-xl bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition">=</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -84,7 +86,7 @@
             <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6 mt-7 border-t border-slate-100 text-xs">
                 <a href="#bento-grid" class="group bg-slate-50/90 hover:bg-blue-50/70 rounded-xl p-3.5 border border-slate-200/80 hover:border-blue-300 transition block">
                     <div class="flex items-center justify-between">
-                        <span id="stat-1-title" class="font-heading font-bold text-base text-slate-900 group-hover:text-blue-700 transition">19 Tools</span>
+                        <span id="stat-1-title" class="font-heading font-bold text-base text-slate-900 group-hover:text-blue-700 transition">21 Tools</span>
                         <span class="text-slate-400 group-hover:text-blue-600 font-bold transition">↓</span>
                     </div>
                     <div id="stat-1-sub" class="text-slate-500 group-hover:text-slate-700 mt-0.5">Gratis zonder inloggen</div>
@@ -143,7 +145,7 @@
         <!-- Geen resultaten -->
         <div id="no-results" class="hidden text-center py-12 bg-white rounded-3xl border border-slate-200">
             <p id="no-results-text" class="font-semibold text-slate-700">Geen calculator gevonden.</p>
-            <button id="reset-search-btn" onclick="document.getElementById('search-input').value=''; renderBento();" class="mt-2 text-sm font-bold text-blue-600 hover:underline">Toon alle 19 tools</button>
+            <button id="reset-search-btn" onclick="document.getElementById('search-input').value=''; renderBento();" class="mt-2 text-sm font-bold text-blue-600 hover:underline">Toon alle 21 tools</button>
         </div>
 
     </main>
@@ -152,6 +154,83 @@
     <script src="rates-2026.js"></script>
     <script src="layout.js"></script>
     <script>
+        // Digitale Zakrekenmachine Logica (werkt met klikken én toetsenbord)
+        let calcCurrent = '0';
+        let calcPrev = null;
+        let calcOperator = null;
+        let calcResetNext = false;
+
+        function updateCalcScreen() {
+            document.getElementById('calc-display').value = calcCurrent.replace('.', ',');
+            document.getElementById('calc-history').textContent = calcPrev !== null && calcOperator
+                ? `${String(calcPrev).replace('.', ',')} ${calcOperator}`
+                : '';
+        }
+
+        function calcDigit(d) {
+            if (calcResetNext) {
+                calcCurrent = d === '.' ? '0.' : d;
+                calcResetNext = false;
+            } else {
+                if (d === '.' && calcCurrent.includes('.')) return;
+                calcCurrent = (calcCurrent === '0' && d !== '.') ? d : calcCurrent + d;
+            }
+            updateCalcScreen();
+        }
+
+        function calcClear() {
+            calcCurrent = '0';
+            calcPrev = null;
+            calcOperator = null;
+            calcResetNext = false;
+            updateCalcScreen();
+        }
+
+        function calcBackspace() {
+            if (calcResetNext) return;
+            calcCurrent = calcCurrent.length > 1 ? calcCurrent.slice(0, -1) : '0';
+            updateCalcScreen();
+        }
+
+        function calcPercent() {
+            const val = parseFloat(calcCurrent) || 0;
+            calcCurrent = String(parseFloat((val / 100).toPrecision(10)));
+            updateCalcScreen();
+        }
+
+        function calcOp(op) {
+            if (calcOperator && !calcResetNext) calcEquals();
+            calcPrev = parseFloat(calcCurrent);
+            calcOperator = op;
+            calcResetNext = true;
+            updateCalcScreen();
+        }
+
+        function calcEquals() {
+            if (calcOperator === null || calcPrev === null) return;
+            const cur = parseFloat(calcCurrent);
+            let res = 0;
+            if (calcOperator === '+') res = calcPrev + cur;
+            if (calcOperator === '-') res = calcPrev - cur;
+            if (calcOperator === '*') res = calcPrev * cur;
+            if (calcOperator === '/') res = cur === 0 ? 0 : calcPrev / cur;
+            calcCurrent = String(parseFloat(res.toPrecision(10)));
+            calcPrev = null;
+            calcOperator = null;
+            calcResetNext = true;
+            updateCalcScreen();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && document.activeElement.id !== 'calc-display') return;
+            if (/^[0-9]$/.test(e.key)) calcDigit(e.key);
+            if (e.key === '.' || e.key === ',') calcDigit('.');
+            if (['+', '-', '*', '/'].includes(e.key)) { e.preventDefault(); calcOp(e.key); }
+            if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calcEquals(); }
+            if (e.key === 'Backspace') calcBackspace();
+            if (e.key === 'Escape') calcClear();
+        });
+
         const flagBE = `<svg class="w-3.5 h-2.5 inline-block rounded-[2px] mr-1 align-baseline" viewBox="0 0 3 2"><rect width="1" height="2" x="0" fill="#111827"/><rect width="1" height="2" x="1" fill="#FACC15"/><rect width="1" height="2" x="2" fill="#DC2626"/></svg>`;
         const flagNL = `<svg class="w-3.5 h-2.5 inline-block rounded-[2px] mr-1 align-baseline" viewBox="0 0 3 2"><rect width="3" height="0.67" y="0" fill="#DC2626"/><rect width="3" height="0.67" y="0.67" fill="#FFFFFF"/><rect width="3" height="0.67" y="1.33" fill="#1D4ED8"/></svg>`;
 
@@ -159,12 +238,13 @@
             nl: {
                 badge: "Officiële 2026-tarieven • België & Nederland apart",
                 titleHtml: `Reken het in seconden uit — <span class="text-[#003366]">op maat van België & Nederland</span>`,
-                subtitle: "Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot laadkosten en hardlooptempo. 100% gratis, lokaal in je browser en met directe bronvermelding.",
-                placeholder: "Waar wil je mee rekenen? (bijv. bruto, Box 3, hypotheek, BMI)...",
+                subtitle: "Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot IBAN-controle en QR-codes. 100% gratis en lokaal in je browser.",
+                placeholder: "Waar wil je mee rekenen? (bijv. bruto, IBAN, QR, hypotheek, BMI)...",
+                calcLabel: "Snelle Rekenmachine",
                 noResults: "Geen calculator gevonden voor deze zoekterm.",
-                resetBtn: "Toon alle 19 tools",
-                pills: ["Bruto-Netto", "Sparen", "Hypotheek", "Laadkosten", "BMI", "Extractor"],
-                stat1Title: "19 Tools",
+                resetBtn: "Toon alle 21 tools",
+                pills: ["Bruto-Netto", "Sparen", "IBAN", "QR", "Hypotheek", "BMI"],
+                stat1Title: "21 Tools",
                 stat1Sub: "Gratis zonder inloggen",
                 stat2BE: "België",
                 stat2NL: "Nederland",
@@ -215,12 +295,13 @@
             fr: {
                 badge: "Barèmes officiels 2026 • Belgique & Pays-Bas séparés",
                 titleHtml: `Calculez tout en quelques secondes — <span class="text-[#003366]">adapté à la Belgique & aux Pays-Bas</span>`,
-                subtitle: "Du salaire brut-net, épargne et droits d'enregistrement aux coûts de recharge et allure de course — 100% gratuit avec sources officielles.",
-                placeholder: "Rechercher un calculateur (ex. salaire, TVA, hypothèque, IMC)...",
+                subtitle: "Du salaire brut-net, épargne et droits d'enregistrement au contrôle IBAN et codes QR — 100% gratuit dans votre navigateur.",
+                placeholder: "Rechercher un calculateur (ex. salaire, IBAN, QR, IMC)...",
+                calcLabel: "Calculatrice Rapide",
                 noResults: "Aucun calculateur trouvé pour cette recherche.",
-                resetBtn: "Afficher les 19 outils",
-                pills: ["Salaire", "Épargne", "Hypothèque", "Recharge VE", "IMC", "Course"],
-                stat1Title: "19 Outils",
+                resetBtn: "Afficher les 21 outils",
+                pills: ["Salaire", "Épargne", "IBAN", "QR", "Hypothèque", "IMC"],
+                stat1Title: "21 Outils",
                 stat1Sub: "Gratuit sans inscription",
                 stat2BE: "Belgique",
                 stat2NL: "Pays-Bas",
@@ -271,12 +352,13 @@
             en: {
                 badge: "Official 2026 rates • Belgium & Netherlands separated",
                 titleHtml: `Calculate anything in seconds — <span class="text-[#003366]">tailored to Belgium & the Netherlands</span>`,
-                subtitle: "From gross-to-net salary, savings (BE & NL Box 3), and property tax to EV charging and running pace — free with official sources.",
-                placeholder: "Search calculator (e.g. salary, VAT, mortgage, BMI)...",
+                subtitle: "From gross-to-net salary, savings (BE & NL Box 3), and property tax to IBAN validation and QR codes — free in your browser.",
+                placeholder: "Search calculator (e.g. salary, IBAN, QR, mortgage, BMI)...",
+                calcLabel: "Quick Calculator",
                 noResults: "No calculator found matching your search.",
-                resetBtn: "Show all 19 tools",
-                pills: ["Salary", "Savings", "Mortgage", "EV Cost", "BMI", "Extractor"],
-                stat1Title: "19 Tools",
+                resetBtn: "Show all 21 tools",
+                pills: ["Salary", "Savings", "IBAN", "QR", "Mortgage", "BMI"],
+                stat1Title: "21 Tools",
                 stat1Sub: "Free without sign-up",
                 stat2BE: "Belgium",
                 stat2NL: "Netherlands",
@@ -361,7 +443,7 @@
                 badgeColor: "text-blue-700 bg-blue-100/80",
                 hoverText: "group-hover:text-blue-700",
                 title: { nl: "Werk, Loon & Btw", fr: "Travail, Salaire & TVA", en: "Work, Income & Tax" },
-                subtitle: { nl: "Bruto-netto, barema's, bijverdienste en btw", fr: "Brut-net, barèmes et TVA", en: "Gross-to-net, scales and sales tax" },
+                subtitle: { nl: "Bruto-netto, barema's, IBAN/BTW-check en btw", fr: "Brut-net, barèmes, IBAN/TVA", en: "Gross-to-net, scales, IBAN/VAT" },
                 illustration: `
                     <svg viewBox="0 0 96 80" class="w-24 h-20 shrink-0" fill="none">
                         <rect x="10" y="12" width="44" height="56" rx="8" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
@@ -375,6 +457,7 @@
                     { file: "werkuren.html", label: { nl: "Bruto-Netto & Uurloon", fr: "Salaire Brut-Net & Horaire", en: "Gross-to-Net & Hourly Pay" }, tag: "BE • NL" },
                     { file: "flexijob.html", label: { nl: "Flexi-job Loon (€ 18.440)", fr: "Salaire Flexi-job (18.440 €)", en: "Flexi-job Salary (BE)" }, tag: "BE" },
                     { file: "btw.html", label: { nl: "BTW Calculator", fr: "Calculateur TVA", en: "VAT / Sales Tax" }, tag: "BE•NL•LU" },
+                    { file: "iban-btw-check.html", label: { nl: "IBAN & BTW-nummer Check", fr: "Contrôle IBAN & N° TVA", en: "IBAN & VAT Number Validator" }, tag: "BE • NL" },
                     { file: "procenten.html", label: { nl: "Procenten & Winstmarge", fr: "Pourcentage & Marge", en: "Percentage & Margin" } }
                 ]
             },
@@ -450,8 +533,8 @@
                 headerBg: "bg-gradient-to-r from-slate-100 to-slate-50 border-slate-200",
                 badgeColor: "text-slate-700 bg-slate-200/80",
                 hoverText: "group-hover:text-blue-700",
-                title: { nl: "Web, SEO & Data Tools", fr: "Outils Web, SEO & Données", en: "Web, SEO & Data Tools" },
-                subtitle: { nl: "Analyseer webpagina's en filter direct URL's, koppen en bedragen uit tekst of HTML", fr: "Analysez des pages web et extrayez URL, titres et montants", en: "Analyze webpages and extract URLs, headings, and amounts from text or HTML" },
+                title: { nl: "Web, Tekst & Data Tools", fr: "Outils Web, Texte & Données", en: "Web, Text & Data Tools" },
+                subtitle: { nl: "Maak gratis QR-codes (link & WiFi), tel woorden of schoon lijsten en teksten lokaal op", fr: "Créez des codes QR, comptez les mots ou nettoyez vos listes", en: "Create free QR codes, count words or clean lists locally" },
                 illustration: `
                     <svg viewBox="0 0 120 72" class="w-28 h-16 shrink-0" fill="none">
                         <rect x="10" y="10" width="68" height="52" rx="8" fill="#E2E8F0" stroke="#334155" stroke-width="2.5"/>
@@ -459,11 +542,12 @@
                         <circle cx="28" cy="20" r="2.5" fill="#64748B"/>
                         <line x1="20" y1="34" x2="58" y2="34" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
                         <line x1="20" y1="46" x2="46" y2="46" stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round"/>
-                        <circle cx="88" cy="40" r="14" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
-                        <line x1="98" y1="50" x2="108" y2="60" stroke="#2563EB" stroke-width="3" stroke-linecap="round"/>
+                        <rect x="86" y="16" width="24" height="24" rx="4" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
+                        <rect x="92" y="22" width="12" height="12" fill="#2563EB"/>
                     </svg>`,
                 links: [
-                    { file: "extractor.html", label: { nl: "Website SEO & Data Extractor (Mini Scraper)", fr: "Extracteur SEO & Données Web", en: "Website SEO & Data Extractor" }, tag: "TOOL" }
+                    { file: "qr-generator.html", label: { nl: "Gratis QR-Code Generator (Link & WiFi)", fr: "Générateur de Code QR (Lien & WiFi)", en: "Free QR Code Generator (URL & WiFi)" }, tag: "NIEUW" },
+                    { file: "extractor.html", label: { nl: "Tekst Opschoner, Woordenteller & Filter", fr: "Compteur de Mots & Nettoyeur de Texte", en: "Word Counter & Text Cleaner" }, tag: "TOOL" }
                 ]
             }
         ];
@@ -503,6 +587,7 @@
             document.getElementById("hero-title").innerHTML = copy.titleHtml;
             document.getElementById("hero-subtitle").textContent = copy.subtitle;
             document.getElementById("search-input").placeholder = copy.placeholder;
+            document.getElementById("calc-label").textContent = copy.calcLabel;
             document.getElementById("no-results-text").textContent = copy.noResults;
             document.getElementById("reset-search-btn").textContent = copy.resetBtn;
 

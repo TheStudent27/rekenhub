@@ -3,70 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website SEO & Data Extractor (Mini Scraper) – RekenHub</title>
-    <meta name="description" content="Haal gratis koppen (H1/H2), meta-tags, links, e-mailadressen en cijfers uit elke webpagina of tekst. Direct in je browser.">
+    <title>Tekst Opschoner, Woordenteller & Data Filter – RekenHub</title>
+    <meta name="description" content="Tel direct woorden en tekens, haal dubbele regels uit lijsten of filter e-mailadressen, links en bedragen uit je tekst. 100% lokaal in je browser.">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased">
+<body class="flex flex-col min-h-screen antialiased">
     <div id="app-header"></div>
 
     <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
         <div class="mb-6">
-            <div id="ex-cat" class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Web & Data Tools</div>
-            <h1 id="ex-title" class="font-heading text-3xl sm:text-4xl font-bold mb-2">Website SEO & Data Extractor</h1>
-            <p id="ex-sub" class="text-slate-600">Analyseer elke URL (koppen, meta-beschrijving en links) of filter direct URL's, bedragen en e-mails uit ruwe tekst/HTML.</p>
+            <div class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Web & Data Tools</div>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold mb-2">Tekst Opschoner, Woordenteller & Data Filter</h1>
+            <p class="text-slate-600">Plak hieronder een tekst of lijst om direct woorden te tellen, dubbele regels te verwijderen of e-mails, links en eurobedragen eruit te filteren.</p>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 overflow-hidden mb-8">
-            <div class="grid grid-cols-2 border-b border-slate-200 bg-slate-50">
-                <button id="tab-url" onclick="switchScraperTab('url')" class="py-3.5 px-4 font-bold text-sm border-b-2 border-blue-600 text-blue-600 bg-white">🌐 URL / Pagina Analyse</button>
-                <button id="tab-text" onclick="switchScraperTab('text')" class="py-3.5 px-4 font-bold text-sm border-b-2 border-transparent text-slate-600">📋 Tekst & HTML Filter</button>
-            </div>
-
-            <!-- TAB 1: URL SCRAPER -->
-            <div id="panel-url" class="p-6 sm:p-8 space-y-5">
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="url" id="scrape-url" placeholder="https://www.voorbeeld.be/pagina" value="https://www.calculator.net" class="flex-grow rounded-xl border border-slate-300 px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
-                    <button onclick="scrapeWebsite()" id="btn-scrape" class="px-6 py-3 rounded-xl bg-[#003366] hover:bg-blue-700 text-white font-bold text-sm transition shrink-0">
-                        Analyseer URL
-                    </button>
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-6 sm:p-8 space-y-5 mb-8">
+            <!-- Live Woorden & Tekens teller -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80">
+                    <div id="cnt-words" class="font-heading font-extrabold text-xl text-slate-900">0</div>
+                    <div class="text-xs text-slate-500">Woorden</div>
                 </div>
-                <p id="scrape-status" class="text-xs text-slate-500">Voer een URL in om titel, meta-omschrijving, H1/H2-structuur en links uit te lezen.</p>
-
-                <div id="scrape-results" class="hidden space-y-4 pt-2">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <div id="lbl-out-title" class="text-[11px] font-bold uppercase text-slate-400">Pagina Titel</div>
-                            <div id="out-title" class="font-bold text-sm text-slate-900 mt-1">-</div>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <div class="text-[11px] font-bold uppercase text-slate-400">Meta Description</div>
-                            <div id="out-desc" class="text-xs text-slate-700 mt-1">-</div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <div id="lbl-out-h" class="text-[11px] font-bold uppercase text-slate-400 mb-2">Gevonden Koppen (H1 & H2)</div>
-                            <ul id="out-headings" class="space-y-1 text-xs text-slate-700 max-h-56 overflow-y-auto"></ul>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                            <div class="text-[11px] font-bold uppercase text-slate-400 mb-2"><span id="lbl-out-l">Gevonden Links</span> (<span id="out-link-count">0</span>)</div>
-                            <ul id="out-links" class="space-y-1 text-xs text-blue-600 max-h-56 overflow-y-auto"></ul>
-                        </div>
-                    </div>
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80">
+                    <div id="cnt-chars" class="font-heading font-extrabold text-xl text-slate-900">0</div>
+                    <div class="text-xs text-slate-500">Tekens (incl. spaties)</div>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80">
+                    <div id="cnt-lines" class="font-heading font-extrabold text-xl text-slate-900">0</div>
+                    <div class="text-xs text-slate-500">Regels</div>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-3 border border-slate-200/80">
+                    <div id="cnt-read" class="font-heading font-extrabold text-xl text-emerald-700">0 sec</div>
+                    <div class="text-xs text-slate-500">Leestijd</div>
                 </div>
             </div>
 
-            <!-- TAB 2: TEKST / HTML DATA FILTER -->
-            <div id="panel-text" class="hidden p-6 sm:p-8 space-y-4">
-                <textarea id="raw-text" rows="5" placeholder="Plak hier een lap tekst, webpagina-broncode of tabel om direct alle links, bedragen of e-mails te filteren..." class="w-full rounded-xl border border-slate-300 p-3.5 text-xs font-mono focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
-                <div class="flex flex-wrap gap-2">
-                    <button id="btn-ex-urls" onclick="extractPattern('urls')" class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold">Haal alle URL's eruit</button>
-                    <button id="btn-ex-emails" onclick="extractPattern('emails')" class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold">Haal E-mailadressen eruit</button>
-                    <button id="btn-ex-amounts" onclick="extractPattern('amounts')" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold">Haal Eurobedragen / Cijfers eruit</button>
+            <textarea id="raw-text" oninput="updateTextStats()" rows="6" placeholder="Plak of typ hier je tekst, lijst met adressen, factuurregels of artikel..." class="w-full rounded-xl border border-slate-300 p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+
+            <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="transformText('dedupe')" class="px-4 py-2 rounded-xl bg-[#003366] hover:bg-blue-700 text-white text-xs font-bold transition">Dubbele regels verwijderen</button>
+                <button type="button" onclick="transformText('sort')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition">Sorteren (A → Z)</button>
+                <button type="button" onclick="transformText('emails')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition">E-mailadressen filteren</button>
+                <button type="button" onclick="transformText('urls')" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition">Links / URL's filteren</button>
+                <button type="button" onclick="transformText('amounts')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">Eurobedragen filteren</button>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-1.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-500">Resultaat</label>
+                    <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('extracted-out').value)" class="text-xs font-bold text-blue-600 hover:underline">Kopieer resultaat</button>
                 </div>
-                <textarea id="extracted-out" rows="5" readonly placeholder="Resultaat verschijnt hier..." class="w-full rounded-xl border border-slate-200 bg-slate-50 p-3.5 text-xs font-mono"></textarea>
+                <textarea id="extracted-out" rows="5" readonly placeholder="Het opgeschoonde resultaat verschijnt hier..." class="w-full rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs font-mono"></textarea>
             </div>
         </div>
     </main>
@@ -74,111 +61,31 @@
     <div id="app-footer"></div>
     <script src="layout.js"></script>
     <script>
-        const exCopy = {
-            nl: {
-                sub: "Analyseer elke URL (koppen, meta-beschrijving en links) of filter direct URL's, bedragen en e-mails uit ruwe tekst/HTML.",
-                statusIdle: "Voer een URL in om titel, meta-omschrijving, H1/H2-structuur en links uit te lezen.",
-                statusLoading: "Pagina ophalen en analyseren...",
-                statusDone: "✓ Analyse voltooid.",
-                statusErr: "Kon deze URL niet direct ophalen. Gebruik het tabblad 'Tekst & HTML Filter' om de broncode te plakken.",
-                outTitle: "Pagina Titel",
-                outH: "Gevonden Koppen (H1 & H2)",
-                outL: "Gevonden Links",
-                rawPh: "Plak hier een lap tekst, webpagina-broncode of tabel om direct alle links, bedragen of e-mails te filteren...",
-                outPh: "Resultaat verschijnt hier...",
-                noMatch: "Geen resultaten gevonden."
-            },
-            fr: {
-                sub: "Analysez n'importe quelle URL (titres, meta description et liens) ou extrayez instantanément les URL, montants et e-mails d'un texte/HTML.",
-                statusIdle: "Entrez une URL pour extraire le titre, la meta description, les titres H1/H2 et les liens.",
-                statusLoading: "Récupération et analyse de la page...",
-                statusDone: "✓ Analyse terminée.",
-                statusErr: "Impossible de récupérer cette URL directement. Utilisez l'onglet 'Filtre Texte & HTML' pour coller le code source.",
-                outTitle: "Titre de la page",
-                outH: "Titres trouvés (H1 & H2)",
-                outL: "Liens trouvés",
-                rawPh: "Collez ici un texte, du code source HTML ou un tableau pour filtrer les liens, montants ou e-mails...",
-                outPh: "Le résultat apparaîtra ici...",
-                noMatch: "Aucun résultat trouvé."
-            },
-            en: {
-                sub: "Analyze any URL (headings, meta description, and links) or instantly extract URLs, amounts, and emails from raw text/HTML.",
-                statusIdle: "Enter a URL to extract its page title, meta description, H1/H2 structure, and links.",
-                statusLoading: "Fetching and analyzing webpage...",
-                statusDone: "✓ Analysis complete.",
-                statusErr: "Could not fetch this URL directly. Use the 'Text & HTML Filter' tab to paste the page source instead.",
-                outTitle: "Page Title",
-                outH: "Found Headings (H1 & H2)",
-                outL: "Found Links",
-                rawPh: "Paste raw text, webpage source code, or a table here to filter URLs, amounts, or emails...",
-                outPh: "Extracted results will appear here...",
-                noMatch: "No matches found."
-            }
-        };
-
-        const curLang = localStorage.getItem("rekenhub_lang") || "nl";
-        const ec = exCopy[curLang] || exCopy.nl;
-        document.getElementById("ex-sub").textContent = ec.sub;
-        document.getElementById("scrape-status").textContent = ec.statusIdle;
-        document.getElementById("lbl-out-title").textContent = ec.outTitle;
-        document.getElementById("lbl-out-h").textContent = ec.outH;
-        document.getElementById("lbl-out-l").textContent = ec.outL;
-        document.getElementById("raw-text").placeholder = ec.rawPh;
-        document.getElementById("extracted-out").placeholder = ec.outPh;
-
-        function switchScraperTab(t) {
-            document.getElementById('panel-url').classList.toggle('hidden', t !== 'url');
-            document.getElementById('panel-text').classList.toggle('hidden', t !== 'text');
-            document.getElementById('tab-url').className = t === 'url'
-                ? 'py-3.5 px-4 font-bold text-sm border-b-2 border-blue-600 text-blue-600 bg-white'
-                : 'py-3.5 px-4 font-bold text-sm border-b-2 border-transparent text-slate-600';
-            document.getElementById('tab-text').className = t === 'text'
-                ? 'py-3.5 px-4 font-bold text-sm border-b-2 border-blue-600 text-blue-600 bg-white'
-                : 'py-3.5 px-4 font-bold text-sm border-b-2 border-transparent text-slate-600';
-        }
-
-        async function scrapeWebsite() {
-            const url = document.getElementById('scrape-url').value.trim();
-            if (!url) return;
-            const status = document.getElementById('scrape-status');
-            status.textContent = ec.statusLoading;
-
-            try {
-                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-                const data = await res.json();
-                const doc = new DOMParser().parseFromString(data.contents, 'text/html');
-
-                document.getElementById('out-title').textContent = doc.title || "-";
-                const metaDesc = doc.querySelector('meta[name="description"]');
-                document.getElementById('out-desc').textContent = metaDesc ? metaDesc.content : "-";
-
-                const headings = Array.from(doc.querySelectorAll('h1, h2')).slice(0, 25);
-                document.getElementById('out-headings').innerHTML = headings.length
-                    ? headings.map(h => `<li><span class="font-bold text-slate-500">${h.tagName}:</span> ${h.textContent.trim()}</li>`).join('')
-                    : '<li>-</li>';
-
-                const links = Array.from(doc.querySelectorAll('a[href]'))
-                    .map(a => a.getAttribute('href'))
-                    .filter(h => h && !h.startsWith('#') && !h.startsWith('javascript:'))
-                    .slice(0, 40);
-                document.getElementById('out-link-count').textContent = links.length;
-                document.getElementById('out-links').innerHTML = links.map(l => `<li class="truncate">${l}</li>`).join('');
-
-                document.getElementById('scrape-results').classList.remove('hidden');
-                status.textContent = ec.statusDone;
-            } catch (e) {
-                status.textContent = ec.statusErr;
-            }
-        }
-
-        function extractPattern(type) {
+        function updateTextStats() {
             const text = document.getElementById('raw-text').value;
-            let matches = [];
-            if (type === 'urls') matches = text.match(/https?:\/\/[^\s"'<>]+/g) || [];
-            if (type === 'emails') matches = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
-            if (type === 'amounts') matches = text.match(/€\s?\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s?%/g) || [];
-            const unique = [...new Set(matches)];
-            document.getElementById('extracted-out').value = unique.length ? unique.join('\n') : ec.noMatch;
+            const trimmed = text.trim();
+            const words = trimmed ? trimmed.split(/\s+/).length : 0;
+            const lines = text ? text.split(/\r?\n/).length : 0;
+            const secs = Math.round((words / 200) * 60);
+
+            document.getElementById('cnt-words').textContent = words;
+            document.getElementById('cnt-chars').textContent = text.length;
+            document.getElementById('cnt-lines').textContent = lines;
+            document.getElementById('cnt-read').textContent = secs < 60 ? `${secs} sec` : `${Math.ceil(secs / 60)} min`;
+        }
+
+        function transformText(action) {
+            const text = document.getElementById('raw-text').value;
+            const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+            let result = [];
+
+            if (action === 'dedupe') result = [...new Set(lines)];
+            if (action === 'sort') result = [...lines].sort((a, b) => a.localeCompare(b));
+            if (action === 'emails') result = [...new Set(text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [])];
+            if (action === 'urls') result = [...new Set(text.match(/https?:\/\/[^\s"'<>]+/g) || [])];
+            if (action === 'amounts') result = text.match(/€\s?\d+(?:[.,]\d+)?|\d+(?:[.,]\d+)?\s?€/g) || [];
+
+            document.getElementById('extracted-out').value = result.length ? result.join('\n') : 'Geen resultaten gevonden.';
         }
     </script>
 </body>

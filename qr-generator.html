@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gratis QR-Code Generator (Link, Tekst & WiFi) – RekenHub</title>
+    <meta name="description" content="Maak gratis en direct een QR-code voor je website, tekst of WiFi-netwerk. Zonder vervaldatum, 100% lokaal in je browser en direct downloaden als PNG.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="flex flex-col min-h-screen antialiased">
+    <div id="app-header"></div>
+
+    <main class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+        <div class="mb-6">
+            <div class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Web & Data Tools</div>
+            <h1 class="font-heading text-3xl sm:text-4xl font-bold mb-2">Gratis QR-Code Generator</h1>
+            <p class="text-slate-600">Genereer direct een permanente QR-code voor een website, vrije tekst of je WiFi-netwerk. Werkt zonder account en verloopt nooit.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xs border border-slate-200/90 p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div class="md:col-span-7 space-y-5">
+                <div class="grid grid-cols-3 gap-2 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+                    <button type="button" id="qr-tab-url" onclick="setQrMode('url')" class="py-2 rounded-lg bg-white text-slate-900 shadow-2xs">Website / URL</button>
+                    <button type="button" id="qr-tab-wifi" onclick="setQrMode('wifi')" class="py-2 rounded-lg text-slate-600">WiFi Netwerk</button>
+                    <button type="button" id="qr-tab-text" onclick="setQrMode('text')" class="py-2 rounded-lg text-slate-600">Vrije Tekst</button>
+                </div>
+
+                <!-- Mode: URL -->
+                <div id="qr-box-url" class="space-y-3">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Website-adres (URL)</label>
+                    <input type="url" id="qr-input-url" oninput="buildQR()" value="https://rekenhub.com" placeholder="https://www.jouwwebsite.be" class="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <!-- Mode: WiFi -->
+                <div id="qr-box-wifi" class="hidden space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">WiFi-naam (SSID)</label>
+                        <input type="text" id="qr-wifi-ssid" oninput="buildQR()" placeholder="Bijv. Gasten_WiFi" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Wachtwoord</label>
+                            <input type="text" id="qr-wifi-pass" oninput="buildQR()" placeholder="WiFi wachtwoord" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Beveiliging</label>
+                            <select id="qr-wifi-enc" onchange="buildQR()" class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium bg-white">
+                                <option value="WPA">WPA / WPA2 (Standaard)</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">Geen wachtwoord</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mode: Tekst -->
+                <div id="qr-box-text" class="hidden space-y-3">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Tekst of bericht</label>
+                    <textarea id="qr-input-text" oninput="buildQR()" rows="3" placeholder="Typ hier tekst, een telefoonnummer of korte info..." class="w-full rounded-xl border border-slate-300 p-3.5 text-sm font-medium"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-1">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Kleur QR-code</label>
+                        <select id="qr-color" onchange="buildQR()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold bg-white">
+                            <option value="#0f172a">Zwart / Donkerblauw</option>
+                            <option value="#003366">RekenHub Marineblauw</option>
+                            <option value="#047857">Smaragdgroen</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Formaat</label>
+                        <select id="qr-size" onchange="buildQR()" class="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs font-semibold bg-white">
+                            <option value="220">Standaard (220 × 220 px)</option>
+                            <option value="320">Groot voor drukwerk (320 px)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview & Download -->
+            <div class="md:col-span-5 flex flex-col items-center justify-center bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-4">
+                <div id="qrcode-canvas" class="bg-white p-4 rounded-2xl shadow-2xs border border-slate-200 flex items-center justify-center"></div>
+                <button type="button" onclick="downloadQR()" class="w-full py-3 px-5 rounded-xl bg-[#003366] hover:bg-blue-700 text-white font-bold text-sm transition">
+                    Download QR-Code (PNG)
+                </button>
+                <p class="text-[11px] text-slate-400 text-center">Scan direct met je telefooncamera om te testen.</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="app-footer"></div>
+    <script src="layout.js"></script>
+    <script>
+        let qrMode = 'url';
+
+        function setQrMode(mode) {
+            qrMode = mode;
+            ['url', 'wifi', 'text'].forEach(m => {
+                document.getElementById('qr-box-' + m).classList.toggle('hidden', m !== mode);
+                document.getElementById('qr-tab-' + m).className = m === mode
+                    ? 'py-2 rounded-lg bg-white text-slate-900 shadow-2xs'
+                    : 'py-2 rounded-lg text-slate-600';
+            });
+            buildQR();
+        }
+
+        function buildQR() {
+            const box = document.getElementById('qrcode-canvas');
+            box.innerHTML = '';
+            let payload = '';
+
+            if (qrMode === 'url') {
+                payload = document.getElementById('qr-input-url').value.trim() || 'https://rekenhub.com';
+            } else if (qrMode === 'wifi') {
+                const ssid = document.getElementById('qr-wifi-ssid').value.trim() || 'WiFi';
+                const pass = document.getElementById('qr-wifi-pass').value;
+                const enc = document.getElementById('qr-wifi-enc').value;
+                payload = `WIFI:T:${enc};S:${ssid};P:${pass};;`;
+            } else {
+                payload = document.getElementById('qr-input-text').value.trim() || 'RekenHub.com';
+            }
+
+            const size = parseInt(document.getElementById('qr-size').value, 10) || 220;
+            const color = document.getElementById('qr-color').value || '#0f172a';
+
+            new QRCode(box, {
+                text: payload,
+                width: size,
+                height: size,
+                colorDark: color,
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+        }
+
+        function downloadQR() {
+            const img = document.querySelector('#qrcode-canvas img');
+            const canvas = document.querySelector('#qrcode-canvas canvas');
+            const url = img && img.src ? img.src : (canvas ? canvas.toDataURL('image/png') : '');
+            if (!url) return;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rekenhub-qrcode.png';
+            a.click();
+        }
+
+        buildQR();
+    </script>
+</body>
+</html>

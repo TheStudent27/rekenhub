@@ -306,6 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 { name: { nl: "Bruto-Netto & Uurloon", fr: "Salaire Brut-Net & Horaire", en: "Gross-to-Net & Hourly Pay" }, sub: { nl: "Barema's BE & NL 2026", fr: "Barèmes BE & NL 2026", en: "Salary scales BE & NL 2026" }, file: "werkuren.html", icon: "💶", fiscal: true },
                 { name: { nl: "Flexi-job Loon (BE)", fr: "Salaire Flexi-job (BE)", en: "Flexi-job Salary (BE)" }, sub: { nl: "Plafond € 18.440 (2026)", fr: "Plafond 18.440 € (2026)", en: "Cap € 18,440 (2026)" }, file: "flexijob.html", icon: "💼", fiscal: true },
                 { name: { nl: "BTW Calculator", fr: "Calculateur TVA", en: "VAT / Sales Tax" }, sub: { nl: "BE • NL • LU tarieven", fr: "Taux BE • NL • LU", en: "BE • NL • LU rates" }, file: "btw.html", icon: "🧾", fiscal: true },
+                { name: { nl: "IBAN & BTW-nummer Check", fr: "Contrôle IBAN & N° TVA", en: "IBAN & VAT Validator" }, sub: { nl: "Modulo-97 & 11-proef (BE/NL)", fr: "Vérification IBAN & TVA", en: "Bank & VAT number check" }, file: "iban-btw-check.html", icon: "✅", fiscal: false },
                 { name: { nl: "Procenten & Marge", fr: "Pourcentage & Marge", en: "Percentage & Margin" }, sub: { nl: "Korting, winstmarge & %", fr: "Remise, marge & %", en: "Discount & profit margin" }, file: "procenten.html", icon: "🏷️", fiscal: false }
             ]
         },
@@ -342,10 +343,11 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         {
             id: "webtools",
-            title: { nl: "Web & Data Tools", fr: "Outils Web & Données", en: "Web & Data Tools" },
+            title: { nl: "Web, Tekst & Data Tools", fr: "Outils Web, Texte & Données", en: "Web, Text & Data Tools" },
             short: { nl: "Web Tools", fr: "Outils Web", en: "Web Tools" },
             items: [
-                { name: { nl: "Website SEO & Data Extractor", fr: "Extracteur SEO & Données", en: "Website SEO & Data Extractor" }, sub: { nl: "Koppen, links & cijfers", fr: "Titres, liens & chiffres", en: "Headings, links & numbers" }, file: "extractor.html", icon: "🔍", fiscal: false }
+                { name: { nl: "Gratis QR-Code Generator", fr: "Générateur de Code QR", en: "Free QR Code Generator" }, sub: { nl: "Link, WiFi & tekst (PNG)", fr: "Lien, WiFi & texte (PNG)", en: "URL, WiFi & text (PNG)" }, file: "qr-generator.html", icon: "📱", fiscal: false },
+                { name: { nl: "Tekst Opschoner & Woordenteller", fr: "Compteur de Mots & Nettoyeur", en: "Word Counter & Text Cleaner" }, sub: { nl: "Woorden, lijsten & e-mails", fr: "Mots, listes & e-mails", en: "Words, lists & emails" }, file: "extractor.html", icon: "🔍", fiscal: false }
             ]
         }
     ];
@@ -449,7 +451,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </header>
     `;
 
-    // Gereserveerde slots voor toekomstige advertenties (boven + zijbalken op grote schermen, standaard verborgen totdat AdSense wordt gevuld)
     const adSlotsHtml = `
         <div id="top-ad-slot" class="hidden no-print max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6"></div>
         <aside id="left-ad-rail" aria-hidden="true" class="hidden 2xl:flex no-print fixed left-4 top-24 w-[160px] min-h-[600px] items-start justify-center pointer-events-none empty:hidden"></aside>
@@ -477,8 +478,8 @@ document.addEventListener("DOMContentLoaded", function () {
                             <li><a href="werkuren.html" class="hover:text-blue-600 transition">${menuCategories[1].items[0].name[lang]}</a></li>
                             <li><a href="sparen.html" class="hover:text-blue-600 transition">${menuCategories[0].items[1].name[lang]}</a></li>
                             <li><a href="registratierechten.html" class="hover:text-blue-600 transition">${menuCategories[0].items[2].name[lang]}</a></li>
-                            <li><a href="flexijob.html" class="hover:text-blue-600 transition">${menuCategories[1].items[1].name[lang]}</a></li>
-                            <li><a href="laadkosten.html" class="hover:text-blue-600 transition">${menuCategories[3].items[0].name[lang]}</a></li>
+                            <li><a href="iban-btw-check.html" class="hover:text-blue-600 transition">${menuCategories[1].items[3].name[lang]}</a></li>
+                            <li><a href="qr-generator.html" class="hover:text-blue-600 transition">${menuCategories[5].items[0].name[lang]}</a></li>
                         </ul>
                     </div>
 
@@ -679,7 +680,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 4. VOLLEDIGE AUTOMATISCHE DOM-VERTALER (voor 100% van alle pagina's, teksten, placeholders & dynamische output)
-    const pagesWithOwnTranslation = ["index.html", "contact.html", "extractor.html"];
+    const pagesWithOwnTranslation = ["index.html", "contact.html"];
     if (lang !== "nl" && mainEl && !pagesWithOwnTranslation.includes(currentPath)) {
         const cacheKey = `rekenhub_tcache_${lang}`;
         let tCache = {};
