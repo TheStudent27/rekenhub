@@ -3,52 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RekenHub Benelux – Online Calculators voor België, Nederland & Luxemburg</title>
-    <meta name="description" content="Alle handige rekenmachines overzichtelijk op één plek: BTW, Sparen & Beleggen, Hypotheek, Registratierechten, Laadkosten, Zonnepanelen, m² en BMI.">
+    <title>RekenHub – Online Calculators (NL / FR / EN)</title>
+    <meta name="description" content="Gratis online calculators voor financiën, wonen, energie, auto en gezondheid in België, Nederland en Luxemburg. Beschikbaar in Nederlands, Frans en Engels.">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #f8fafc; color: #0f172a; }
+        body { background-color: #ffffff; color: #0f172a; }
         section { scroll-margin-top: 90px; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen antialiased">
     <div id="app-header"></div>
 
-    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow space-y-10">
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 flex-grow space-y-12">
 
-        <!-- Rustige Header + Zoekbalk -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div>
-                <h1 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900">
-                    Online Calculators voor België & Nederland
-                </h1>
-                <p class="text-slate-500 text-base mt-1.5">
-                    Kies een categorie of zoek direct een rekenmachine. Gratis, snel en zonder registratie.
-                </p>
-            </div>
-
-            <div class="relative w-full md:w-80 shrink-0">
-                <input type="text" id="search-input" onkeyup="filterCatalog()" placeholder="Zoek op onderwerp (bijv. btw, auto, m²)..." class="w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 py-2.5 text-sm font-medium text-slate-800 shadow-2xs focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition">
-                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <!-- Hero + Zoekbalk -->
+        <div class="text-center max-w-2xl mx-auto space-y-4">
+            <h1 id="hero-title" class="font-heading text-3xl sm:text-4xl font-bold text-slate-900">
+                Gratis Online Calculators
+            </h1>
+            <p id="hero-subtitle" class="text-slate-500 text-base">
+                Snel, nauwkeurig en gratis rekenen voor België, Nederland en Luxemburg. Kies een categorie hieronder.
+            </p>
+            <div class="relative max-w-md mx-auto pt-1">
+                <input type="text" id="search-input" onkeyup="renderPortal()" placeholder="Zoek een calculator (bijv. btw, hypotheek, BMI)..." class="w-full rounded-full border border-slate-300 bg-slate-50/70 focus:bg-white pl-11 pr-5 py-3 text-sm font-medium text-slate-800 shadow-2xs focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition">
+                <svg class="w-4 h-4 text-slate-400 absolute left-4 top-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
         </div>
 
-        <!-- Dynamische "Laatst gebruikt"-balk (verschijnt zodra bezoeker tools heeft geopend) -->
-        <div id="recent-tools-bar" class="hidden bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">🕒 Laatst gebruikt op dit apparaat</span>
-                <button onclick="localStorage.removeItem('rekenhub_recent'); document.getElementById('recent-tools-bar').classList.add('hidden');" class="text-xs text-slate-400 hover:text-slate-600">Wissen</button>
-            </div>
-            <div id="recent-tools-list" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
-        </div>
+        <!-- 4 Kolommen met Ronde Thema-afbeeldingen (zoals op de screenshot) -->
+        <div id="portal-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pt-2"></div>
 
-        <!-- Container waarin de 5 gecategoriseerde secties gerenderd worden -->
-        <div id="catalog-container" class="space-y-11"></div>
-
-        <!-- Melding bij geen zoekresultaten -->
-        <div id="no-results" class="hidden bg-white rounded-2xl p-10 text-center border border-slate-200">
-            <p class="font-semibold text-slate-700">Geen calculator gevonden voor deze zoekterm.</p>
-            <button onclick="document.getElementById('search-input').value=''; filterCatalog();" class="mt-2 text-sm font-semibold text-blue-600 hover:underline">Toon alle calculators</button>
+        <!-- Geen resultaten -->
+        <div id="no-results" class="hidden text-center py-12 bg-slate-50 rounded-2xl border border-slate-200">
+            <p id="no-results-text" class="font-semibold text-slate-700">Geen calculator gevonden.</p>
+            <button id="reset-search-btn" onclick="document.getElementById('search-input').value=''; renderPortal();" class="mt-2 text-sm font-bold text-blue-600 hover:underline">Toon alle calculators</button>
         </div>
 
     </main>
@@ -56,144 +44,139 @@
     <div id="app-footer"></div>
     <script src="layout.js"></script>
     <script>
-        const catalog = [
+        const pageCopy = {
+            nl: {
+                title: "Gratis Online Calculators",
+                subtitle: "Snel, nauwkeurig en gratis rekenen voor België, Nederland en Luxemburg. Kies een calculator hieronder.",
+                placeholder: "Zoek een calculator (bijv. btw, hypotheek, BMI)...",
+                noResults: "Geen calculator gevonden voor deze zoekterm.",
+                resetBtn: "Toon alle 15 calculators"
+            },
+            fr: {
+                title: "Calculateurs en Ligne Gratuits",
+                subtitle: "Calculs rapides et précis pour la Belgique, les Pays-Bas et le Luxembourg. Choisissez un outil ci-dessous.",
+                placeholder: "Rechercher un calculateur (ex. TVA, prêt, IMC)...",
+                noResults: "Aucun calculateur trouvé pour cette recherche.",
+                resetBtn: "Afficher les 15 calculateurs"
+            },
+            en: {
+                title: "Free Online Calculators",
+                subtitle: "Fast, accurate calculators for finance, home, energy, auto, and health. Select a calculator below.",
+                placeholder: "Search a calculator (e.g. VAT, mortgage, BMI)...",
+                noResults: "No calculator found matching your search.",
+                resetBtn: "Show all 15 calculators"
+            }
+        };
+
+        const portalColumns = [
             {
-                id: "belastingen",
-                title: "Belastingen & Werk",
-                subtitle: "Btw-tarieven, bijverdienste en urenregistratie",
-                accentBg: "bg-blue-600",
-                iconBg: "bg-blue-50 text-blue-600",
-                items: [
-                    { title: "BTW Calculator", desc: "Excl. of incl. btw rekenen voor België, Nederland en Luxemburg.", file: "btw.html", region: "BE • NL • LU", icon: "🧾" },
-                    { title: "Flexi-job Loon", desc: "Bruto=netto uurloon, 7,67% vakantiegeld en fiscaal plafond checken.", file: "flexijob.html", region: "BE", icon: "💼" },
-                    { title: "Werkuren & Uurloon", desc: "Start- en eindtijd inclusief pauze omrekenen naar decimale uren.", file: "werkuren.html", region: "Benelux", icon: "⏱️" }
+                id: "financien",
+                titleColor: "text-emerald-700",
+                ringColor: "ring-emerald-100",
+                image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=400&q=80",
+                title: { nl: "Financiën & Vastgoed", fr: "Finances & Immobilier", en: "Financial Calculators" },
+                links: [
+                    { file: "hypotheek.html", label: { nl: "Hypotheek Calculator", fr: "Calculateur Prêt Hypothécaire", en: "Mortgage Calculator" } },
+                    { file: "sparen.html", label: { nl: "Sparen & Beleggen", fr: "Épargne & Intérêts Composés", en: "Compound Interest & Savings" } },
+                    { file: "btw.html", label: { nl: "BTW Calculator", fr: "Calculateur TVA", en: "VAT / Sales Tax Calculator" } },
+                    { file: "registratierechten.html", label: { nl: "Registratierechten & Notaris", fr: "Droits d'enregistrement", en: "Property Transfer Tax" } },
+                    { file: "flexijob.html", label: { nl: "Flexi-job Loon (BE)", fr: "Salaire Flexi-job (BE)", en: "Flexi-job Salary (BE)" } },
+                    { file: "inflatie.html", label: { nl: "Inflatie & Koopkracht", fr: "Calculateur d'Inflation", en: "Inflation Calculator" } }
                 ]
             },
             {
-                id: "geld-vastgoed",
-                title: "Sparen, Lenen & Vastgoed",
-                subtitle: "Vermogensgroei na belasting, woonleningen en aankoopkosten",
-                accentBg: "bg-indigo-600",
-                iconBg: "bg-indigo-50 text-indigo-600",
-                items: [
-                    { title: "Sparen & Beleggen", desc: "Netto eindkapitaal na Belgische roerende voorheffing of NL Box 3.", file: "sparen.html", region: "BE • NL", icon: "📈" },
-                    { title: "Hypotheek & Woonlening", desc: "Vaste maandlast, totale intrest en aflossingsgrafiek simuleren.", file: "hypotheek.html", region: "Benelux", icon: "🏦" },
-                    { title: "Registratie & Overdracht", desc: "Verkooprecht (BE) of overdrachtsbelasting (NL) en notariskosten.", file: "registratierechten.html", region: "BE • NL", icon: "🔑" },
-                    { title: "Inflatie & Koopkracht", desc: "Waardeverlies van spaargeld over de jaren inzichtelijk maken.", file: "inflatie.html", region: "Benelux", icon: "📉" }
+                id: "gezondheid",
+                titleColor: "text-sky-700",
+                ringColor: "ring-sky-100",
+                image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=400&q=80",
+                title: { nl: "Gezondheid & Dagelijks", fr: "Santé & Quotidien", en: "Fitness & Health Calculators" },
+                links: [
+                    { file: "bmi.html", label: { nl: "BMI & Caloriebehoefte", fr: "Calculateur IMC & Calories", en: "BMI & Calorie Calculator" } },
+                    { file: "werkuren.html", label: { nl: "Werkuren & Uurloon", fr: "Heures de Travail & Salaire", en: "Work Hours & Pay Calculator" } },
+                    { file: "procenten.html", label: { nl: "Procenten & Korting", fr: "Pourcentage & Remise", en: "Percentage & Discount" } }
                 ]
             },
             {
-                id: "energie-wonen",
-                title: "Energie & Klussen",
-                subtitle: "Elektriciteitsverbruik, zonnepanelen en oppervlaktes",
-                accentBg: "bg-amber-500",
-                iconBg: "bg-amber-50 text-amber-600",
-                items: [
-                    { title: "Stroomverbruik & Kosten", desc: "Verbruik in kWh en stroomkosten per toestel per dag, maand en jaar.", file: "energie.html", region: "Benelux", icon: "🔌" },
-                    { title: "Zonnepanelen Rendement", desc: "Terugverdientijd berekenen op basis van zelfverbruik en injectie.", file: "zonnepanelen.html", region: "BE • NL", icon: "☀️" },
-                    { title: "Oppervlakte & m²", desc: "Vierkante meters, omtrek, verfverbruik en 10% snijverlies.", file: "oppervlakte.html", region: "Benelux", icon: "📐" }
+                id: "wonen",
+                titleColor: "text-amber-700",
+                ringColor: "ring-amber-100",
+                image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=400&q=80",
+                title: { nl: "Wonen, Klussen & Energie", fr: "Maison, Travaux & Énergie", en: "Home & Energy Calculators" },
+                links: [
+                    { file: "oppervlakte.html", label: { nl: "Oppervlakte & Omtrek (m²)", fr: "Surface & Périmètre (m²)", en: "Square Meter (m²) Area" } },
+                    { file: "energie.html", label: { nl: "Stroomverbruik & Kosten (kWh)", fr: "Consommation Électrique (kWh)", en: "Electricity Cost (kWh)" } },
+                    { file: "zonnepanelen.html", label: { nl: "Zonnepanelen Terugverdientijd", fr: "Rentabilité Panneaux Solaires", en: "Solar Panel Payback" } }
                 ]
             },
             {
                 id: "auto",
-                title: "Auto & Mobiliteit",
-                subtitle: "Elektrisch laden, brandstofkosten en autobelastingen",
-                accentBg: "bg-emerald-600",
-                iconBg: "bg-emerald-50 text-emerald-600",
-                items: [
-                    { title: "Laadkosten vs. Benzine", desc: "Thuis laden of snelladen vergeleken met rijden op benzine.", file: "laadkosten.html", region: "Benelux", icon: "🔋" },
-                    { title: "Brandstofkosten per Rit", desc: "Verbruik berekenen en ritkosten eerlijk delen met passagiers.", file: "ritkosten.html", region: "Benelux", icon: "⛽" },
-                    { title: "Autobelasting", desc: "Indicatie BIV & verkeersbelasting (BE) of BPM & MRB (NL).", file: "autobelasting.html", region: "BE • NL", icon: "🚗" }
-                ]
-            },
-            {
-                id: "overig",
-                title: "Rekenen & Gezondheid",
-                subtitle: "Snelle alledaagse berekeningen",
-                accentBg: "bg-violet-600",
-                iconBg: "bg-violet-50 text-violet-600",
-                items: [
-                    { title: "Procenten & Korting", desc: "Kortingsprijs, marge en procentuele stijging of daling.", file: "procenten.html", region: "Benelux", icon: "🏷️" },
-                    { title: "BMI & Caloriebehoefte", desc: "Gezond gewicht op kleurenschaal en dagelijkse caloriebehoefte.", file: "bmi.html", region: "Benelux", icon: "⚖️" }
+                titleColor: "text-indigo-700",
+                ringColor: "ring-indigo-100",
+                image: "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?auto=format&fit=crop&w=400&q=80",
+                title: { nl: "Auto & Mobiliteit", fr: "Auto & Mobilité", en: "Auto & Fuel Calculators" },
+                links: [
+                    { file: "laadkosten.html", label: { nl: "Laadkosten EV vs. Benzine", fr: "Recharge VE vs Essence", en: "EV Charging vs. Gas Cost" } },
+                    { file: "ritkosten.html", label: { nl: "Brandstofkosten per Rit", fr: "Coût Carburant par Trajet", en: "Fuel Trip Cost Calculator" } },
+                    { file: "autobelasting.html", label: { nl: "Autobelasting (BIV / BPM)", fr: "Taxe Auto (TMC / BPM)", en: "Vehicle Registration Tax" } }
                 ]
             }
         ];
 
-        // Render "Laatst gebruikt" vanuit localStorage
-        function renderRecentTools() {
-            try {
-                const recent = JSON.parse(localStorage.getItem("rekenhub_recent") || "[]");
-                if (recent.length > 0) {
-                    document.getElementById("recent-tools-bar").classList.remove("hidden");
-                    document.getElementById("recent-tools-list").innerHTML = recent.map(r => `
-                        <a href="${r.file}" class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-blue-50/70 border border-slate-200/70 transition">
-                            <div class="flex items-center gap-2.5 min-w-0">
-                                <span class="text-lg">${r.icon}</span>
-                                <span class="font-heading font-bold text-sm text-slate-800 truncate">${r.name}</span>
-                            </div>
-                            <span class="text-xs font-semibold text-blue-600 shrink-0 ml-2">Open →</span>
-                        </a>
-                    `).join("");
-                }
-            } catch (e) {}
-        }
+        function renderPortal() {
+            const lang = localStorage.getItem("rekenhub_lang") || "nl";
+            const copy = pageCopy[lang] || pageCopy.nl;
 
-        function filterCatalog() {
+            document.getElementById("hero-title").textContent = copy.title;
+            document.getElementById("hero-subtitle").textContent = copy.subtitle;
+            document.getElementById("search-input").placeholder = copy.placeholder;
+            document.getElementById("no-results-text").textContent = copy.noResults;
+            document.getElementById("reset-search-btn").textContent = copy.resetBtn;
+
             const q = document.getElementById("search-input").value.toLowerCase().trim();
-            const container = document.getElementById("catalog-container");
-            let totalMatches = 0;
+            const grid = document.getElementById("portal-grid");
+            let totalVisible = 0;
 
-            container.innerHTML = catalog.map(cat => {
-                const matchedItems = cat.items.filter(item =>
+            grid.innerHTML = portalColumns.map(col => {
+                const matched = col.links.filter(l =>
                     !q ||
-                    item.title.toLowerCase().includes(q) ||
-                    item.desc.toLowerCase().includes(q) ||
-                    item.region.toLowerCase().includes(q) ||
-                    cat.title.toLowerCase().includes(q)
+                    l.label[lang].toLowerCase().includes(q) ||
+                    l.label.nl.toLowerCase().includes(q) ||
+                    l.label.en.toLowerCase().includes(q) ||
+                    col.title[lang].toLowerCase().includes(q)
                 );
 
-                if (matchedItems.length === 0) return "";
-                totalMatches += matchedItems.length;
+                if (matched.length === 0) return "";
+                totalVisible += matched.length;
 
                 return `
-                    <section id="${cat.id}" class="space-y-4">
-                        <div class="flex items-end justify-between border-b border-slate-200 pb-3">
-                            <div class="flex items-center gap-3">
-                                <span class="w-1.5 h-7 rounded-full ${cat.accentBg}"></span>
-                                <div>
-                                    <h2 class="font-heading text-xl font-bold text-slate-900 leading-tight">${cat.title}</h2>
-                                    <p class="text-xs text-slate-500 mt-0.5">${cat.subtitle}</p>
-                                </div>
+                    <section id="${col.id}" class="flex flex-col items-center text-center sm:items-start sm:text-left">
+                        <a href="#${col.id}" class="group mb-4 self-center">
+                            <div class="w-32 h-32 rounded-full overflow-hidden ring-4 ${col.ringColor} shadow-sm group-hover:scale-105 transition duration-200">
+                                <img src="${col.image}" alt="${col.title[lang]}" loading="lazy" class="w-full h-full object-cover">
                             </div>
-                            <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full shrink-0">${matchedItems.length} ${matchedItems.length === 1 ? 'tool' : 'tools'}</span>
-                        </div>
+                        </a>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            ${matchedItems.map(item => `
-                                <a href="${item.file}" class="group bg-white rounded-2xl p-5 border border-slate-200/90 hover:border-blue-400 shadow-2xs hover:shadow-md transition-all duration-150 flex items-start gap-4">
-                                    <div class="w-11 h-11 rounded-xl ${cat.iconBg} flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition">
-                                        ${item.icon}
-                                    </div>
-                                    <div class="flex-grow min-w-0">
-                                        <div class="flex items-center justify-between gap-2">
-                                            <h3 class="font-heading font-bold text-slate-900 group-hover:text-blue-600 transition truncate">${item.title}</h3>
-                                            <span class="text-[10px] font-medium text-slate-400 bg-slate-50 border border-slate-200/80 px-1.5 py-0.5 rounded shrink-0">${item.region}</span>
-                                        </div>
-                                        <p class="text-xs text-slate-500 leading-relaxed mt-1.5">${item.desc}</p>
-                                    </div>
-                                    <svg class="w-4 h-4 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                </a>
+                        <h2 class="font-heading text-lg font-bold ${col.titleColor} mb-3 self-center sm:self-start">
+                            ${col.title[lang]}
+                        </h2>
+
+                        <ul class="space-y-2 w-full">
+                            ${matched.map(link => `
+                                <li>
+                                    <a href="${link.file}" class="text-sm font-medium text-blue-700 hover:text-blue-900 hover:underline transition block py-0.5">
+                                        ${link.label[lang]}
+                                    </a>
+                                </li>
                             `).join("")}
-                        </div>
+                        </ul>
                     </section>
                 `;
             }).join("");
 
-            document.getElementById("no-results").classList.toggle("hidden", totalMatches > 0);
+            document.getElementById("no-results").classList.toggle("hidden", totalVisible > 0);
         }
 
-        renderRecentTools();
-        filterCatalog();
+        renderPortal();
     </script>
 </body>
 </html>
