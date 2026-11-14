@@ -1,229 +1,290 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="nl" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RekenHub – Gratis Online Calculators voor Financiën, Energie, Auto & Gezondheid</title>
-    <meta name="description" content="Reken alles snel, gratis en nauwkeurig uit. Van Belgische BTW, spaarrente en hypotheek tot laadkosten, stroomverbruik en BMI.">
+    <title>RekenHub Benelux – Online Calculators voor België, Nederland & Luxemburg</title>
+    <meta name="description" content="Kies direct uit 15 snelle en gratis calculators: BTW, Sparen & Beleggen, Hypotheek, Registratierechten, Laadkosten, Zonnepanelen, Oppervlakte en BMI.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; color: #0f172a; }
+        section { scroll-margin-top: 120px; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen antialiased">
-
     <div id="app-header"></div>
 
-    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 flex-grow">
-        
-        <!-- Hero Sectie -->
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-wider mb-3">100% Gratis & Direct Resultaat</span>
-            <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-                Slimme calculators voor elke dag
-            </h1>
-            <p class="text-slate-600 text-base sm:text-lg mb-6">
-                Kies een rekenmachine uit een van onze categorieën. Geen ingewikkelde tabellen of registraties, maar direct heldere cijfers en grafieken.
-            </p>
-            
-            <!-- Snelle Zoekbalk -->
-            <div class="max-w-md mx-auto relative">
-                <input type="text" id="tool-search" onkeyup="filterTools()" placeholder="Zoek een calculator (bijv. BTW, laadkosten, BMI)..." 
-                    class="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white border border-slate-200 shadow-sm text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-                <svg class="w-5 h-5 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow space-y-10">
+
+        <!-- Compacte Hero & Directe Filter -->
+        <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Online Calculators voor <span class="text-blue-600">België & Nederland</span>
+                </h1>
+                <p class="text-slate-600 text-sm sm:text-base mt-1">
+                    Klik op een tegel om direct te rekenen — 100% gratis, zonder account en direct in je browser.
+                </p>
+            </div>
+            <div class="relative w-full md:w-80 shrink-0">
+                <input type="text" id="page-search" onkeyup="filterGrid()" placeholder="Filter tegels (bijv. btw, auto, m²)..." class="w-full rounded-xl border border-slate-300 bg-slate-50 focus:bg-white pl-10 pr-4 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-blue-500 outline-none">
+                <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
         </div>
 
-        <!-- Categorie 1: Financiën -->
-        <section class="mb-12 tool-section">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold">€</div>
-                <h2 class="text-xl font-bold text-slate-900">Financiën & Belastingen</h2>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <a href="btw.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold">Live</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+        <!-- Populaire Snelkoppelingen (Boven de vouw) -->
+        <div id="popular-bar" class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 text-white shadow-sm">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-blue-300 mb-3">🔥 Meest Gebruikte Calculators</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <a href="btw.html" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 rounded-xl p-3 transition">
+                    <span class="text-2xl">🧾</span>
+                    <div>
+                        <div class="font-bold text-sm">BTW Calculator</div>
+                        <div class="text-[11px] text-slate-300">21% • 12% • 6% • 9%</div>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">BTW Calculator België</h3>
-                    <p class="text-sm text-slate-500">Bereken bedragen exclusief of inclusief btw met 21%, 12%, 6% of 0% tarief.</p>
                 </a>
-
-                <a href="sparen.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold">Live</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="sparen.html" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 rounded-xl p-3 transition">
+                    <span class="text-2xl">📈</span>
+                    <div>
+                        <div class="font-bold text-sm">Sparen & Rente</div>
+                        <div class="text-[11px] text-slate-300">Netto BE & NL</div>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Spaar & Rente Simulator</h3>
-                    <p class="text-sm text-slate-500">Simuleer je vermogensgroei met startbedrag, maandelijkse inleg en samengestelde interest.</p>
                 </a>
-
-                <a href="flexijob.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 2</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="hypotheek.html" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 rounded-xl p-3 transition">
+                    <span class="text-2xl">🏠</span>
+                    <div>
+                        <div class="font-bold text-sm">Hypotheek</div>
+                        <div class="text-[11px] text-slate-300">Maandlast & grafiek</div>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Flexi-job & Bijverdienste</h3>
-                    <p class="text-sm text-slate-500">Bereken je netto uurloon, flexivakantiegeld en hoeveel je fiscaal mag bijverdienen.</p>
                 </a>
-
-                <a href="hypotheek.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 2</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="laadkosten.html" class="flex items-center gap-3 bg-white/10 hover:bg-white/20 rounded-xl p-3 transition">
+                    <span class="text-2xl">🔌</span>
+                    <div>
+                        <div class="font-bold text-sm">Laadkosten EV</div>
+                        <div class="text-[11px] text-slate-300">vs. Benzine</div>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Hypotheek & Woonlening</h3>
-                    <p class="text-sm text-slate-500">Bereken je maandelijkse aflossing en totale rentekosten op basis van looptijd en rentevoet.</p>
-                </a>
-
-                <a href="registratierechten.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 2</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Registratierechten Vlaanderen</h3>
-                    <p class="text-sm text-slate-500">Bereken de verkooprechten en notariskosten bij aankoop van een enige woning of tweede verblijf.</p>
-                </a>
-
-                <a href="inflatie.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 3</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Inflatie & Koopkracht</h3>
-                    <p class="text-sm text-slate-500">Ontdek hoeveel je spaargeld over 5, 10 of 20 jaar nog waard is rekening houdend met inflatie.</p>
                 </a>
             </div>
-        </section>
+        </div>
 
-        <!-- Categorie 2: Auto & Mobiliteit -->
-        <section class="mb-12 tool-section">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">⚡</div>
-                <h2 class="text-xl font-bold text-slate-900">Auto & Mobiliteit</h2>
+        <!-- Categorie 1: Financiën & Belastingen -->
+        <section id="financien" class="tool-section space-y-4">
+            <div class="flex items-center justify-between border-b-2 border-blue-600 pb-2">
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-base">💶</span>
+                    <span>Financiën & Belastingen</span>
+                </h2>
+                <span class="text-xs font-bold text-blue-700 bg-blue-100 px-2.5 py-1 rounded-full">6 tools</span>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <a href="laadkosten.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold">Live</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="btw.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-blue-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🧾</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-blue-600">BTW Calculator</h3>
+                            <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">BE/NL/LU</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Excl. of incl. btw rekenen (21%, 12%, 9%, 6%, 17%).</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Laadkosten vs. Benzine</h3>
-                    <p class="text-sm text-slate-500">Vergelijk de kosten per 100 km tussen elektrisch rijden (thuis of snellader) en benzine.</p>
                 </a>
 
-                <a href="ritkosten.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 3</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="sparen.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-blue-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">📈</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-blue-600">Sparen & Beleggen</h3>
+                            <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">BE/NL</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Netto eindkapitaal na roerende voorheffing of Box 3.</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Brandstofkosten Rit</h3>
-                    <p class="text-sm text-slate-500">Bereken exact wat een autorit of vakantie kost en deel het bedrag per passagier.</p>
                 </a>
 
-                <a href="autobelasting.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 3</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="hypotheek.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-blue-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🏦</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-blue-600">Hypotheek & Woonlening</h3>
+                            <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">Benelux</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Maandlast, totale rente en aflossingstabel berekenen.</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">BIV & Verkeersbelasting</h3>
-                    <p class="text-sm text-slate-500">Schat de eenmalige inschrijvingstaks (BIV) en jaarlijkse verkeersbelasting in Vlaanderen.</p>
-                </a>
-            </div>
-        </section>
-
-        <!-- Categorie 3: Wonen & Energie -->
-        <section class="mb-12 tool-section">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-bold">🏠</div>
-                <h2 class="text-xl font-bold text-slate-900">Wonen & Energie</h2>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <a href="oppervlakte.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 2</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
-                    </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Oppervlakte & Vierkante Meter</h3>
-                    <p class="text-sm text-slate-500">Bereken m², omtrek, snijverlies en benodigde verf voor rechthoeken, cirkels en driehoeken.</p>
                 </a>
 
-                <a href="energie.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 2</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="registratierechten.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-blue-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🔑</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-blue-600">Registratie & Overdracht</h3>
+                            <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">BE/NL</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Verkooprecht (2%/1%/12%) of overdrachtsbelasting + notaris.</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Stroomverbruik & Energiekosten</h3>
-                    <p class="text-sm text-slate-500">Bereken hoeveel kWh en euro een huishoudtoestel verbruikt per dag, maand en jaar.</p>
                 </a>
 
-                <a href="zonnepanelen.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 3</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="flexijob.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-blue-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">💼</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-blue-600">Flexi-job Calculator</h3>
+                            <span class="text-[10px] font-bold bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded">BE</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Bruto = Netto uurloon, 7,67% vakantiegeld & €12.000 grens.</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Zonnepanelen Terugverdientijd</h3>
-                    <p class="text-sm text-slate-500">Bereken je jaarlijkse besparing en na hoeveel jaar je zonnepanelen zijn terugverdiend.</p>
+                </a>
+
+                <a href="inflatie.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-blue-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">📉</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-blue-600">Inflatie & Koopkracht</h3>
+                            <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">Benelux</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Waardeverlies van spaargeld over de jaren berekenen.</p>
+                    </div>
                 </a>
             </div>
         </section>
 
-        <!-- Categorie 4: Gezondheid & Dagelijks -->
-        <section class="tool-section">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">♥</div>
-                <h2 class="text-xl font-bold text-slate-900">Gezondheid & Dagelijks</h2>
+        <!-- Categorie 2: Wonen & Energie -->
+        <section id="wonen" class="tool-section space-y-4">
+            <div class="flex items-center justify-between border-b-2 border-amber-500 pb-2">
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center text-base">⚡</span>
+                    <span>Wonen, Klussen & Energie</span>
+                </h2>
+                <span class="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">3 tools</span>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <a href="bmi.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold">Live</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="energie.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-amber-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🔌</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-amber-600">Stroomverbruik & Kosten</h3>
+                        <p class="text-xs text-slate-500 mt-1">Wat kost een airco, droogkast of pc per dag, maand en jaar?</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">BMI & Caloriebehoefte</h3>
-                    <p class="text-sm text-slate-500">Bereken je Body Mass Index met kleurenschaal en je dagelijkse caloriebehoefte.</p>
                 </a>
 
-                <a href="procenten.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 3</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="zonnepanelen.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-amber-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">☀️</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-amber-600">Zonnepanelen Rendement</h3>
+                        <p class="text-xs text-slate-500 mt-1">Terugverdientijd met zelfverbruik en injectietarief.</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Procenten & Korting</h3>
-                    <p class="text-sm text-slate-500">Bereken kortingen tijdens de solden, procentuele stijgingen en verhoudingen.</p>
                 </a>
 
-                <a href="werkuren.html" class="tool-card bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition group">
-                    <div class="flex justify-between items-start mb-3">
-                        <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-500 text-xs font-semibold">Batch 3</span>
-                        <span class="text-slate-300 group-hover:text-blue-600 transition">→</span>
+                <a href="oppervlakte.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-amber-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">📐</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-amber-600">Oppervlakte & m²</h3>
+                        <p class="text-xs text-slate-500 mt-1">Vierkante meters, omtrek, verfverbruik en 10% snijverlies.</p>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 transition mb-1">Werkuren & Uurloon</h3>
-                    <p class="text-sm text-slate-500">Tel gewerkte uren minus pauzes op en bereken direct je totale verdienste.</p>
                 </a>
             </div>
         </section>
+
+        <!-- Categorie 3: Auto & Mobiliteit -->
+        <section id="auto" class="tool-section space-y-4">
+            <div class="flex items-center justify-between border-b-2 border-emerald-600 pb-2">
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-base">🚗</span>
+                    <span>Auto & Mobiliteit</span>
+                </h2>
+                <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">3 tools</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="laadkosten.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-emerald-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🔋</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-emerald-600">Laadkosten vs. Benzine</h3>
+                        <p class="text-xs text-slate-500 mt-1">Thuis laden of snellader vergeleken met benzinekosten.</p>
+                    </div>
+                </a>
+
+                <a href="ritkosten.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-emerald-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">⛽</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-emerald-600">Brandstofkosten per Rit</h3>
+                        <p class="text-xs text-slate-500 mt-1">Verbruik berekenen en ritkosten delen met passagiers.</p>
+                    </div>
+                </a>
+
+                <a href="autobelasting.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-emerald-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🚘</div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-slate-900 group-hover:text-emerald-600">Autobelasting</h3>
+                            <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">BE/NL</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-1">Indicatie BIV & rijtaks (BE) of BPM & MRB (NL).</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Categorie 4: Dagelijks & Gezondheid -->
+        <section id="dagelijks" class="tool-section space-y-4">
+            <div class="flex items-center justify-between border-b-2 border-purple-600 pb-2">
+                <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-purple-600 text-white flex items-center justify-center text-base">🧮</span>
+                    <span>Dagelijks & Gezondheid</span>
+                </h2>
+                <span class="text-xs font-bold text-purple-800 bg-purple-100 px-2.5 py-1 rounded-full">3 tools</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="procenten.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-purple-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">🏷️</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-purple-600">Procenten & Korting</h3>
+                        <p class="text-xs text-slate-500 mt-1">Kortingsprijs, marge en procentuele stijging/daling.</p>
+                    </div>
+                </a>
+
+                <a href="werkuren.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-purple-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">⏱️</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-purple-600">Werkuren & Uurloon</h3>
+                        <p class="text-xs text-slate-500 mt-1">Start- en eindtijd omrekenen naar decimale uren en loon.</p>
+                    </div>
+                </a>
+
+                <a href="bmi.html" class="tool-tile group bg-white rounded-2xl p-5 border-2 border-transparent hover:border-purple-500 shadow-xs hover:shadow-md transition flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition">⚖️</div>
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 group-hover:text-purple-600">BMI & Caloriebehoefte</h3>
+                        <p class="text-xs text-slate-500 mt-1">Gezond gewicht op kleurenschaal en dagelijkse kcal.</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Lege zoekresultaten melding -->
+        <div id="empty-state" class="hidden bg-white rounded-2xl p-10 text-center border border-slate-200">
+            <p class="font-bold text-slate-700">Geen calculator gevonden voor deze zoekterm.</p>
+            <button onclick="document.getElementById('page-search').value=''; filterGrid();" class="mt-2 text-sm font-bold text-blue-600 hover:underline">Reset zoekfilter</button>
+        </div>
 
     </main>
 
     <div id="app-footer"></div>
-
     <script src="layout.js"></script>
     <script>
-        function filterTools() {
-            const query = document.getElementById('tool-search').value.toLowerCase();
-            document.querySelectorAll('.tool-card').forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(query) ? 'block' : 'none';
-            });
+        function filterGrid() {
+            const q = document.getElementById('page-search').value.toLowerCase().trim();
+            const popular = document.getElementById('popular-bar');
+            popular.classList.toggle('hidden', q.length > 0);
+
+            let totalVisible = 0;
             document.querySelectorAll('.tool-section').forEach(sec => {
-                const visibleCards = sec.querySelectorAll('.tool-card[style="display: block;"], .tool-card:not([style*="display: none"])');
-                sec.style.display = visibleCards.length > 0 ? 'block' : 'none';
+                let secVisible = 0;
+                sec.querySelectorAll('.tool-tile').forEach(tile => {
+                    const match = tile.textContent.toLowerCase().includes(q);
+                    tile.classList.toggle('hidden', !match);
+                    if (match) { secVisible++; totalVisible++; }
+                });
+                sec.classList.toggle('hidden', secVisible === 0);
             });
+
+            document.getElementById('empty-state').classList.toggle('hidden', totalVisible > 0);
         }
     </script>
 </body>

@@ -3,212 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spaar & Rente-op-rente Simulator – Bereken Je Vermogensgroei</title>
-    <meta name="description" content="Bereken hoe snel je spaargeld of beleggingen groeien dankzij samengestelde interest (rente-op-rente). Inclusief interactieve groeigrafiek.">
+    <title>Spaar & Beleggen Simulator (BE & NL) – Netto Rendement na Belasting</title>
+    <meta name="description" content="Bereken je netto eindkapitaal met rente-op-rente voor België (roerende voorheffing & vrijstelling) en Nederland (Box 3 vermogensbelasting). Vergelijk spaarrentes en ETF-beleggen.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }
-        input[type="range"] { accent-color: #2563eb; }
-    </style>
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }</style>
 </head>
 <body class="flex flex-col min-h-screen antialiased">
-
     <div id="app-header"></div>
 
     <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
-        
         <div class="mb-8">
-            <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Financiën & Vermogen</div>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
-                Spaar & Rente-op-rente Simulator
-            </h1>
-            <p class="text-slate-600 text-base sm:text-lg">
-                Ontdek het sneeuwbaleffect van samengestelde interest op je spaargeld of maandelijkse beleggingen.
-            </p>
+            <div class="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Financiën & Vermogen (BE & NL)</div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">Spaar & Beleggen Simulator (Netto na Belasting)</h1>
+            <p class="text-slate-600 text-base sm:text-lg">Vergelijk sparen bij grootbanken of online banken met beleggen, inclusief Belgische roerende voorheffing of Nederlandse Box 3-heffing.</p>
         </div>
 
-        <!-- Calculator Card -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 mb-10">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                <!-- Sliders (Links) -->
-                <div class="lg:col-span-5 space-y-6">
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-700">Startbedrag</span>
-                            <span class="text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-md" id="lbl-start">€ 10.000</span>
-                        </div>
-                        <input type="range" id="inp-start" min="0" max="100000" step="500" value="10000" oninput="updateSavings()" class="w-full cursor-pointer">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-700">Maandelijkse inleg</span>
-                            <span class="text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-md" id="lbl-monthly">€ 250</span>
-                        </div>
-                        <input type="range" id="inp-monthly" min="0" max="2500" step="25" value="250" oninput="updateSavings()" class="w-full cursor-pointer">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-700">Jaarlijks rendement / rente</span>
-                            <span class="text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-md" id="lbl-rate">4,5%</span>
-                        </div>
-                        <input type="range" id="inp-rate" min="0.5" max="12" step="0.5" value="4.5" oninput="updateSavings()" class="w-full cursor-pointer">
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between text-sm font-bold mb-2">
-                            <span class="text-slate-700">Looptijd (jaren)</span>
-                            <span class="text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-md" id="lbl-years">15 jaar</span>
-                        </div>
-                        <input type="range" id="inp-years" min="1" max="40" step="1" value="15" oninput="updateSavings()" class="w-full cursor-pointer">
+            <!-- Bovenste balk: Land + Type + Situatie -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pb-6 mb-6 border-b border-slate-200">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">1. Fiscaal Land</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btn-be" onclick="setCountry('BE')" class="py-2 px-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm transition">België (BE)</button>
+                        <button id="btn-nl" onclick="setCountry('NL')" class="py-2 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition">Nederland (NL)</button>
                     </div>
                 </div>
 
-                <!-- Resultaten & Grafiek (Rechts) -->
-                <div class="lg:col-span-7 flex flex-col justify-between space-y-6">
-                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/70">
-                            <div class="text-xs font-semibold text-slate-500">Eindbedrag</div>
-                            <div class="text-lg sm:text-2xl font-extrabold text-emerald-600 mt-1" id="res-total">€ 87.432</div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">2. Type Vermogen</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="type-save" onclick="setAssetType('save')" class="py-2 px-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm transition">Spaarrekening</button>
+                        <button id="type-invest" onclick="setAssetType('invest')" class="py-2 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition">Beleggen / ETF</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">3. Fiscale Situatie</label>
+                    <select id="tax-profile" onchange="calculate()" class="w-full rounded-xl border-slate-300 border px-3 py-2 text-sm font-bold text-slate-700 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="single">Alleenstaande (1× vrijstelling)</option>
+                        <option value="couple">Gehuwd / Fiscaal partners (2× vrijstelling)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Bank & Rente Presets -->
+            <div class="mb-6">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Rente-indicatie per type aanbieder (pas hieronder vrij aan)</label>
+                <div id="presets-bar" class="flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Sliders & Inputs -->
+                <div class="lg:col-span-5 space-y-5">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-sm font-bold text-slate-700">Startbedrag</label>
+                            <span class="text-sm font-extrabold text-blue-600" id="lbl-initial">€ 15.000</span>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/70">
-                            <div class="text-xs font-semibold text-slate-500">Eigen inleg</div>
-                            <div class="text-lg sm:text-2xl font-extrabold text-slate-900 mt-1" id="res-invested">€ 55.000</div>
+                        <input type="range" id="initial-range" min="0" max="250000" step="1000" value="15000" oninput="sync('initial', this.value)" class="w-full accent-blue-600">
+                        <input type="number" id="initial-num" value="15000" step="500" oninput="syncBack('initial', this.value)" class="mt-1.5 w-full rounded-xl border-slate-300 border px-3.5 py-2 font-bold text-slate-800">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-sm font-bold text-slate-700">Maandelijkse inleg</label>
+                            <span class="text-sm font-extrabold text-blue-600" id="lbl-monthly">€ 300</span>
                         </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200/70">
-                            <div class="text-xs font-semibold text-slate-500">Verdiende rente</div>
-                            <div class="text-lg sm:text-2xl font-extrabold text-blue-600 mt-1" id="res-interest">€ 32.432</div>
+                        <input type="range" id="monthly-range" min="0" max="3000" step="25" value="300" oninput="sync('monthly', this.value)" class="w-full accent-blue-600">
+                        <input type="number" id="monthly-num" value="300" step="25" oninput="syncBack('monthly', this.value)" class="mt-1.5 w-full rounded-xl border-slate-300 border px-3.5 py-2 font-bold text-slate-800">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-sm font-bold text-slate-700" id="rate-title">Jaarlijkse rente (basis + getrouwheid)</label>
+                            <span class="text-sm font-extrabold text-blue-600" id="lbl-rate">2,25%</span>
+                        </div>
+                        <input type="range" id="rate-range" min="0" max="12" step="0.05" value="2.25" oninput="sync('rate', this.value)" class="w-full accent-blue-600">
+                        <input type="number" id="rate-num" value="2.25" step="0.05" oninput="syncBack('rate', this.value)" class="mt-1.5 w-full rounded-xl border-slate-300 border px-3.5 py-2 font-bold text-slate-800">
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <label class="text-sm font-bold text-slate-700">Looptijd (jaren)</label>
+                            <span class="text-sm font-extrabold text-blue-600" id="lbl-years">15 jaar</span>
+                        </div>
+                        <input type="range" id="years-range" min="1" max="40" step="1" value="15" oninput="calculate()" class="w-full accent-blue-600">
+                    </div>
+                </div>
+
+                <!-- Resultaten & Grafiek -->
+                <div class="lg:col-span-7 flex flex-col justify-between bg-slate-50 rounded-2xl p-6 border border-slate-200/80 space-y-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/70">
+                            <span class="text-xs font-bold uppercase text-emerald-600">Netto Eindkapitaal</span>
+                            <div class="text-2xl font-extrabold text-slate-900 mt-0.5" id="res-net">€ 81.420</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/70">
+                            <span class="text-xs font-bold uppercase text-slate-400">Eigen Inleg</span>
+                            <div class="text-lg font-extrabold text-slate-800 mt-0.5" id="res-contrib">€ 69.000</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200/70">
+                            <span class="text-xs font-bold uppercase text-rose-500">Betaalde Taks (Totaal)</span>
+                            <div class="text-lg font-extrabold text-rose-600 mt-0.5" id="res-tax">€ 0</div>
                         </div>
                     </div>
 
-                    <div class="bg-slate-50/50 rounded-xl p-4 border border-slate-200/70 h-64">
+                    <div id="tax-explanation" class="text-xs bg-blue-50/80 text-blue-900 border border-blue-100 rounded-xl p-3.5 leading-relaxed"></div>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200/70 h-60">
                         <canvas id="savingsChart"></canvas>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <!-- Midden AdSense Slot -->
-        <div class="bg-slate-100/80 border border-dashed border-slate-300 rounded-xl h-24 flex items-center justify-center text-xs font-medium text-slate-400 uppercase tracking-wider mb-10">
-            Advertentieruimte (In-Article)
-        </div>
-
-        <!-- SEO Tekst -->
         <article class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
-            <h2 class="text-2xl font-bold text-slate-900">Wat is het effect van rente-op-rente?</h2>
+            <h2 class="text-2xl font-bold text-slate-900">Hoe werkt belasting op sparen en beleggen in België en Nederland?</h2>
             <p class="text-slate-600 leading-relaxed">
-                Rente-op-rente (ook wel samengestelde interest of <em>compound interest</em> genoemd) betekent dat je niet alleen rente ontvangt over je eigen ingelegde spaargeld, maar ook over de rente die je in voorgaande jaren al hebt opgebouwd. Hoe langer de looptijd, hoe steiler de groeigrafiek omhoog gaat.
+                <strong>In België:</strong> Op een gereglementeerde spaarrekening (met basisrente + getrouwheidspremie) geniet je van een wettelijke vrijstelling van roerende voorheffing op de eerste <strong>€1.020 interest per persoon</strong> per jaar (€2.040 voor gehuwden en wettelijk samenwonenden). Boven dat grensbedrag betaal je 15% roerende voorheffing. Bij beleggen in kapitaliserende ETF's of aandelen als particulier binnen normaal beheer van privévermogen betaal je geen jaarlijkse vermogensbelasting, maar wel beurstaks (TOB, meestal 0,12% tot 1,32%) bij aankoop/verkoop.
             </p>
-            <h3 class="text-lg font-bold text-slate-900 pt-2">Sparen vs. Beleggen in ETF's</h3>
             <p class="text-slate-600 leading-relaxed">
-                Op een klassieke Belgische spaarrekening ligt de rente doorgaans tussen de 1% en 3%. Wie voor een langere termijn (10 jaar of meer) maandelijks belegt in wereldwijde aandelenfondsen (ETF's), rekent historisch gezien vaak met een gemiddeld jaarlijks rendement tussen 6% en 8%. Met de schuifregelaars hierboven zie je direct het verschil op lange termijn.
+                <strong>In Nederland:</strong> Spaargeld en beleggingen vallen in <strong>Box 3</strong>. Je betaalt pas belasting zodra je totale vermogen boven het heffingsvrij vermogen uitkomt (€57.684 voor alleenstaanden, €115.368 voor fiscaal partners). Voor spaargeld rekent de Belastingdienst met een laag forfaitair rendement, terwijl voor beleggingen een hoger forfaitair rendement geldt (belast tegen 36%).
             </p>
         </article>
-
     </main>
 
     <div id="app-footer"></div>
-
     <script src="layout.js"></script>
     <script>
+        let country = 'BE';
+        let assetType = 'save';
         let chartInstance = null;
 
-        function fmtEuro(num) {
-            return '€ ' + Math.round(num).toLocaleString('nl-BE');
+        const presetsData = {
+            BE: {
+                save: [
+                    { label: "Grootbank spaarboekje (~0,80%)", rate: 0.80 },
+                    { label: "Gereglementeerd hoog (~2,25%)", rate: 2.25 },
+                    { label: "Getrouwheidsrekening (~2,75%)", rate: 2.75 }
+                ],
+                invest: [
+                    { label: "Defensief / Obligaties (4,0%)", rate: 4.0 },
+                    { label: "Wereldwijde ETF gem. (7,0%)", rate: 7.0 },
+                    { label: "Groei / Aandelen (8,5%)", rate: 8.5 }
+                ]
+            },
+            NL: {
+                save: [
+                    { label: "NL Grootbank (~1,50%)", rate: 1.50 },
+                    { label: "NL Online spaarbank (~2,60%)", rate: 2.60 },
+                    { label: "Deposito / Neobank (~3,00%)", rate: 3.00 }
+                ],
+                invest: [
+                    { label: "Defensieve portefeuille (4,0%)", rate: 4.0 },
+                    { label: "Wereldwijde ETF gem. (7,0%)", rate: 7.0 },
+                    { label: "Groei / Aandelen (8,5%)", rate: 8.5 }
+                ]
+            }
+        };
+
+        function setCountry(c) {
+            country = c;
+            document.getElementById('btn-be').className = c === 'BE'
+                ? 'py-2 px-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm transition'
+                : 'py-2 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition';
+            document.getElementById('btn-nl').className = c === 'NL'
+                ? 'py-2 px-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm transition'
+                : 'py-2 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition';
+            applyDefaultPreset();
         }
 
-        function updateSavings() {
-            const start = parseFloat(document.getElementById('inp-start').value);
-            const monthly = parseFloat(document.getElementById('inp-monthly').value);
-            const rate = parseFloat(document.getElementById('inp-rate').value) / 100;
-            const years = parseInt(document.getElementById('inp-years').value);
+        function setAssetType(t) {
+            assetType = t;
+            document.getElementById('type-save').className = t === 'save'
+                ? 'py-2 px-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm transition'
+                : 'py-2 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition';
+            document.getElementById('type-invest').className = t === 'invest'
+                ? 'py-2 px-3 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm transition'
+                : 'py-2 px-3 rounded-xl border-2 border-slate-200 text-slate-600 font-bold text-sm hover:border-slate-300 transition';
+            document.getElementById('rate-title').textContent = t === 'save' ? 'Jaarlijkse rente (%)' : 'Verwacht jaarrendement (%)';
+            applyDefaultPreset();
+        }
 
-            document.getElementById('lbl-start').textContent = fmtEuro(start);
-            document.getElementById('lbl-monthly').textContent = fmtEuro(monthly);
-            document.getElementById('lbl-rate').textContent = (rate * 100).toLocaleString('nl-BE') + '%';
+        function applyDefaultPreset() {
+            const list = presetsData[country][assetType];
+            const mid = list[1];
+            document.getElementById('rate-range').value = mid.rate;
+            document.getElementById('rate-num').value = mid.rate;
+            renderPresets();
+            calculate();
+        }
+
+        function renderPresets() {
+            const list = presetsData[country][assetType];
+            document.getElementById('presets-bar').innerHTML = list.map(p => `
+                <button onclick="setRatePreset(${p.rate})" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-blue-50 hover:text-blue-600 text-slate-700 border border-slate-200/80 transition">
+                    ${p.label}
+                </button>
+            `).join('');
+        }
+
+        function setRatePreset(r) {
+            document.getElementById('rate-range').value = r;
+            document.getElementById('rate-num').value = r;
+            calculate();
+        }
+
+        function sync(key, val) {
+            document.getElementById(key + '-num').value = val;
+            calculate();
+        }
+        function syncBack(key, val) {
+            document.getElementById(key + '-range').value = val;
+            calculate();
+        }
+
+        function fmt(v) { return '€ ' + Math.round(v).toLocaleString('nl-BE'); }
+
+        function calculate() {
+            const initial = parseFloat(document.getElementById('initial-num').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthly-num').value) || 0;
+            const rate = parseFloat(document.getElementById('rate-num').value) || 0;
+            const years = parseInt(document.getElementById('years-range').value) || 10;
+            const isCouple = document.getElementById('tax-profile').value === 'couple';
+
+            document.getElementById('lbl-initial').textContent = fmt(initial);
+            document.getElementById('lbl-monthly').textContent = fmt(monthly);
+            document.getElementById('lbl-rate').textContent = rate.toLocaleString('nl-BE', { minimumFractionDigits: 2 }) + '%';
             document.getElementById('lbl-years').textContent = years + ' jaar';
 
-            const labels = [];
-            const dataInvested = [];
-            const dataTotal = [];
+            const labels = ['Start'];
+            const contribSeries = [initial];
+            const netSeries = [initial];
 
-            let currentTotal = start;
-            let currentInvested = start;
-            const monthlyRate = Math.pow(1 + rate, 1 / 12) - 1;
+            let balance = initial;
+            let totalContrib = initial;
+            let totalTaxPaid = 0;
 
-            labels.push('Jaar 0');
-            dataInvested.push(Math.round(currentInvested));
-            dataTotal.push(Math.round(currentTotal));
+            const annualRate = rate / 100;
+            const monthlyRate = Math.pow(1 + annualRate, 1 / 12) - 1;
 
             for (let y = 1; y <= years; y++) {
+                const startOfYearBalance = balance;
+                let yearInterest = 0;
+
                 for (let m = 0; m < 12; m++) {
-                    currentTotal = (currentTotal + monthly) * (1 + monthlyRate);
-                    currentInvested += monthly;
+                    const interestM = balance * monthlyRate;
+                    yearInterest += interestM;
+                    balance += interestM + monthly;
+                    totalContrib += monthly;
                 }
+
+                // Fiscale berekening per jaar
+                let yearTax = 0;
+                if (country === 'BE') {
+                    if (assetType === 'save') {
+                        // België gereglementeerd spaarboekje: €1.020 vrijgesteld per persoon (€2.040 koppel), daarboven 15% RV
+                        const exempt = isCouple ? 2040 : 1020;
+                        const taxableInterest = Math.max(0, yearInterest - exempt);
+                        yearTax = taxableInterest * 0.15;
+                    } else {
+                        // België kapitaliserende ETF: geen jaarlijkse vermogensbelasting (enkel TOB op inleg)
+                        yearTax = (y === 1 ? initial * 0.0012 : 0) + (monthly * 12 * 0.0012);
+                    }
+                } else {
+                    // Nederland Box 3: heffingsvrij vermogen €57.684 (€115.368 partners)
+                    const freeCap = isCouple ? 115368 : 57684;
+                    if (startOfYearBalance > freeCap) {
+                        const taxableShare = (startOfYearBalance - freeCap) / startOfYearBalance;
+                        const notionalReturn = assetType === 'save' ? 0.0144 : 0.0588; // Forfaitair rendement sparen vs beleggen
+                        yearTax = startOfYearBalance * taxableShare * notionalReturn * 0.36;
+                    }
+                }
+
+                balance = Math.max(0, balance - yearTax);
+                totalTaxPaid += yearTax;
+
                 labels.push('Jaar ' + y);
-                dataInvested.push(Math.round(currentInvested));
-                dataTotal.push(Math.round(currentTotal));
+                contribSeries.push(Math.round(totalContrib));
+                netSeries.push(Math.round(balance));
             }
 
-            document.getElementById('res-total').textContent = fmtEuro(currentTotal);
-            document.getElementById('res-invested').textContent = fmtEuro(currentInvested);
-            document.getElementById('res-interest').textContent = fmtEuro(currentTotal - currentInvested);
+            document.getElementById('res-net').textContent = fmt(balance);
+            document.getElementById('res-contrib').textContent = fmt(totalContrib);
+            document.getElementById('res-tax').textContent = fmt(totalTaxPaid);
 
-            renderChart(labels, dataInvested, dataTotal);
-        }
+            // Uitlegbalk bijwerken
+            const infoBox = document.getElementById('tax-explanation');
+            if (country === 'BE' && assetType === 'save') {
+                const limit = isCouple ? '€ 2.040' : '€ 1.020';
+                infoBox.innerHTML = `<strong>België (Gereglementeerde spaarrekening):</strong> Rente tot <strong>${limit}/jaar</strong> is vrijgesteld van roerende voorheffing. Op rente daarboven wordt automatisch <strong>15% roerende voorheffing</strong> ingehouden.`;
+            } else if (country === 'BE' && assetType === 'invest') {
+                infoBox.innerHTML = `<strong>België (Kapitaliserende ETF):</strong> Geen jaarlijkse vermogensbelasting bij normaal beheer van privévermogen. Wel is indicatief <strong>0,12% beurstaks (TOB)</strong> op je aankopen verrekend.`;
+            } else if (country === 'NL' && assetType === 'save') {
+                const limit = isCouple ? '€ 115.368' : '€ 57.684';
+                infoBox.innerHTML = `<strong>Nederland (Box 3 Sparen):</strong> Vermogen tot <strong>${limit}</strong> is belastingvrij. Boven deze grens wordt gerekend met het verlaagde forfaitaire spaarrendement (belast tegen 36%).`;
+            } else {
+                const limit = isCouple ? '€ 115.368' : '€ 57.684';
+                infoBox.innerHTML = `<strong>Nederland (Box 3 Beleggen):</strong> Vermogen tot <strong>${limit}</strong> is vrijgesteld. Daarboven geldt het hogere forfaitaire beleggingsrendement (5,88% belast tegen 36% ≈ 2,12% effectieve jaarheffing).`;
+            }
 
-        function renderChart(labels, invested, total) {
             const ctx = document.getElementById('savingsChart').getContext('2d');
             if (chartInstance) chartInstance.destroy();
-
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Totaal kapitaal',
-                            data: total,
+                            label: 'Netto eindkapitaal (€)',
+                            data: netSeries,
                             borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.12)',
                             fill: true,
-                            tension: 0.3,
-                            borderWidth: 2.5
+                            tension: 0.3
                         },
                         {
-                            label: 'Eigen inleg',
-                            data: invested,
-                            borderColor: '#2563eb',
-                            backgroundColor: 'rgba(37, 99, 235, 0.12)',
-                            fill: true,
-                            tension: 0.1,
-                            borderWidth: 2
+                            label: 'Eigen inleg (€)',
+                            data: contribSeries,
+                            borderColor: '#3b82f6',
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.3
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top', labels: { boxWidth: 12, font: { family: 'Plus Jakarta Sans', size: 12 } } }
-                    },
+                    plugins: { legend: { position: 'bottom' } },
                     scales: {
-                        y: {
-                            ticks: {
-                                callback: value => '€ ' + value.toLocaleString('nl-BE')
-                            }
-                        }
+                        y: { beginAtZero: true, ticks: { callback: v => '€' + (v / 1000) + 'k' } }
                     }
                 }
             });
         }
 
-        updateSavings();
+        renderPresets();
+        calculate();
     </script>
 </body>
 </html>
