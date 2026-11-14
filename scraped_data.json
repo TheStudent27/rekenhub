@@ -1,0 +1,31 @@
+{
+  "bron_url": "https://www.rijksoverheid.nl/onderwerpen/minimumloon/bedragen-minimumloon",
+  "opgehaald_op": "2026-11-14 18:47:38",
+  "pagina_titel": "Bedragen minimumloon | Rijksoverheid.nl",
+  "aantal_tabellen": 0,
+  "gevonden_bedragen": [],
+  "gevonden_percentages": [],
+  "koppen": [
+    {
+      "niveau": "H1",
+      "tekst": "Bedragen minimumloon"
+    },
+    {
+      "niveau": "H2",
+      "tekst": "Hoort bij"
+    },
+    {
+      "niveau": "H2",
+      "tekst": "Andere talen"
+    },
+    {
+      "niveau": "H2",
+      "tekst": "Service"
+    },
+    {
+      "niveau": "H2",
+      "tekst": "Over deze site"
+    }
+  ],
+  "tabellen": []
+}

@@ -3,24 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacybeleid – RekenHub</title>
+    <title>Privacybeleid & Cookies – RekenHub</title>
+    <meta name="description" content="Lees hoe RekenHub omgaat met jouw privacy. Alle berekeningen draaien 100% lokaal in je browser zonder opslag van persoonlijke cijfers.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f7fa; color: #0f172a; }</style>
 </head>
-<body class="flex flex-col min-h-screen antialiased">
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen antialiased">
     <div id="app-header"></div>
-    <main class="max-w-3xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 flex-grow">
-        <div class="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200/80 space-y-5">
-            <h1 class="text-3xl font-extrabold text-slate-900">Privacybeleid</h1>
-            <p class="text-sm text-slate-400">Laatst bijgewerkt: 2026</p>
-            <p class="text-slate-600 leading-relaxed">RekenHub hecht veel waarde aan jouw privacy. Alle berekeningen op deze website worden lokaal in jouw eigen webbrowser uitgevoerd. Wij slaan geen ingevoerde financiële of persoonlijke bedragen op onze servers op.</p>
-            <h2 class="text-xl font-bold text-slate-900 pt-2">Cookies & Advertenties (Google AdSense)</h2>
-            <p class="text-slate-600 leading-relaxed">Om deze tools gratis aan te bieden, maken wij gebruik van advertentiepartners zoals Google AdSense. Externe leveranciers, waaronder Google, gebruiken cookies om advertenties weer te geven op basis van eerdere bezoeken aan deze of andere websites. Je kunt je afmelden voor gepersonaliseerde advertenties via de Google Advertentie-instellingen.</p>
-            <h2 class="text-xl font-bold text-slate-900 pt-2">Statistieken</h2>
-            <p class="text-slate-600 leading-relaxed">Wij gebruiken privacyvriendelijke websitestatistieken om te meten welke calculators het meest gebruikt worden en onze pagina's technisch te verbeteren.</p>
-        </div>
+
+    <main class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 flex-grow">
+        <article class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-2xs space-y-6">
+            <div>
+                <span class="inline-block text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full mb-2">GDPR / AVG Conform</span>
+                <h1 class="font-heading text-3xl sm:text-4xl font-bold text-slate-900">Privacybeleid</h1>
+                <p class="text-xs text-slate-400 mt-1">Laatst bijgewerkt: november 2026</p>
+            </div>
+
+            <section class="space-y-2 text-sm sm:text-base text-slate-600 leading-relaxed">
+                <h2 class="font-heading text-xl font-bold text-slate-900">1. Geen opslag van jouw rekengegevens</h2>
+                <p>
+                    RekenHub hecht groot belang aan jouw privacy. Alle calculators en tools op deze website draaien <strong>100% lokaal in jouw eigen webbrowser (client-side)</strong>. De bedragen, lonen, spaartegoeden of gezondheidsgegevens die je invult, worden <strong>niet</strong> naar onze servers verzonden en niet in een database opgeslagen.
+                </p>
+            </section>
+
+            <section class="space-y-2 text-sm sm:text-base text-slate-600 leading-relaxed">
+                <h2 class="font-heading text-xl font-bold text-slate-900">2. Lokale browseropslag (LocalStorage)</h2>
+                <p>
+                    Om je gebruikservaring te verbeteren, gebruikt deze website uitsluitend functionele <code>localStorage</code> in jouw eigen browser om twee voorkeuren te onthouden:
+                </p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li>Je gekozen voorkeurstaal (Nederlands, Frans of Engels).</li>
+                    <li>De laatste 4 calculators die je hebt geopend, zodat je snel verder kunt rekenen.</li>
+                </ul>
+                <p>Je kunt deze gegevens op elk moment wissen via de knop "Wissen" op de startpagina of via de instellingen van je browser.</p>
+            </section>
+
+            <section class="space-y-2 text-sm sm:text-base text-slate-600 leading-relaxed">
+                <h2 class="font-heading text-xl font-bold text-slate-900">3. Bezoekersstatistieken & Advertenties (Google AdSense)</h2>
+                <p>
+                    Wij maken gebruik van privacyvriendelijke statistieken (Cloudflare Web Analytics) om te meten welke rekenmachines het meest worden gebruikt, zonder individuele bezoekers te volgen.
+                </p>
+                <p>
+                    Om dit platform gratis toegankelijk te houden, kunnen op deze website advertenties worden weergegeven via <strong>Google AdSense</strong>. Externe leveranciers, waaronder Google, maken gebruik van cookies om advertenties weer te geven op basis van eerdere bezoeken van een gebruiker aan deze of andere websites. Gebruikers kunnen zich afmelden voor gepersonaliseerde advertenties via de <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline">Google Advertentie-instellingen</a>.
+                </p>
+            </section>
+
+            <section class="space-y-2 text-sm sm:text-base text-slate-600 leading-relaxed">
+                <h2 class="font-heading text-xl font-bold text-slate-900">4. Jouw rechten (AVG / GDPR)</h2>
+                <p>
+                    Omdat wij geen persoonsgegevens of accounts opslaan, hebben wij geen persoonlijke dossiers over bezoekers. Heb je vragen over dit privacybeleid? Neem dan gerust contact met ons op via de <a href="contact.html" class="text-blue-600 underline">contactpagina</a>.
+                </p>
+            </section>
+        </article>
     </main>
+
     <div id="app-footer"></div>
     <script src="layout.js"></script>
 </body>
