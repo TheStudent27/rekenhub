@@ -7,7 +7,6 @@
     <meta name="description" content="Snelle, nauwkeurige en gratis calculators voor België en Nederland (2026): bruto-netto loon, sparen & Box 3, registratierechten, laadkosten, gezondheid en web-tools.">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #f8fafc; color: #0f172a; }
         section { scroll-margin-top: 90px; }
     </style>
 </head>
@@ -16,34 +15,74 @@
 
     <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex-grow space-y-10">
 
-        <!-- Hero & Snelle Zoekbalk -->
-        <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-2xs relative overflow-hidden">
-            <div class="absolute -right-16 -top-16 w-64 h-64 bg-blue-50 rounded-full blur-2xl opacity-70 pointer-events-none"></div>
-            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                <div class="max-w-xl space-y-2.5">
-                    <span id="hero-badge" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-                        ✓ Bijgewerkt voor 2026 • België & Nederland apart
-                    </span>
-                    <h1 id="hero-title" class="font-heading text-3xl sm:text-4xl font-bold text-slate-900">
-                        Slimme Calculators voor Elke Dag
+        <!-- Vernieuwde Hero met Illustratie, Zoekbalk & 4 Kernblokken -->
+        <div class="bg-white/95 backdrop-blur-xs rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm relative overflow-hidden">
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-gradient-to-br from-blue-100/70 to-emerald-100/60 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <!-- Linkerkolom: Titel, uitleg & zoekbalk -->
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="inline-flex items-center gap-2 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/90 px-3 py-1 rounded-full">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="hero-badge">Officiële 2026-tarieven • België & Nederland apart</span>
+                    </div>
+
+                    <h1 id="hero-title" class="font-heading text-2xl sm:text-4xl font-extrabold text-slate-900 leading-[1.15]">
+                        Reken het in seconden uit — <span class="text-[#003366]">op maat van België & Nederland</span>
                     </h1>
-                    <p id="hero-subtitle" class="text-slate-500 text-sm sm:text-base leading-relaxed">
-                        Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot laadkosten en hardlooptempo — 100% gratis en met officiële bronvermelding.
+
+                    <p id="hero-subtitle" class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl">
+                        Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot laadkosten en hardlooptempo. 100% gratis, lokaal in je browser en met directe bronvermelding.
                     </p>
+
+                    <div class="pt-1 max-w-xl space-y-2.5">
+                        <div class="relative">
+                            <input type="text" id="search-input" onkeyup="renderBento()" placeholder="Waar wil je mee rekenen? (bijv. bruto, Box 3, hypotheek, BMI)..." class="w-full rounded-2xl border border-slate-300 bg-slate-50/90 focus:bg-white pl-11 pr-4 py-3.5 text-sm font-medium text-slate-800 shadow-2xs focus:border-[#003366] focus:ring-2 focus:ring-blue-500/20 outline-none transition">
+                            <svg class="w-4 h-4 text-slate-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <div id="quick-pills" class="flex flex-wrap items-center gap-1.5 text-xs font-medium text-slate-500"></div>
+                    </div>
                 </div>
 
-                <div class="w-full lg:w-80 shrink-0 space-y-2">
-                    <div class="relative">
-                        <input type="text" id="search-input" onkeyup="renderBento()" placeholder="Zoek calculator (bijv. bruto, Box 3, BMI)..." class="w-full rounded-2xl border border-slate-300 bg-slate-50/80 focus:bg-white pl-11 pr-4 py-3 text-sm font-medium text-slate-800 focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20 outline-none transition">
-                        <svg class="w-4 h-4 text-slate-400 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-                    <div id="quick-pills" class="flex flex-wrap gap-1.5 text-[11px] font-semibold text-slate-500"></div>
+                <!-- Rechterkolom: Levendige 2026 Dashboard-illustratie -->
+                <div class="lg:col-span-5 hidden sm:flex justify-center">
+                    <svg viewBox="0 0 360 240" class="w-full max-w-sm h-auto drop-shadow-xs" fill="none">
+                        <!-- Achtergrondkaart -->
+                        <rect x="24" y="18" width="260" height="190" rx="22" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="2"/>
+                        <!-- Bovenbalk -->
+                        <rect x="24" y="18" width="260" height="36" rx="22" fill="#003366"/>
+                        <rect x="24" y="38" width="260" height="16" fill="#003366"/>
+                        <circle cx="44" cy="36" r="4" fill="#34D399"/>
+                        <circle cx="58" cy="36" r="4" fill="#FBBF24"/>
+                        <circle cx="72" cy="36" r="4" fill="#F87171"/>
+                        <!-- Grafiekbalken -->
+                        <rect x="46" y="128" width="24" height="58" rx="6" fill="#BAE6FD"/>
+                        <rect x="80" y="106" width="24" height="80" rx="6" fill="#38BDF8"/>
+                        <rect x="114" y="84" width="24" height="102" rx="6" fill="#0284C7"/>
+                        <rect x="148" y="68" width="24" height="118" rx="6" fill="#10B981"/>
+                        <path d="M56 116L92 94L126 76L160 58" stroke="#059669" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="160" cy="58" r="5" fill="#059669"/>
+                        <!-- Zwevende Rekenmachine-kaart rechts -->
+                        <rect x="196" y="48" width="144" height="174" rx="20" fill="#FFFFFF" stroke="#94A3B8" stroke-width="2"/>
+                        <rect x="212" y="64" width="112" height="34" rx="10" fill="#ECFDF5" stroke="#6EE7B7" stroke-width="1.5"/>
+                        <text x="314" y="86" text-anchor="end" fill="#047857" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="15">€ 2.485,50</text>
+                        <!-- Toetsen -->
+                        <rect x="212" y="110" width="32" height="22" rx="6" fill="#F1F5F9"/>
+                        <rect x="252" y="110" width="32" height="22" rx="6" fill="#F1F5F9"/>
+                        <rect x="292" y="110" width="32" height="22" rx="6" fill="#DBEAFE"/>
+                        <rect x="212" y="140" width="32" height="22" rx="6" fill="#F1F5F9"/>
+                        <rect x="252" y="140" width="32" height="22" rx="6" fill="#F1F5F9"/>
+                        <rect x="292" y="140" width="32" height="22" rx="6" fill="#DBEAFE"/>
+                        <rect x="212" y="170" width="72" height="24" rx="7" fill="#003366"/>
+                        <rect x="292" y="170" width="32" height="24" rx="7" fill="#10B981"/>
+                        <text x="308" y="186" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-weight="700" font-size="14">=</text>
+                    </svg>
                 </div>
             </div>
 
-            <!-- 4-Koloms Vertrouwens- & Kerncijferstrook (Eerste 3 klikbaar!) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6 mt-6 border-t border-slate-100 text-xs">
-                <a href="#bento-grid" class="group bg-slate-50/80 hover:bg-blue-50/60 rounded-xl p-3.5 border border-slate-200/70 hover:border-blue-300 transition block">
+            <!-- 4-Koloms Kerncijferstrook -->
+            <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6 mt-7 border-t border-slate-100 text-xs">
+                <a href="#bento-grid" class="group bg-slate-50/90 hover:bg-blue-50/70 rounded-xl p-3.5 border border-slate-200/80 hover:border-blue-300 transition block">
                     <div class="flex items-center justify-between">
                         <span id="stat-1-title" class="font-heading font-bold text-base text-slate-900 group-hover:text-blue-700 transition">19 Tools</span>
                         <span class="text-slate-400 group-hover:text-blue-600 font-bold transition">↓</span>
@@ -51,7 +90,7 @@
                     <div id="stat-1-sub" class="text-slate-500 group-hover:text-slate-700 mt-0.5">Gratis zonder inloggen</div>
                 </a>
 
-                <a href="disclaimer.html" class="group bg-slate-50/80 hover:bg-blue-50/60 rounded-xl p-3.5 border border-slate-200/70 hover:border-blue-300 transition block">
+                <a href="disclaimer.html" class="group bg-slate-50/90 hover:bg-blue-50/70 rounded-xl p-3.5 border border-slate-200/80 hover:border-blue-300 transition block">
                     <div class="flex items-center justify-between gap-1">
                         <div class="font-heading font-bold text-sm sm:text-base text-slate-900 group-hover:text-blue-700 flex items-center gap-1.5 flex-wrap transition">
                             <svg class="w-4 h-3 rounded-[2px] shrink-0 shadow-2xs" viewBox="0 0 3 2"><rect width="1" height="2" x="0" fill="#111827"/><rect width="1" height="2" x="1" fill="#FACC15"/><rect width="1" height="2" x="2" fill="#DC2626"/></svg>
@@ -65,7 +104,7 @@
                     <div id="stat-2-sub" class="text-slate-500 underline decoration-slate-300 group-hover:text-blue-700 mt-0.5">Strikt gescheiden regels</div>
                 </a>
 
-                <a href="disclaimer.html" class="group bg-emerald-50/60 hover:bg-emerald-50 rounded-xl p-3.5 border border-emerald-200/80 hover:border-emerald-400 transition block">
+                <a href="disclaimer.html" class="group bg-emerald-50/70 hover:bg-emerald-50 rounded-xl p-3.5 border border-emerald-200/80 hover:border-emerald-400 transition block">
                     <div class="flex items-center justify-between">
                         <span id="stat-3-title" class="font-heading font-bold text-base text-emerald-700">2026 Tarieven</span>
                         <span class="text-emerald-600 font-bold group-hover:translate-x-0.5 transition">→</span>
@@ -73,27 +112,27 @@
                     <div id="stat-3-sub" class="text-emerald-800/80 underline decoration-emerald-300 mt-0.5">Met officiële overheidslinks</div>
                 </a>
 
-                <div class="bg-slate-50/80 rounded-xl p-3.5 border border-slate-200/60">
+                <div class="bg-slate-50/90 rounded-xl p-3.5 border border-slate-200/70">
                     <div id="stat-4-title" class="font-heading font-bold text-base text-slate-900">100% Privé</div>
                     <div id="stat-4-sub" class="text-slate-500 mt-0.5">Rekent lokaal in je browser</div>
                 </div>
             </div>
         </div>
 
-        <!-- Laatst Gebruikt (Volledig meertalig) -->
+        <!-- Laatst Gebruikt -->
         <div id="recent-tools-wrap" class="hidden space-y-3">
             <div class="flex items-center justify-between">
-                <h2 id="recent-heading" class="font-heading text-sm font-bold uppercase tracking-wider text-slate-500">Verder rekenen waar je gebleven was</h2>
+                <h2 id="recent-heading" class="font-heading text-xs font-bold uppercase tracking-wider text-slate-500">Verder rekenen waar je gebleven was</h2>
                 <button id="recent-clear-btn" onclick="localStorage.removeItem('rekenhub_recent'); document.getElementById('recent-tools-wrap').classList.add('hidden');" class="text-xs text-slate-400 hover:text-slate-600">Wissen</button>
             </div>
             <div id="recent-tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
         </div>
 
-        <!-- Populaire 2026 Voorbeeldscenario's (Volledig meertalig) -->
+        <!-- Populaire 2026 Voorbeeldscenario's -->
         <div class="space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <h2 id="examples-heading" class="font-heading text-lg font-bold text-slate-900">Populaire 2026 Rekenvoorbeelden (Klik & Bereken Direct)</h2>
-                <span id="examples-sub" class="text-xs font-semibold text-slate-400">Opent met vooraf ingevulde 2026-cijfers</span>
+                <span id="examples-sub" class="text-xs font-semibold text-slate-500">Opent met vooraf ingevulde 2026-cijfers</span>
             </div>
             <div id="examples-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
         </div>
@@ -118,10 +157,10 @@
 
         const pageCopy = {
             nl: {
-                badge: "✓ Bijgewerkt voor 2026 • België & Nederland apart",
-                title: "Slimme Calculators voor Elke Dag",
-                subtitle: "Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot laadkosten en hardlooptempo — 100% gratis en met officiële bronvermelding.",
-                placeholder: "Zoek calculator (bijv. bruto, Box 3, BMI)...",
+                badge: "Officiële 2026-tarieven • België & Nederland apart",
+                titleHtml: `Reken het in seconden uit — <span class="text-[#003366]">op maat van België & Nederland</span>`,
+                subtitle: "Van bruto-netto loon, sparen (RV & Box 3) en registratierechten tot laadkosten en hardlooptempo. 100% gratis, lokaal in je browser en met directe bronvermelding.",
+                placeholder: "Waar wil je mee rekenen? (bijv. bruto, Box 3, hypotheek, BMI)...",
                 noResults: "Geen calculator gevonden voor deze zoekterm.",
                 resetBtn: "Toon alle 19 tools",
                 pills: ["Bruto-Netto", "Sparen", "Hypotheek", "Laadkosten", "BMI", "Extractor"],
@@ -174,10 +213,10 @@
                 ]
             },
             fr: {
-                badge: "✓ Mis à jour pour 2026 • Belgique & Pays-Bas séparés",
-                title: "Calculateurs Intelligents au Quotidien",
+                badge: "Barèmes officiels 2026 • Belgique & Pays-Bas séparés",
+                titleHtml: `Calculez tout en quelques secondes — <span class="text-[#003366]">adapté à la Belgique & aux Pays-Bas</span>`,
                 subtitle: "Du salaire brut-net, épargne et droits d'enregistrement aux coûts de recharge et allure de course — 100% gratuit avec sources officielles.",
-                placeholder: "Rechercher (ex. salaire, TVA, IMC)...",
+                placeholder: "Rechercher un calculateur (ex. salaire, TVA, hypothèque, IMC)...",
                 noResults: "Aucun calculateur trouvé pour cette recherche.",
                 resetBtn: "Afficher les 19 outils",
                 pills: ["Salaire", "Épargne", "Hypothèque", "Recharge VE", "IMC", "Course"],
@@ -230,10 +269,10 @@
                 ]
             },
             en: {
-                badge: "✓ Updated for 2026 • Belgium & Netherlands separated",
-                title: "Smart Calculators for Everyday Decisions",
+                badge: "Official 2026 rates • Belgium & Netherlands separated",
+                titleHtml: `Calculate anything in seconds — <span class="text-[#003366]">tailored to Belgium & the Netherlands</span>`,
                 subtitle: "From gross-to-net salary, savings (BE & NL Box 3), and property tax to EV charging and running pace — free with official sources.",
-                placeholder: "Search calculator (e.g. salary, VAT, BMI)...",
+                placeholder: "Search calculator (e.g. salary, VAT, mortgage, BMI)...",
                 noResults: "No calculator found matching your search.",
                 resetBtn: "Show all 19 tools",
                 pills: ["Salary", "Savings", "Mortgage", "EV Cost", "BMI", "Extractor"],
@@ -291,8 +330,8 @@
             {
                 id: "financien",
                 span: "lg:col-span-2",
-                cardBg: "bg-white",
-                headerBg: "bg-gradient-to-r from-emerald-50 to-teal-50/60 border-emerald-100",
+                cardBg: "bg-white/95 backdrop-blur-xs",
+                headerBg: "bg-gradient-to-r from-emerald-50 to-teal-50/70 border-emerald-100",
                 badgeColor: "text-emerald-700 bg-emerald-100/80",
                 hoverText: "group-hover:text-emerald-700",
                 title: { nl: "Sparen, Lenen & Vastgoed", fr: "Épargne, Prêt & Immobilier", en: "Savings, Loans & Property" },
@@ -317,8 +356,8 @@
             {
                 id: "werk-btw",
                 span: "lg:col-span-1",
-                cardBg: "bg-white",
-                headerBg: "bg-gradient-to-r from-blue-50 to-indigo-50/60 border-blue-100",
+                cardBg: "bg-white/95 backdrop-blur-xs",
+                headerBg: "bg-gradient-to-r from-blue-50 to-indigo-50/70 border-blue-100",
                 badgeColor: "text-blue-700 bg-blue-100/80",
                 hoverText: "group-hover:text-blue-700",
                 title: { nl: "Werk, Loon & Btw", fr: "Travail, Salaire & TVA", en: "Work, Income & Tax" },
@@ -342,8 +381,8 @@
             {
                 id: "wonen",
                 span: "lg:col-span-1",
-                cardBg: "bg-white",
-                headerBg: "bg-gradient-to-r from-amber-50 to-orange-50/60 border-amber-100",
+                cardBg: "bg-white/95 backdrop-blur-xs",
+                headerBg: "bg-gradient-to-r from-amber-50 to-orange-50/70 border-amber-100",
                 badgeColor: "text-amber-800 bg-amber-100/80",
                 hoverText: "group-hover:text-amber-700",
                 title: { nl: "Wonen & Energie", fr: "Maison & Énergie", en: "Home & Energy" },
@@ -364,8 +403,8 @@
             {
                 id: "auto",
                 span: "lg:col-span-1",
-                cardBg: "bg-white",
-                headerBg: "bg-gradient-to-r from-indigo-50 to-violet-50/60 border-indigo-100",
+                cardBg: "bg-white/95 backdrop-blur-xs",
+                headerBg: "bg-gradient-to-r from-indigo-50 to-violet-50/70 border-indigo-100",
                 badgeColor: "text-indigo-700 bg-indigo-100/80",
                 hoverText: "group-hover:text-indigo-700",
                 title: { nl: "Auto & Mobiliteit", fr: "Auto & Mobilité", en: "Auto & Mobility" },
@@ -386,8 +425,8 @@
             {
                 id: "gezondheid",
                 span: "lg:col-span-1",
-                cardBg: "bg-white",
-                headerBg: "bg-gradient-to-r from-rose-50 to-pink-50/60 border-rose-100",
+                cardBg: "bg-white/95 backdrop-blur-xs",
+                headerBg: "bg-gradient-to-r from-rose-50 to-pink-50/70 border-rose-100",
                 badgeColor: "text-rose-700 bg-rose-100/80",
                 hoverText: "group-hover:text-rose-700",
                 title: { nl: "Gezondheid & Sport", fr: "Santé & Sport", en: "Health & Fitness" },
@@ -407,7 +446,7 @@
             {
                 id: "webtools",
                 span: "lg:col-span-3",
-                cardBg: "bg-white",
+                cardBg: "bg-white/95 backdrop-blur-xs",
                 headerBg: "bg-gradient-to-r from-slate-100 to-slate-50 border-slate-200",
                 badgeColor: "text-slate-700 bg-slate-200/80",
                 hoverText: "group-hover:text-blue-700",
@@ -444,7 +483,7 @@
                     const grid = document.getElementById("recent-tools-grid");
                     wrap.classList.remove("hidden");
                     grid.innerHTML = recent.map(r => `
-                        <a href="${r.file}" class="bg-white rounded-2xl p-3.5 border border-slate-200/90 hover:border-blue-400 transition flex items-center gap-3">
+                        <a href="${r.file}" class="bg-white/95 rounded-2xl p-3.5 border border-slate-200/90 hover:border-blue-400 transition flex items-center gap-3">
                             <span class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-base shrink-0">${r.icon}</span>
                             <div class="min-w-0">
                                 <div class="font-heading font-bold text-xs text-slate-900 truncate">${r.name[lang] || r.name.nl}</div>
@@ -461,7 +500,7 @@
             const copy = pageCopy[lang] || pageCopy.nl;
 
             document.getElementById("hero-badge").textContent = copy.badge;
-            document.getElementById("hero-title").textContent = copy.title;
+            document.getElementById("hero-title").innerHTML = copy.titleHtml;
             document.getElementById("hero-subtitle").textContent = copy.subtitle;
             document.getElementById("search-input").placeholder = copy.placeholder;
             document.getElementById("no-results-text").textContent = copy.noResults;
@@ -483,7 +522,7 @@
             document.getElementById("examples-sub").textContent = copy.examplesSub;
 
             document.getElementById("examples-grid").innerHTML = copy.examples.map(ex => `
-                <a href="${ex.href}" class="group bg-white rounded-2xl p-4 border border-slate-200/90 hover:border-blue-400 transition flex flex-col justify-between space-y-3">
+                <a href="${ex.href}" class="group bg-white/95 rounded-2xl p-4 border border-slate-200/90 hover:border-blue-400 transition flex flex-col justify-between space-y-3 shadow-2xs">
                     <div>
                         <span class="inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md border mb-2 ${ex.badgeStyle}">${ex.badge}</span>
                         <div class="font-heading font-bold text-sm text-slate-900 group-hover:text-blue-600 transition">${ex.title}</div>
@@ -494,7 +533,7 @@
             `).join("");
 
             document.getElementById("quick-pills").innerHTML = copy.pills.map(p =>
-                `<button type="button" onclick="quickSearch('${p.split(' ')[0]}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-600 transition">${p}</button>`
+                `<button type="button" onclick="quickSearch('${p.split(' ')[0]}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 hover:text-blue-700 transition">${p}</button>`
             ).join("");
 
             const q = document.getElementById("search-input").value.toLowerCase().trim();
@@ -525,7 +564,7 @@
 
                         <div class="p-4 sm:p-5 grid grid-cols-1 ${cat.span.includes('col-span-2') || cat.span.includes('col-span-3') ? 'sm:grid-cols-2' : ''} gap-2.5 flex-grow content-start">
                             ${matched.map(link => `
-                                <a href="${link.file}" class="group flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-slate-50/70 hover:bg-slate-100/90 border border-transparent hover:border-slate-200 transition">
+                                <a href="${link.file}" class="group flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-slate-50/80 hover:bg-slate-100 border border-transparent hover:border-slate-200 transition">
                                     <span class="text-sm font-semibold text-slate-800 ${cat.hoverText} transition truncate">${link.label[lang]}</span>
                                     <div class="flex items-center gap-2 shrink-0">
                                         ${link.tag ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-md ${cat.badgeColor}">${link.tag}</span>` : ''}

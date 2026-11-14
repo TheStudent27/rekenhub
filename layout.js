@@ -19,21 +19,36 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = url.toString();
     };
 
-    // 2. Google Fonts + Print CSS
+    // 2. Verfijnde Google Fonts (Plus Jakarta Sans + Inter) & Subtiele Pagina-achtergrond
     if (!document.getElementById("rekenhub-fonts")) {
         const fontLink = document.createElement("link");
         fontLink.id = "rekenhub-fonts";
         fontLink.rel = "stylesheet";
-        fontLink.href = "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@600;700&family=Inter:wght@400;500;600;700&display=swap";
+        fontLink.href = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap";
         document.head.appendChild(fontLink);
 
         const style = document.createElement("style");
         style.textContent = `
-            body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-feature-settings: "cv02", "cv03", "cv04", "cv11"; }
-            h1, h2, h3, .font-heading { font-family: 'Instrument Sans', 'Inter', sans-serif; letter-spacing: -0.02em; }
+            body {
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                font-size: 15px;
+                line-height: 1.6;
+                color: #0f172a;
+                background-color: #f1f5f9;
+                background-image:
+                    radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.08) 0px, transparent 45%),
+                    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 45%),
+                    radial-gradient(#cbd5e1 1px, transparent 1px);
+                background-size: 100% 100%, 100% 100%, 24px 24px;
+                background-attachment: fixed;
+            }
+            h1, h2, h3, .font-heading {
+                font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+                letter-spacing: -0.025em;
+            }
             input[type="number"], .tabular-nums { font-variant-numeric: tabular-nums; }
             @media print {
-                #app-header, #app-footer, .no-print, #related-tools-box, #official-sources-box { display: none !important; }
+                #app-header, #app-footer, .no-print, #related-tools-box, #official-sources-box, #left-ad-rail, #right-ad-rail { display: none !important; }
                 body { background: white !important; }
                 main { max-width: 100% !important; padding: 0 !important; }
             }
@@ -434,10 +449,15 @@ document.addEventListener("DOMContentLoaded", function () {
         </header>
     `;
 
-    const adBannerHtml = `<div id="top-ad-slot" class="hidden no-print max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6"></div>`;
+    // Gereserveerde slots voor toekomstige advertenties (boven + zijbalken op grote schermen, standaard verborgen totdat AdSense wordt gevuld)
+    const adSlotsHtml = `
+        <div id="top-ad-slot" class="hidden no-print max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6"></div>
+        <aside id="left-ad-rail" aria-hidden="true" class="hidden 2xl:flex no-print fixed left-4 top-24 w-[160px] min-h-[600px] items-start justify-center pointer-events-none empty:hidden"></aside>
+        <aside id="right-ad-rail" aria-hidden="true" class="hidden 2xl:flex no-print fixed right-4 top-24 w-[160px] min-h-[600px] items-start justify-center pointer-events-none empty:hidden"></aside>
+    `;
 
     const footerHtml = `
-        <footer data-no-translate="1" class="bg-white border-t border-slate-200 mt-16">
+        <footer data-no-translate="1" class="bg-white/95 backdrop-blur-xs border-t border-slate-200 mt-16">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-slate-100">
                     <div class="space-y-3">
@@ -493,7 +513,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (headerPlaceholder) {
         headerPlaceholder.className = "sticky top-0 z-50 w-full";
         headerPlaceholder.innerHTML = headerHtml;
-        headerPlaceholder.insertAdjacentHTML("afterend", adBannerHtml);
+        headerPlaceholder.insertAdjacentHTML("afterend", adSlotsHtml);
     }
     if (footerPlaceholder) footerPlaceholder.innerHTML = footerHtml;
 
