@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Zorg dat zowel "/sparen" (Cloudflare clean URL) als "/sparen.html" herkend wordt
     let rawPath = window.location.pathname.split("/").pop() || "index.html";
     if (!rawPath.includes(".")) rawPath += ".html";
     const currentPath = rawPath;
@@ -32,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "Belastingen & Werk",
             short: "Belastingen",
             items: [
-                { name: "BTW Calculator", sub: "BE • NL • LU", file: "btw.html", icon: "🧾", fiscal: true, desc: "Excl. of incl. btw rekenen (21%, 12%, 9%, 6%, 17%)." },
-                { name: "Flexi-job Loon", sub: "België", file: "flexijob.html", icon: "💼", fiscal: true, desc: "Bruto=netto uurloon, 7,67% vakantiegeld & €12.000 plafond." },
-                { name: "Werkuren & Uurloon", sub: "Decimale uren", file: "werkuren.html", icon: "⏱️", fiscal: false, desc: "Start- en eindtijd omrekenen naar decimale werkuren." }
+                { name: "BTW Calculator", sub: "BE • NL • LU tarieven", file: "btw.html", icon: "🧾", fiscal: true, desc: "Excl. of incl. btw rekenen (21%, 12%, 9%, 6%, 17%)." },
+                { name: "Flexi-job Loon", sub: "België (bruto = netto)", file: "flexijob.html", icon: "💼", fiscal: true, desc: "Bruto=netto uurloon, 7,67% vakantiegeld & €12.000 plafond." },
+                { name: "Werkuren & Uurloon", sub: "Decimale uren berekenen", file: "werkuren.html", icon: "⏱️", fiscal: false, desc: "Start- en eindtijd omrekenen naar decimale werkuren." }
             ]
         },
         {
@@ -42,10 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "Sparen, Lenen & Vastgoed",
             short: "Geld & Woning",
             items: [
-                { name: "Sparen & Beleggen", sub: "Netto na taks", file: "sparen.html", icon: "📈", fiscal: true, desc: "Netto eindkapitaal na roerende voorheffing of NL Box 3." },
-                { name: "Hypotheek & Woonlening", sub: "Maandlast & rente", file: "hypotheek.html", icon: "🏦", fiscal: false, desc: "Maandelijkse aflossing, totale rente en aflossingsgrafiek." },
-                { name: "Registratie & Overdracht", sub: "Aankoopkosten", file: "registratierechten.html", icon: "🔑", fiscal: true, desc: "Verkooprecht (BE) of overdrachtsbelasting (NL) + notaris." },
-                { name: "Inflatie & Koopkracht", sub: "Waardeverlies", file: "inflatie.html", icon: "📉", fiscal: false, desc: "Waardeverlies van spaargeld over de jaren berekenen." }
+                { name: "Sparen & Beleggen", sub: "Netto na roerende voorheffing", file: "sparen.html", icon: "📈", fiscal: true, desc: "Netto eindkapitaal na roerende voorheffing of NL Box 3." },
+                { name: "Hypotheek & Woonlening", sub: "Maandlast & aflossing", file: "hypotheek.html", icon: "🏦", fiscal: false, desc: "Maandelijkse aflossing, totale rente en aflossingsgrafiek." },
+                { name: "Registratie & Overdracht", sub: "Aankoopkosten woning", file: "registratierechten.html", icon: "🔑", fiscal: true, desc: "Verkooprecht (BE) of overdrachtsbelasting (NL) + notaris." },
+                { name: "Inflatie & Koopkracht", sub: "Waardeverlies spaargeld", file: "inflatie.html", icon: "📉", fiscal: false, desc: "Waardeverlies van spaargeld over de jaren berekenen." }
             ]
         },
         {
@@ -54,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
             short: "Energie & m²",
             items: [
                 { name: "Stroomverbruik (kWh)", sub: "Kosten per toestel", file: "energie.html", icon: "🔌", fiscal: false, desc: "Verbruik en kosten per dag, maand en jaar berekenen." },
-                { name: "Zonnepanelen", sub: "Terugverdientijd", file: "zonnepanelen.html", icon: "☀️", fiscal: true, desc: "Terugverdientijd met zelfverbruik en injectietarief." },
-                { name: "Oppervlakte (m²)", sub: "Omtrek & snijverlies", file: "oppervlakte.html", icon: "📐", fiscal: false, desc: "Vierkante meters, omtrek, verf en 10% snijverlies." }
+                { name: "Zonnepanelen", sub: "Terugverdientijd & injectie", file: "zonnepanelen.html", icon: "☀️", fiscal: true, desc: "Terugverdientijd met zelfverbruik en injectietarief." },
+                { name: "Oppervlakte (m²)", sub: "Omtrek, verf & snijverlies", file: "oppervlakte.html", icon: "📐", fiscal: false, desc: "Vierkante meters, omtrek, verf en 10% snijverlies." }
             ]
         },
         {
@@ -63,9 +62,9 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "Auto & Mobiliteit",
             short: "Auto & Laden",
             items: [
-                { name: "Laadkosten vs. Benzine", sub: "EV besparing", file: "laadkosten.html", icon: "🔋", fiscal: false, desc: "Thuis laden of snellader vergeleken met benzine." },
-                { name: "Brandstofkosten Rit", sub: "Verbruik & delen", file: "ritkosten.html", icon: "⛽", fiscal: false, desc: "Brandstofkosten berekenen en splitsen per persoon." },
-                { name: "Autobelasting", sub: "BIV, BPM & MRB", file: "autobelasting.html", icon: "🚗", fiscal: true, desc: "Indicatie BIV & rijtaks (BE) of BPM & MRB (NL)." }
+                { name: "Laadkosten vs. Benzine", sub: "EV besparing per jaar", file: "laadkosten.html", icon: "🔋", fiscal: false, desc: "Thuis laden of snellader vergeleken met benzine." },
+                { name: "Brandstofkosten Rit", sub: "Verbruik & kosten delen", file: "ritkosten.html", icon: "⛽", fiscal: false, desc: "Brandstofkosten berekenen en splitsen per persoon." },
+                { name: "Autobelasting", sub: "BIV, rijtaks, BPM & MRB", file: "autobelasting.html", icon: "🚗", fiscal: true, desc: "Indicatie BIV & rijtaks (BE) of BPM & MRB (NL)." }
             ]
         },
         {
@@ -73,11 +72,90 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "Rekenen & Gezondheid",
             short: "Rekenen & BMI",
             items: [
-                { name: "Procenten & Korting", sub: "Solden & marges", file: "procenten.html", icon: "🏷️", fiscal: false, desc: "Kortingsprijs, marge en procentuele stijging/daling." },
-                { name: "BMI & Caloriebehoefte", sub: "Gezond gewicht", file: "bmi.html", icon: "⚖️", fiscal: false, desc: "Gezond gewicht op kleurenschaal en dagelijkse kcal." }
+                { name: "Procenten & Korting", sub: "Solden, marge & verschil", file: "procenten.html", icon: "🏷️", fiscal: false, desc: "Kortingsprijs, marge en procentuele stijging/daling." },
+                { name: "BMI & Caloriebehoefte", sub: "Gezond gewicht & kcal", file: "bmi.html", icon: "⚖️", fiscal: false, desc: "Gezond gewicht op kleurenschaal en dagelijkse kcal." }
             ]
         }
     ];
+
+    // 2. Contextuele Presets per calculator (banken, laadpalen, toestellen, etc.)
+    const toolPresets = {
+        "sparen.html": {
+            label: "Indicatieve spaarrente per bank (2026):",
+            note: "Rentes zijn indicatief inclusief getrouwheidspremie en kunnen wijzigen.",
+            options: [
+                { name: "Grootbanken BE (KBC / Belfius / BNP)", tag: "~1,10%", values: { rate: 1.10 }, country: "BE" },
+                { name: "Argenta Groeirekening (BE)", tag: "~2,15%", values: { rate: 2.15 }, country: "BE" },
+                { name: "Keytrade High Fidelity (BE)", tag: "~2,25%", values: { rate: 2.25 }, country: "BE" },
+                { name: "MeDirect Essential (BE)", tag: "~2,50%", values: { rate: 2.50 }, country: "BE" },
+                { name: "Grootbanken NL (ING / Rabo / ABN)", tag: "~1,50%", values: { rate: 1.50 }, country: "NL" },
+                { name: "Trade Republic / Bunq (NL)", tag: "~2,75%", values: { rate: 2.75 }, country: "NL" },
+                { name: "Wereldwijde ETF (Gem. historisch)", tag: "~7,00%", values: { rate: 7.00 } }
+            ]
+        },
+        "hypotheek.html": {
+            label: "Indicatieve hypotheekrente per looptijd:",
+            note: "Gemiddelde vaste rentevoeten in de Benelux bij quotiteit ≤ 80%.",
+            options: [
+                { name: "10 jaar vast", tag: "~2,95%", values: { years: 10, rate: 2.95 } },
+                { name: "15 jaar vast", tag: "~3,10%", values: { years: 15, rate: 3.10 } },
+                { name: "20 jaar vast", tag: "~3,25%", values: { years: 20, rate: 3.25 } },
+                { name: "25 jaar vast (Standaard BE)", tag: "~3,40%", values: { years: 25, rate: 3.40 } },
+                { name: "30 jaar vast (Standaard NL)", tag: "~3,65%", values: { years: 30, rate: 3.65 } }
+            ]
+        },
+        "laadkosten.html": {
+            label: "Kies laadlocatie & tarief:",
+            note: "Inclusief gemiddelde nettarieven en btw in België en Nederland.",
+            options: [
+                { name: "Thuis laden (Zonnepanelen)", tag: "€0,08 / kWh", values: { "ev-price": 0.08, kwhPrice: 0.08, priceKwh: 0.08 } },
+                { name: "Thuis laden (Standaard netstroom)", tag: "€0,32 / kWh", values: { "ev-price": 0.32, kwhPrice: 0.32, priceKwh: 0.32 } },
+                { name: "Publieke laadpaal op straat", tag: "€0,48 / kWh", values: { "ev-price": 0.48, kwhPrice: 0.48, priceKwh: 0.48 } },
+                { name: "Snellader (Fastned / Ionity / Tesla)", tag: "€0,69 / kWh", values: { "ev-price": 0.69, kwhPrice: 0.69, priceKwh: 0.69 } }
+            ]
+        },
+        "ritkosten.html": {
+            label: "Gemiddelde brandstofprijs (Benelux):",
+            note: "Pas het bedrag hieronder vrij aan naar de actuele pompprijs.",
+            options: [
+                { name: "Benzine Euro 95 (BE)", tag: "€1,68 / L", values: { price: 1.68, fuelPrice: 1.68, consumption: 6.2 } },
+                { name: "Benzine Euro 95 (NL)", tag: "€1,98 / L", values: { price: 1.98, fuelPrice: 1.98, consumption: 6.2 } },
+                { name: "Diesel B7", tag: "€1,74 / L", values: { price: 1.74, fuelPrice: 1.74, consumption: 5.2 } },
+                { name: "LPG", tag: "€0,82 / L", values: { price: 0.82, fuelPrice: 0.82, consumption: 7.8 } }
+            ]
+        },
+        "energie.html": {
+            label: "Standaard vermogen per toestel:",
+            note: "Kies een toestel om direct het verbruik en de jaarprijs te zien.",
+            options: [
+                { name: "Mobiele Airco", tag: "1.200 W", values: { watt: 1200, wattage: 1200, hours: 4 } },
+                { name: "Warmtepompdroogkast", tag: "850 W", values: { watt: 850, wattage: 850, hours: 1.5 } },
+                { name: "Gaming-PC + Scherm", tag: "450 W", values: { watt: 450, wattage: 450, hours: 4 } },
+                { name: "Koelkast (24u actief)", tag: "60 W", values: { watt: 60, wattage: 60, hours: 24 } },
+                { name: "Elektrisch Bijverwarmen", tag: "2.000 W", values: { watt: 2000, wattage: 2000, hours: 3 } }
+            ]
+        },
+        "oppervlakte.html": {
+            label: "Snelle afmetingen per ruimte:",
+            note: "Handig om snel vloeroppervlak of verfverbruik te schatten.",
+            options: [
+                { name: "Slaapkamer (4 × 3,5 m)", tag: "14,00 m²", values: { "rect-length": 4, "rect-width": 3.5 } },
+                { name: "Woonkamer (8 × 4,5 m)", tag: "36,00 m²", values: { "rect-length": 8, "rect-width": 4.5 } },
+                { name: "Garage (6 × 3 m)", tag: "18,00 m²", values: { "rect-length": 6, "rect-width": 3 } },
+                { name: "Terras (5 × 4 m)", tag: "20,00 m²", values: { "rect-length": 5, "rect-width": 4 } }
+            ]
+        },
+        "btw.html": {
+            label: "Veelgebruikte btw-tarieven:",
+            note: "Selecteer het juiste tarief voor jouw land of dienst.",
+            options: [
+                { name: "Standaard tarief (BE & NL)", tag: "21%", values: { rate: 21, vatRate: 21 } },
+                { name: "Renovatie / Horeca / Voeding (BE)", tag: "6%", values: { rate: 6, vatRate: 6 } },
+                { name: "Voeding / Horeca / Boeken (NL)", tag: "9%", values: { rate: 9, vatRate: 9 } },
+                { name: "Standaard tarief Luxemburg (LU)", tag: "17%", values: { rate: 17, vatRate: 17 } }
+            ]
+        }
+    };
 
     const activeCat = menuCategories.find(c => c.items.some(i => i.file === currentPath));
     const activeTool = activeCat ? activeCat.items.find(i => i.file === currentPath) : null;
@@ -91,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (e) {}
     }
 
+    // 3. Strakke navigatie (titel & lichtgrijze subtekst netjes onder elkaar!)
     let navDesktopHtml = `<a href="index.html" class="px-3 py-1.5 rounded-lg text-sm font-medium transition ${currentPath === 'index.html' ? 'text-slate-900 bg-slate-100 font-semibold' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'}">Overzicht</a>`;
     let navMobileHtml = `<a href="index.html" class="block px-3 py-2.5 rounded-xl text-base font-semibold ${currentPath === 'index.html' ? 'text-blue-600 bg-blue-50' : 'text-slate-800'}">Alle Calculators</a>`;
 
@@ -102,12 +181,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     <span>${cat.short}</span>
                     <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <div class="absolute left-0 mt-1 w-64 bg-white rounded-xl shadow-lg border border-slate-200/90 py-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
-                    <div class="px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">${cat.title}</div>
+                <div class="absolute left-0 mt-1.5 w-72 bg-white rounded-2xl shadow-xl border border-slate-200/90 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                    <div class="px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 mb-1">${cat.title}</div>
                     ${cat.items.map(item => `
-                        <a href="${item.file}" class="flex items-center justify-between px-3.5 py-2 text-sm transition ${currentPath === item.file ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'}">
-                            <span>${item.name}</span>
-                            <span class="text-[11px] text-slate-400">${item.sub}</span>
+                        <a href="${item.file}" class="flex flex-col px-4 py-2.5 transition ${currentPath === item.file ? 'bg-blue-50/90 text-blue-600' : 'text-slate-800 hover:bg-slate-50'}">
+                            <span class="text-sm font-semibold leading-snug ${currentPath === item.file ? 'text-blue-600' : 'text-slate-900'}">${item.name}</span>
+                            <span class="text-xs text-slate-400 mt-0.5 leading-tight">${item.sub}</span>
                         </a>
                     `).join('')}
                 </div>
@@ -116,12 +195,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         navMobileHtml += `
             <div class="pt-3 pb-1 border-t border-slate-100">
-                <div class="px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">${cat.title}</div>
-                <div class="mt-1 space-y-0.5">
+                <div class="px-3 text-xs font-bold uppercase tracking-wider text-slate-400">${cat.title}</div>
+                <div class="mt-1.5 space-y-1">
                     ${cat.items.map(item => `
-                        <a href="${item.file}" class="flex justify-between items-center px-3 py-2 rounded-lg text-sm ${currentPath === item.file ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-700 hover:bg-slate-50'}">
-                            <span>${item.name}</span>
-                            <span class="text-xs text-slate-400">${item.sub}</span>
+                        <a href="${item.file}" class="flex flex-col px-3 py-2 rounded-xl ${currentPath === item.file ? 'bg-blue-50' : 'hover:bg-slate-50'}">
+                            <span class="text-sm font-semibold ${currentPath === item.file ? 'text-blue-600' : 'text-slate-800'}">${item.name}</span>
+                            <span class="text-xs text-slate-400 mt-0.5">${item.sub}</span>
                         </a>
                     `).join('')}
                 </div>
@@ -165,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="flex items-center gap-2.5">
                         <div class="w-7 h-7 bg-slate-900 rounded-lg flex items-center justify-center text-white font-heading font-bold text-sm">R</div>
                         <span class="font-heading font-bold text-slate-800">RekenHub Benelux</span>
-                        <span class="text-sm text-slate-400">© 2026</span>
+                        <span class="text-sm text-slate-400">&copy; 2026</span>
                     </div>
                     <div class="flex flex-wrap justify-center gap-6 text-sm font-medium text-slate-500">
                         <a href="index.html" class="hover:text-slate-900 transition">Alle Calculators</a>
@@ -197,6 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mobileBtn.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
     }
 
+    // 4. Extra functies op calculator-pagina's
     const mainEl = document.querySelector("main");
     if (activeTool && mainEl) {
         const h1 = mainEl.querySelector("h1");
@@ -211,6 +291,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const firstCard = mainEl.querySelector(".bg-white.rounded-2xl");
         if (firstCard) {
+            // Voeg relevante presets/banken toe bovenaan het rekenblok
+            const presetConfig = toolPresets[currentPath];
+            if (presetConfig) {
+                const presetBar = document.createElement("div");
+                presetBar.className = "no-print bg-slate-50/90 border-b border-slate-200/80 px-6 py-4 rounded-t-2xl";
+                presetBar.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-600">${presetConfig.label}</span>
+                        <span class="text-[11px] text-slate-400">${presetConfig.note}</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        ${presetConfig.options.map((opt, idx) => `
+                            <button type="button" data-preset-idx="${idx}" class="preset-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-blue-500 hover:bg-blue-50/60 text-xs font-semibold text-slate-700 transition shadow-2xs">
+                                <span>${opt.name}</span>
+                                <span class="text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded-md">${opt.tag}</span>
+                            </button>
+                        `).join("")}
+                    </div>
+                `;
+                firstCard.insertAdjacentElement("afterbegin", presetBar);
+
+                presetBar.querySelectorAll(".preset-chip").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const opt = presetConfig.options[parseInt(btn.dataset.presetIdx, 10)];
+
+                        // Highlight geselecteerde chip
+                        presetBar.querySelectorAll(".preset-chip").forEach(b => b.classList.remove("border-blue-600", "ring-2", "ring-blue-500/20"));
+                        btn.classList.add("border-blue-600", "ring-2", "ring-blue-500/20");
+
+                        // Schakel eventueel landknop om (BE of NL)
+                        if (opt.country) {
+                            const countryBtn = Array.from(firstCard.querySelectorAll("button")).find(b => b.textContent.includes(`(${opt.country})`));
+                            if (countryBtn) countryBtn.click();
+                        }
+
+                        // Vul bijbehorende velden in (zoekt op exact ID of op logische naam)
+                        Object.entries(opt.values).forEach(([key, val]) => {
+                            let target = document.getElementById(key) || document.getElementById("input-" + key);
+                            if (!target) {
+                                // Fallback: zoek naar een nummerveld dat bij rente/tarief past
+                                const numInputs = firstCard.querySelectorAll("input[type='number']");
+                                if (key === "rate" && numInputs.length >= 3) target = numInputs[2];
+                            }
+                            if (target) {
+                                target.value = val;
+                                target.dispatchEvent(new Event("input", { bubbles: true }));
+                                target.dispatchEvent(new Event("change", { bubbles: true }));
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Kopieer / Deel / Print balk
             const actionBar = document.createElement("div");
             actionBar.className = "no-print flex flex-wrap items-center justify-between gap-3 bg-white rounded-xl px-5 py-3 border border-slate-200/90 mb-8 text-xs font-semibold text-slate-600";
             actionBar.innerHTML = `
@@ -268,6 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
+        // Gerelateerde tools + FAQ
         const related = activeCat.items.filter(i => i.file !== currentPath);
         const otherCat = menuCategories.find(c => c.id !== activeCat.id);
         const suggestions = [...related, otherCat.items[0]].slice(0, 2);
